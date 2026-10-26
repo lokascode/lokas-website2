@@ -2624,17 +2624,17 @@
         <label for="c-service" data-i18n="form.service">Service</label>
         <select id="c-service">
           <optgroup label="Marketing" data-i18n-label="form.group.marketing">
-            <option data-i18n="form.opt.social">Social Media Management</option>
-            <option data-i18n="form.opt.digital">Digital Marketing</option>
-            <option data-i18n="form.opt.branding">Branding</option>
-            <option data-i18n="form.opt.content">Content Creation</option>
+            <option value="social" data-i18n="form.opt.social">Social Media Management</option>
+            <option value="digital" data-i18n="form.opt.digital">Digital Marketing</option>
+            <option value="branding" data-i18n="form.opt.branding">Branding</option>
+            <option value="content" data-i18n="form.opt.content">Content Creation</option>
           </optgroup>
           <optgroup label="Education" data-i18n-label="form.group.education">
-            <option data-i18n="form.opt.scholarship">Scholarship</option>
-            <option data-i18n="form.opt.uni">University Offer</option>
-            <option data-i18n="form.opt.training">Training</option>
-            <option data-i18n="form.opt.consulting">Consulting</option>
-            <option data-i18n="form.opt.event">Event</option>
+            <option value="scholarship" data-i18n="form.opt.scholarship">Scholarship</option>
+            <option value="university" data-i18n="form.opt.uni">University Offer</option>
+            <option value="training" data-i18n="form.opt.training">Training</option>
+            <option value="consulting" data-i18n="form.opt.consulting">Consulting</option>
+            <option value="event" data-i18n="form.opt.event">Event</option>
           </optgroup>
         </select>
       </div>
@@ -2967,7 +2967,7 @@
       "eduopp.eyebrow":"فصلك القادم قد يبدأ من أي مكان.","eduopp.title":"اعثر على فرصتك.<br>ابنِ مستقبلك.",
       "eduopp.desc":"الدراسة في الخارج أكثر من مجرد الحصول على شهادة. إنها عن اختبار ثقافة جديدة، والتعرف على أشخاص جدد، وتطوير مهارات جديدة، وخلق فرص لمستقبلك. تساعد لوكاس الطلاب على اجتياز هذه الرحلة من اكتشاف الفرصة المناسبة إلى تجهيز طلب الالتحاق.",
       "eduopp.cta1":"استكشف الجامعات","eduopp.cta2":"ابحث عن منح دراسية","eduopp.step4":"دعم التقديم",
-      "stats.eyebrow":"الأثر التعليمي","stats.title":"تقدّم حقيقي، بالأرقام.","stats.desc":"استبدل هذه الأرقام المؤقتة بأرقامك الفعلية عند توفرها.",
+      "stats.eyebrow":"الأثر التعليمي","stats.title":"��قدّم حقيقي، بالأرقام.","stats.desc":"استبدل هذه الأرقام المؤقتة بأرقامك الفعلية عند توفرها.",
       "stats.l1":"طالب تم إرشادهم","stats.l2":"فرصة جامعية","stats.l3":"طلب منحة تم دعمه","stats.l4":"فعالية تدريبية وتعليمية",
       "furas.eyebrow":"الفرص","furas.title":"فرصة",
       "furas.tagline":"اكتشف فرصتك القادمة واتخذ الخطوة التالية نحو مستقبلك المهني.",
@@ -3309,9 +3309,55 @@
   const form = document.getElementById('contact-form');
   const response = document.getElementById('form-response');
   if(!form) return;
-  form.addEventListener('submit', function(e){
+  const submitBtn = form.querySelector('.submit-btn');
+  const successText = response ? response.textContent : '';
+  const errorText = {
+    en: 'Sorry, we could not send your inquiry. Please try again or contact us on WhatsApp.',
+    ar: 'عذرًا، تعذر إرسال طلبك. يرجى المحاولة مرة أخرى أو التواصل معنا عبر واتساب.'
+  };
+  const interestByService = {
+    scholarship: 'scholarship',
+    university: 'university',
+    training: 'training',
+    consulting: 'consulting',
+    event: 'event'
+  };
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
-    if(response) response.classList.add('show');
+    const service = document.getElementById('c-service').value;
+    const language = document.documentElement.getAttribute('lang') === 'ar' ? 'ar' : 'en';
+    if(submitBtn) submitBtn.disabled = true;
+    try{
+      const res = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          name: document.getElementById('c-name').value,
+          email: document.getElementById('c-email').value,
+          phone: document.getElementById('c-phone').value,
+          organization: document.getElementById('c-org').value,
+          service: service,
+          interestType: interestByService[service] || 'other',
+          message: document.getElementById('c-message').value,
+          language: language
+        })
+      });
+      if(!res.ok) throw new Error('Request failed: ' + res.status);
+      if(response){
+        response.textContent = successText;
+        response.removeAttribute('role');
+        response.classList.add('show');
+      }
+      form.reset();
+    }catch(err){
+      if(response){
+        response.textContent = errorText[language];
+        response.setAttribute('role', 'alert');
+        response.classList.add('show');
+      }
+    }finally{
+      if(submitBtn) submitBtn.disabled = false;
+    }
   });
 })();
 
