@@ -868,6 +868,31 @@
     font-size:15.5px;
     line-height:1.7;
   }
+  /* ================= EDUCATION OFFERS ================= */
+  .edu-offers-section{padding-top:100px;}
+  .edu-offers-head{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:34px;}
+  .edu-offers-head p{max-width:430px;color:var(--text-soft);font-size:15px;line-height:1.7;}
+  .edu-offers-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+  .edu-offer-card{display:flex;flex-direction:column;min-height:510px;border:1px solid var(--line-soft);background:var(--bg-soft);transition:transform 260ms var(--ease-out),border-color 260ms ease,box-shadow 260ms ease;overflow:hidden;}
+  .edu-offer-card:hover{transform:translateY(-5px);border-color:var(--text);box-shadow:0 18px 42px rgba(7,7,7,.09);}
+  .edu-offer-media{height:188px;display:flex;align-items:flex-end;padding:18px;background-color:#111;color:#fff;position:relative;overflow:hidden;}
+  .edu-offer-media::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 55%);}
+  .edu-offer-card:nth-child(2) .edu-offer-media{background-color:#303f52;}
+  .edu-offer-card:nth-child(3) .edu-offer-media{background-color:#59634c;}
+  .edu-offer-mark{position:absolute;top:18px;right:18px;width:48px;height:48px;border:1px solid rgba(255,255,255,.45);border-radius:50%;display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;}
+  .edu-offer-media-label{position:relative;font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-.06em;line-height:1;}
+  .edu-offer-body{display:flex;flex:1;flex-direction:column;padding:24px 24px 22px;}
+  .edu-offer-pill{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:var(--card-hover);color:var(--text-soft);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+  .edu-offer-card h3{margin-top:18px;font-family:'Space Grotesk',sans-serif;font-size:23px;line-height:1.15;letter-spacing:-.035em;}
+  .edu-offer-card p{margin-top:12px;color:var(--text-soft);font-size:14px;line-height:1.7;}
+  .edu-offer-meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:auto;padding-top:24px;color:var(--text-soft);font-size:12px;}
+  .edu-offer-meta span{display:inline-flex;align-items:center;gap:6px;}
+  .edu-offer-meta strong{color:var(--text);font-weight:600;}
+  .edu-offer-link{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;}
+  .edu-offer-link span{transition:transform 220ms ease;}
+  .edu-offer-card:hover .edu-offer-link span{transform:translateX(4px);}
+  @media(max-width:820px){.edu-offers-head{display:block}.edu-offers-head p{margin-top:16px}.edu-offers-grid{grid-template-columns:1fr;gap:16px}.edu-offer-card{min-height:0}.edu-offer-media{height:170px;}}
+
   /* ================= SERVICE GRID (marketing/education) ================= */
   .service-grid{
     max-width:1320px;margin:0 auto;
@@ -2059,6 +2084,49 @@
   </div>
 </section>
 
+<!-- SCHOLARSHIP & UNIVERSITY OFFERS -->
+<section class="section edu-offers-section" id="education-offers" data-page="education">
+  <div class="edu-offers-head reveal">
+    <div class="section-head" style="margin-bottom:0;">
+      <div class="eyebrow kicker">Scholarship &amp; University Offers</div>
+      <h2 class="display">Opportunities worth moving for.</h2>
+    </div>
+    <p>Explore selected routes to study abroad, from fully funded scholarships to university pathways matched to your goals.</p>
+  </div>
+  <div class="edu-offers-grid stagger">
+    <article class="edu-offer-card">
+      <div class="edu-offer-media"><span class="edu-offer-media-label">FUND</span><span class="edu-offer-mark">01</span></div>
+      <div class="edu-offer-body">
+        <span class="edu-offer-pill">Scholarship · Fully funded</span>
+        <h3>International scholarship pathways</h3>
+        <p>Find funding opportunities that can cover tuition, living costs, and the next step in your academic journey.</p>
+        <div class="edu-offer-meta"><span>Level <strong>Master's</strong></span><span>Open <strong>Now</strong></span></div>
+        <a class="edu-offer-link" href="#contact">Explore scholarship <span>→</span></a>
+      </div>
+    </article>
+    <article class="edu-offer-card">
+      <div class="edu-offer-media"><span class="edu-offer-media-label">UNI</span><span class="edu-offer-mark">02</span></div>
+      <div class="edu-offer-body">
+        <span class="edu-offer-pill">University offer · Direct route</span>
+        <h3>University offers matched to you</h3>
+        <p>Compare suitable universities and programs by field, country, entry requirements, and application timeline.</p>
+        <div class="edu-offer-meta"><span>Level <strong>All levels</strong></span><span>Route <strong>Personalized</strong></span></div>
+        <a class="edu-offer-link" href="#contact">Find your university <span>→</span></a>
+      </div>
+    </article>
+    <article class="edu-offer-card">
+      <div class="edu-offer-media"><span class="edu-offer-media-label">NEXT</span><span class="edu-offer-mark">03</span></div>
+      <div class="edu-offer-body">
+        <span class="edu-offer-pill">Application support · Guided</span>
+        <h3>From shortlist to submission</h3>
+        <p>Turn a promising opportunity into a complete application with clear documents, deadlines, and expert guidance.</p>
+        <div class="edu-offer-meta"><span>Support <strong>End to end</strong></span><span>Languages <strong>EN · AR</strong></span></div>
+        <a class="edu-offer-link" href="#contact">Start your application <span>→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
 <!-- EDUCATION SUCCESS -->
 <section class="section" data-page="education">
   <div class="section-head reveal">
@@ -2905,7 +2973,7 @@
       "intl.2.title":"التحضير للفعالية","intl.2.desc":"التحضير للمشاركة وتنظيم الخطوات المطلوبة.",
       "intl.3.title":"التوثيق","intl.3.desc":"الدعم في إعداد الوثائق اللازمة.",
       "intl.4.title":"إجراءات التأشيرة","intl.4.desc":"إرشاد خلال عملية طلب التأشيرة ذات الصلة.",
-      "intl.5.title":"المشاركة","intl.5.desc":"مساعدتك على الاستعداد للفعالية ورحلتك الدولية.","intl.cta":"استكشف الفعاليات الدولية",
+      "intl.5.title":"المشاركة","intl.5.desc":"مساعدتك على الاستعدا�� للفعالية ورحلتك الدولية.","intl.cta":"استكشف الفعاليات الدولية",
       "whylokas.eyebrow":"لماذا لوكاس","whylokas.title":"رؤية واحدة. حلول متعددة.",
       "whylokas.desc":"التحديات التي يواجهها الأفراد والشركات نادرًا ما توجد بمعزل عن بعضها. لهذا تجمع لوكاس مجالات خبرة متعددة تحت رؤية واحدة — فكّر أبعد.",
       "whylokas.1.title":"للطلاب","whylokas.1.desc":"استكشف فرص التعليم والفرص الدولية.",
@@ -2991,7 +3059,7 @@
       "faq.m6.q":"هل يمكنكم إدارة الحملات الإعلانية؟","faq.m6.a":"نعم، نخطط ونطلق ونحسّن الحملات المدفوعة عبر المنصات التي تهم جمهوركم.",
       "faq.e1.q":"كيف يمكنني إيجاد منحة دراسية؟","faq.e1.a":"نساعدك في تحديد المنح الدراسية المناسبة ونرشدك خلال عملية التقديم بالكامل.",
       "faq.e2.q":"هل تساعدون في طلبات الالتحاق بالجامعات؟","faq.e2.a":"نعم، من اختيار الجامعات إلى تجهيز مستندات طلب الالتحاق.",
-      "faq.e3.q":"هل يمكنكم مساعدتي في الدراسة بالخارج؟","faq.e3.a":"نعم، ندعم الطلاب في استكشاف فرص الدراسة بالخارج من البداية حتى النهاية.",
+      "faq.e3.q":"هل يمكنكم مساعدتي في ا��دراسة بالخارج؟","faq.e3.a":"نعم، ندعم الطلاب في استكشاف فرص الدراسة بالخارج من البداية حتى النهاية.",
       "faq.e4.q":"ما هي برامج التدريب التي تقدمونها؟","faq.e4.a":"��دريب عملي يركز على المسار المهني ومصمم حول احتياجات أكاديمية ومهنية حقيقية.",
       "faq.e5.q":"هل تنظمون فعاليات تعليمية؟","faq.e5.a":"نعم، نربط الطلاب والمهنيين بالجامعات والفرص المتاحة.",
       "faq.e6.q":"هل يمكنني الحصول على استشارة شخصية؟","faq.e6.a":"نعم، إرشاد فردي مبني على أهدافك واهتماماتك وخططك المستقبلية.",
