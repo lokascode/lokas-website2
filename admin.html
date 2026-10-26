@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Lokas Education Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --surface:#f5f5f4;
+    --text:#070707;
+    --text-soft:#4a4a4a;
+    --line:rgba(7,7,7,0.14);
+    --accent:#070707;
+    --accent-text:#ffffff;
+    --danger:#b42318;
+    --ok:#067647;
+    --radius:10px;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.5;color:var(--text);background:var(--bg)}
+  h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif;margin:0;letter-spacing:-0.01em}
+  button,input,select,textarea{font:inherit;color:inherit}
+  button{cursor:pointer}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:0 16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg);font-weight:500}
+  .btn:hover{background:var(--surface)}
+  .btn-primary{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+  .btn-primary:hover{background:#2a2a2a}
+  .btn-danger{color:var(--danger);border-color:rgba(180,35,24,0.35)}
+  .btn[disabled]{opacity:.55;cursor:not-allowed}
+
+  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .login form{width:100%;max-width:380px;display:flex;flex-direction:column;gap:16px}
+  .login p{margin:0;color:var(--text-soft)}
+
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-weight:500;font-size:14px}
+  .field input[type=text],.field input[type=password],.field input[type=number],.field input[type=date],.field input[type=datetime-local],.field select,.field textarea{
+    width:100%;min-height:40px;padding:8px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg)
+  }
+  .field textarea{min-height:96px;resize:vertical}
+  .field.check{flex-direction:row;align-items:center;gap:10px}
+  .field.check input{width:18px;height:18px;accent-color:var(--accent)}
+  .field.check label{margin:0}
+  .field [dir=rtl]{text-align:right}
+  .hint{font-size:13px;color:var(--text-soft)}
+  .error{color:var(--danger);font-size:14px;min-height:20px;margin:0}
+
+  .shell{display:flex;min-height:100vh}
+  .side{width:240px;flex-shrink:0;border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+  .side h1{font-size:18px;padding:0 12px 16px}
+  .side button.nav{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;min-height:40px;padding:0 12px;border:0;background:none;border-radius:var(--radius);text-align:left}
+  .side button.nav:hover{background:var(--surface)}
+  .side button.nav[aria-current=page]{background:var(--accent);color:var(--accent-text)}
+  .count{font-size:13px;opacity:.7;font-variant-numeric:tabular-nums}
+  .badge{background:var(--text);color:var(--bg);border-radius:999px;font-size:12px;padding:0 8px;margin-left:6px}
+  .side .spacer{flex:1}
+
+  main{flex:1;min-width:0;padding:28px 32px}
+  .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+  .bar h2{font-size:26px}
+  .tools{display:flex;gap:8px;flex-wrap:wrap}
+  .tools input,.tools select{min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg)}
+
+  .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--radius)}
+  table{width:100%;border-collapse:collapse;min-width:640px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:13px;font-weight:600;color:var(--text-soft);background:var(--surface);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr{cursor:pointer}
+  tbody tr:hover{background:var(--surface)}
+  td.clip{max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pill{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid var(--line);font-size:13px;white-space:nowrap}
+  .empty{padding:48px 16px;text-align:center;color:var(--text-soft)}
+
+  dialog{width:min(640px,calc(100vw - 24px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--text)}
+  dialog::backdrop{background:rgba(7,7,7,0.45)}
+  dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 24px)}
+  .dlg-head{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line)}
+  .dlg-head h3{font-size:20px}
+  .dlg-body{padding:20px 24px;overflow:auto;display:flex;flex-direction:column;gap:16px}
+  .dlg-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--line)}
+  .dlg-foot .group{display:flex;gap:8px}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;z-index:50}
+
+  @media (max-width:760px){
+    .shell{flex-direction:column}
+    .side{width:100%;height:auto;position:static;flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line);padding:12px}
+    .side h1,.side .spacer{display:none}
+    .side button.nav{width:auto;white-space:nowrap}
+    main{padding:20px 16px}
+  }
+</style>
+</head>
+<body>
+
+<section class="login" id="login" hidden>
+  <form id="login-form">
+    <h1>Education admin</h1>
+    <p>Enter the admin password to manage scholarships, events, applications and the rest of the Education content.</p>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+    </div>
+    <p class="error" id="login-error" role="alert"></p>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+  </form>
+</section>
+
+<div class="shell" id="app" hidden>
+  <nav class="side" aria-label="Education data">
+    <h1>Education admin</h1>
+    <div id="nav" style="display:flex;flex-direction:column;gap:4px"></div>
+    <div class="spacer"></div>
+    <button class="btn" type="button" id="logout">Sign out</button>
+  </nav>
+  <main>
+    <div class="bar">
+      <h2 id="title">Applications</h2>
+      <div class="tools">
+        <input type="search" id="search" placeholder="Search" aria-label="Search rows">
+        <select id="status-filter" aria-label="Filter by status" hidden></select>
+        <button class="btn btn-primary" type="button" id="new-row" hidden>New</button>
+      </div>
+    </div>
+    <div class="table-wrap" id="table-wrap"></div>
+  </main>
+</div>
+
+<dialog id="editor" aria-labelledby="editor-title">
+  <form id="editor-form" novalidate>
+    <div class="dlg-head">
+      <h3 id="editor-title"></h3>
+      <button class="btn" type="button" id="editor-close" aria-label="Close">Close</button>
+    </div>
+    <div class="dlg-body" id="editor-fields"></div>
+    <div class="dlg-foot">
+      <div>
+        <button class="btn btn-danger" type="button" id="editor-delete" hidden>Delete</button>
+        <p class="error" id="editor-error" role="alert"></p>
+      </div>
+      <div class="group">
+        <button class="btn" type="button" id="editor-cancel">Cancel</button>
+        <button class="btn btn-primary" type="submit" id="editor-save">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<script>
+(function () {
+  var TOKEN_KEY = 'lokas-admin-token';
+  var state = { resources: [], current: 'applications', data: null, editingId: null };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var loginEl = $('login'), appEl = $('app'), editor = $('editor');
+
+  function token() { return sessionStorage.getItem(TOKEN_KEY); }
+
+  function api(path, options) {
+    options = options || {};
+    return fetch('/api/admin' + path, {
+      method: options.method || 'GET',
+      headers: Object.assign({ Authorization: 'Bearer ' + token() }, options.body ? { 'Content-Type': 'application/json' } : {}),
+      body: options.body ? JSON.stringify(options.body) : undefined
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (json) {
+        if (res.status === 401) { signOut(); throw new Error(json.error || 'Signed out'); }
+        if (!res.ok) throw new Error(json.error || 'Request failed');
+        return json;
+      });
+    });
+  }
+
+  function toast(message) {
+    var el = document.createElement('div');
+    el.className = 'toast';
+    el.setAttribute('role', 'status');
+    el.textContent = message;
+    document.body.appendChild(el);
+    setTimeout(function () { el.remove(); }, 2600);
+  }
+
+  function label(value) {
+    return String(value).replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
+  }
+
+  function formatCell(name, value, field) {
+    if (value === null || value === undefined || value === '') return '';
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+    if (field && field.type === 'datetime' || name === 'created_at') return new Date(value).toLocaleString();
+    if (field && field.type === 'date') return String(value).slice(0, 10);
+    if (Array.isArray(value)) return value.join(', ');
+    return String(value);
+  }
+
+  function showLogin(message) {
+    appEl.hidden = true;
+    loginEl.hidden = false;
+    $('login-error').textContent = message || '';
+    $('password').focus();
+  }
+
+  function signOut() {
+    sessionStorage.removeItem(TOKEN_KEY);
+    showLogin('');
+  }
+
+  function loadOverview() {
+    return api('').then(function (json) {
+      state.resources = json.resources;
+      state.newApplications = json.newApplications;
+      renderNav();
+    });
+  }
+
+  function renderNav() {
+    var nav = $('nav');
+    nav.textContent = '';
+    state.resources.forEach(function (resource) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'nav';
+      if (resource.key === state.current) button.setAttribute('aria-current', 'page');
+      var name = document.createElement('span');
+      name.textContent = resource.label;
+      if (resource.key === 'applications' && state.newApplications) {
+        var badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = state.newApplications + ' new';
+        name.appendChild(badge);
+      }
+      var count = document.createElement('span');
+      count.className = 'count';
+      count.textContent = resource.total;
+      button.append(name, count);
+      button.addEventListener('click', function () { select(resource.key); });
+      nav.appendChild(button);
+    });
+  }
+
+  function select(key) {
+    state.current = key;
+    $('search').value = '';
+    renderNav();
+    return loadResource();
+  }
+
+  function loadResource() {
+    $('table-wrap').innerHTML = '<div class="empty">Loading</div>';
+    return api('?resource=' + encodeURIComponent(state.current)).then(function (json) {
+      state.data = json;
+      $('title').textContent = json.label;
+      $('new-row').hidden = !json.canCreate;
+      setupStatusFilter();
+      renderTable();
+    }).catch(function (error) {
+      $('table-wrap').innerHTML = '';
+      var div = document.createElement('div');
+      div.className = 'empty';
+      div.textContent = error.message;
+      $('table-wrap').appendChild(div);
+    });
+  }
+
+  function setupStatusFilter() {
+    var filter = $('status-filter');
+    var field = state.data.fields.find(function (f) { return f.name === 'status'; });
+    filter.textContent = '';
+    if (!field) { filter.hidden = true; return; }
+    var all = document.createElement('option');
+    all.value = '';
+    all.textContent = 'All statuses';
+    filter.appendChild(all);
+    field.options.forEach(function (option) {
+      var el = document.createElement('option');
+      el.value = option;
+      el.textContent = label(option);
+      filter.appendChild(el);
+    });
+    filter.hidden = false;
+  }
+
+  function visibleRows() {
+    var query = $('search').value.trim().toLowerCase();
+    var status = $('status-filter').hidden ? '' : $('status-filter').value;
+    return state.data.rows.filter(function (row) {
+      if (status && row.status !== status) return false;
+      if (!query) return true;
+      return state.data.listColumns.some(function (column) {
+        return String(row[column] == null ? '' : row[column]).toLowerCase().indexOf(query) !== -1;
+      }) || (row.email && row.email.toLowerCase().indexOf(query) !== -1);
+    });
+  }
+
+  function renderTable() {
+    var wrap = $('table-wrap');
+    wrap.textContent = '';
+    var rows = visibleRows();
+    if (!rows.length) {
+      var empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = state.data.rows.length ? 'No rows match your filters.' : 'Nothing here yet.';
+      wrap.appendChild(empty);
+      return;
+    }
+    var fieldByName = {};
+    state.data.fields.forEach(function (f) { fieldByName[f.name] = f; });
+
+    var table = document.createElement('table');
+    var head = table.createTHead().insertRow();
+    state.data.listColumns.forEach(function (column) {
+      var th = document.createElement('th');
+      th.scope = 'col';
+      th.textContent = (fieldByName[column] && fieldByName[column].label) || label(column);
+      head.appendChild(th);
+    });
+    var body = table.createTBody();
+    rows.forEach(function (row) {
+      var tr = body.insertRow();
+      tr.tabIndex = 0;
+      tr.setAttribute('role', 'button');
+      tr.addEventListener('click', function () { openEditor(row); });
+      tr.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openEditor(row); }
+      });
+      state.data.listColumns.forEach(function (column) {
+        var td = tr.insertCell();
+        td.className = 'clip';
+        var text = formatCell(column, row[column], fieldByName[column]);
+        if (column === 'status' || column === 'interest_type') {
+          var pill = document.createElement('span');
+          pill.className = 'pill';
+          pill.textContent = label(text);
+          td.appendChild(pill);
+        } else {
+          td.textContent = text;
+          td.title = text;
+        }
+      });
+    });
+    wrap.appendChild(table);
+  }
+
+  function toLocalInput(value) {
+    if (!value) return '';
+    var date = new Date(value);
+    if (isNaN(date)) return '';
+    var offset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - offset).toISOString().slice(0, 16);
+  }
+
+  function buildField(field, value) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'field' + (field.type === 'bool' ? ' check' : '');
+    var id = 'f-' + field.name;
+    var labelEl = document.createElement('label');
+    labelEl.htmlFor = id;
+    labelEl.textContent = field.label + (field.required && !field.readOnly ? ' *' : '');
+
+    var input;
+    if (field.type === 'textarea') {
+      input = document.createElement('textarea');
+      input.value = value == null ? '' : value;
+    } else if (field.type === 'select') {
+      input = document.createElement('select');
+      if (!field.required) input.appendChild(new Option('None', ''));
+      field.options.forEach(function (option) { input.appendChild(new Option(label(option), option)); });
+      input.value = value == null ? (field.default || '') : value;
+    } else if (field.type === 'bool') {
+      input = document.createElement('input');
+      input.type = 'checkbox';
+      input.checked = !!value;
+    } else if (field.type === 'number') {
+      input = document.createElement('input');
+      input.type = 'number';
+      input.step = '1';
+      if (field.min !== undefined) input.min = field.min;
+      input.value = value == null ? (field.default !== undefined ? field.default : '') : value;
+    } else if (field.type === 'date') {
+      input = document.createElement('input');
+      input.type = 'date';
+      input.value = value ? String(value).slice(0, 10) : '';
+    } else if (field.type === 'datetime') {
+      input = document.createElement('input');
+      input.type = 'datetime-local';
+      input.value = toLocalInput(value);
+    } else if (field.type === 'array') {
+      input = document.createElement('input');
+      input.type = 'text';
+      input.value = Array.isArray(value) ? value.join(', ') : '';
+    } else {
+      input = document.createElement('input');
+      input.type = 'text';
+      input.value = value == null ? '' : value;
+    }
+    input.id = id;
+    input.name = field.name;
+    if (field.rtl) input.dir = 'rtl';
+    if (field.readOnly) { input.disabled = true; }
+    wrapper.append(labelEl, input);
+    if (field.type === 'bool') wrapper.append(labelEl);
+    if (field.type === 'bool') wrapper.insertBefore(input, labelEl);
+    return wrapper;
+  }
+
+  function openEditor(row) {
+    state.editingId = row ? row.id : null;
+    $('editor-title').textContent = (row ? 'Edit ' : 'New ') + state.data.label.toLowerCase();
+    $('editor-error').textContent = '';
+    $('editor-delete').hidden = !row;
+    var container = $('editor-fields');
+    container.textContent = '';
+    state.data.fields.forEach(function (field) {
+      container.appendChild(buildField(field, row ? row[field.name] : undefined));
+    });
+    if (typeof editor.showModal === 'function') editor.showModal(); else editor.setAttribute('open', '');
+    var first = container.querySelector('input:not(:disabled),select:not(:disabled),textarea:not(:disabled)');
+    if (first) first.focus();
+  }
+
+  function closeEditor() {
+    if (editor.open) editor.close();
+  }
+
+  function collectValues() {
+    var values = {};
+    state.data.fields.forEach(function (field) {
+      if (field.readOnly) return;
+      var input = $('f-' + field.name);
+      if (field.type === 'bool') values[field.name] = input.checked;
+      else if (field.type === 'datetime') values[field.name] = input.value ? new Date(input.value).toISOString() : '';
+      else values[field.name] = input.value;
+    });
+    return values;
+  }
+
+  $('login-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    sessionStorage.setItem(TOKEN_KEY, $('password').value);
+    start();
+  });
+
+  $('logout').addEventListener('click', signOut);
+  $('search').addEventListener('input', function () { if (state.data) renderTable(); });
+  $('status-filter').addEventListener('change', renderTable);
+  $('new-row').addEventListener('click', function () { openEditor(null); });
+  $('editor-close').addEventListener('click', closeEditor);
+  $('editor-cancel').addEventListener('click', closeEditor);
+
+  $('editor-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    var save = $('editor-save');
+    save.disabled = true;
+    $('editor-error').textContent = '';
+    var editing = state.editingId !== null;
+    var path = '?resource=' + encodeURIComponent(state.current) + (editing ? '&id=' + encodeURIComponent(state.editingId) : '');
+    api(path, { method: editing ? 'PATCH' : 'POST', body: collectValues() })
+      .then(function () {
+        closeEditor();
+        toast(editing ? 'Saved' : 'Created');
+        return Promise.all([loadResource(), loadOverview()]);
+      })
+      .catch(function (error) { $('editor-error').textContent = error.message; })
+      .then(function () { save.disabled = false; });
+  });
+
+  $('editor-delete').addEventListener('click', function () {
+    if (!window.confirm('Delete this row permanently? This cannot be undone.')) return;
+    api('?resource=' + encodeURIComponent(state.current) + '&id=' + encodeURIComponent(state.editingId), { method: 'DELETE' })
+      .then(function () {
+        closeEditor();
+        toast('Deleted');
+        return Promise.all([loadResource(), loadOverview()]);
+      })
+      .catch(function (error) { $('editor-error').textContent = error.message; });
+  });
+
+  function start() {
+    if (!token()) { showLogin(''); return; }
+    loadOverview().then(function () {
+      loginEl.hidden = true;
+      appEl.hidden = false;
+      return loadResource();
+    }).catch(function (error) {
+      if (token()) { sessionStorage.removeItem(TOKEN_KEY); showLogin(error.message); }
+    });
+  }
+
+  start();
+})();
+</script>
+</body>
+</html>
