@@ -872,6 +872,10 @@
   .edu-offers-section{padding-top:100px;}
   .edu-offers-head{display:flex;align-items:end;justify-content:space-between;gap:32px;margin-bottom:34px;}
   .edu-offers-head p{max-width:430px;color:var(--text-soft);font-size:15px;line-height:1.7;}
+ .edu-offers-filter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;}
+ .edu-filter-btn{border:1px solid var(--line-soft);background:transparent;color:var(--text-soft);padding:10px 16px;border-radius:999px;font:600 11px 'Space Grotesk',sans-serif;letter-spacing:.04em;cursor:pointer;transition:background 180ms ease,color 180ms ease,border-color 180ms ease;}
+ .edu-filter-btn:hover,.edu-filter-btn.is-active{background:var(--text);border-color:var(--text);color:var(--bg);}
+ .edu-offer-card.is-hidden{display:none;}
   .edu-offers-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
   .edu-offer-card{display:flex;flex-direction:column;min-height:510px;border:1px solid var(--line-soft);background:var(--bg-soft);transition:transform 260ms var(--ease-out),border-color 260ms ease,box-shadow 260ms ease;overflow:hidden;}
   .edu-offer-card:hover{transform:translateY(-5px);border-color:var(--text);box-shadow:0 18px 42px rgba(7,7,7,.09);}
@@ -915,6 +919,11 @@
     .service-card:hover .service-num{color:var(--text);}
     .edu-card:hover{background:var(--card-hover);transform:translateY(-3px);z-index:1;}
     .edu-card:hover .edu-num{color:var(--text);}
+ .edu-card-link{display:block;color:inherit;text-decoration:none;cursor:pointer;}
+ .edu-card-link:focus-visible,.edu-filter-btn:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}
+ .edu-card-cta{display:inline-flex;align-items:center;gap:8px;margin-top:18px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;}
+ .edu-card-cta span{transition:transform 220ms ease;}
+ .edu-card-link:hover .edu-card-cta span{transform:translateX(4px);}
     .work-tile:hover .bg{transform:scale(1.16);}
   }
   .service-num{display:none;}
@@ -2018,18 +2027,20 @@
     <h2 class="display" data-i18n="svc.edu.title">Where Futures Start.</h2>
   </div>
   <div class="edu-grid stagger six services-grid">
-    <div class="edu-card" id="svc-edu-1">
+    <a class="edu-card edu-card-link" id="svc-edu-1" href="#education-offers" data-offer-filter="scholarship">
       <svg class="icon card-icon"><use href="#icon-medal"/></svg>
       <div class="edu-num">01</div>
       <h3 class="display" data-i18n="svc.edu.1.title">Scholarships</h3>
       <p data-i18n="svc.edu.1.desc">Discover scholarship opportunities and application guidance.</p>
-    </div>
-    <div class="edu-card" id="svc-edu-2">
+      <span class="edu-card-cta">View available offers <span>→</span></span>
+    </a>
+    <a class="edu-card edu-card-link" id="svc-edu-2" href="#education-offers?type=university" data-offer-filter="university">
       <svg class="icon card-icon"><use href="#icon-cap"/></svg>
       <div class="edu-num">02</div>
       <h3 class="display" data-i18n="svc.edu.2.title">University Offers</h3>
       <p data-i18n="svc.edu.2.desc">Connect with suitable universities and programs.</p>
-    </div>
+      <span class="edu-card-cta">View available offers <span>→</span></span>
+    </a>
     <div class="edu-card" id="svc-edu-3">
       <svg class="icon card-icon"><use href="#icon-globe"/></svg>
       <div class="edu-num">03</div>
@@ -2093,8 +2104,13 @@
     </div>
     <p>Explore selected routes to study abroad, from fully funded scholarships to university pathways matched to your goals.</p>
   </div>
+  <div class="edu-offers-filter" role="tablist" aria-label="Offer type">
+    <button class="edu-filter-btn is-active" type="button" data-offer-tab="all">All offers</button>
+    <button class="edu-filter-btn" type="button" data-offer-tab="scholarship">Scholarships</button>
+    <button class="edu-filter-btn" type="button" data-offer-tab="university">University offers</button>
+  </div>
   <div class="edu-offers-grid stagger">
-    <article class="edu-offer-card">
+    <article class="edu-offer-card" data-offer-type="scholarship">
       <div class="edu-offer-media"><span class="edu-offer-media-label">FUND</span><span class="edu-offer-mark">01</span></div>
       <div class="edu-offer-body">
         <span class="edu-offer-pill">Scholarship · Fully funded</span>
@@ -2104,7 +2120,7 @@
         <a class="edu-offer-link" href="#contact">Explore scholarship <span>→</span></a>
       </div>
     </article>
-    <article class="edu-offer-card">
+    <article class="edu-offer-card" data-offer-type="university">
       <div class="edu-offer-media"><span class="edu-offer-media-label">UNI</span><span class="edu-offer-mark">02</span></div>
       <div class="edu-offer-body">
         <span class="edu-offer-pill">University offer · Direct route</span>
@@ -2114,7 +2130,7 @@
         <a class="edu-offer-link" href="#contact">Find your university <span>→</span></a>
       </div>
     </article>
-    <article class="edu-offer-card">
+    <article class="edu-offer-card" data-offer-type="support">
       <div class="edu-offer-media"><span class="edu-offer-media-label">NEXT</span><span class="edu-offer-mark">03</span></div>
       <div class="edu-offer-body">
         <span class="edu-offer-pill">Application support · Guided</span>
@@ -3427,6 +3443,32 @@
       if(submitBtn) submitBtn.disabled = false;
     }
   });
+})();
+
+/* Education offer filters */
+(function(){
+  const section = document.getElementById('education-offers');
+  if(!section) return;
+  const buttons = section.querySelectorAll('[data-offer-tab]');
+  const cards = section.querySelectorAll('[data-offer-type]');
+  function setFilter(filter, shouldScroll){
+    const selected = filter === 'scholarship' || filter === 'university' ? filter : 'all';
+    buttons.forEach(button => {
+      const active = button.dataset.offerTab === selected;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    cards.forEach(card => card.classList.toggle('is-hidden', selected !== 'all' && card.dataset.offerType !== selected));
+    if(shouldScroll) section.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  buttons.forEach(button => button.addEventListener('click', () => setFilter(button.dataset.offerTab, true)));
+  document.querySelectorAll('[data-offer-filter]').forEach(card => card.addEventListener('click', event => {
+    event.preventDefault();
+    setFilter(card.dataset.offerFilter, true);
+    history.replaceState(null, '', '#education-offers');
+  }));
+  const query = new URLSearchParams(window.location.hash.split('?')[1] || '');
+  setFilter(query.get('type'), false);
 })();
 
 /* ================= PAGE ROUTER ================= */
