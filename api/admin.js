@@ -202,6 +202,23 @@ const RESOURCES = {
       bool('is_placeholder', 'Placeholder value'),
     ],
   },
+  site_content: {
+    table: 'site_content',
+    idType: 'int',
+    label: 'Website content',
+    canCreate: true,
+    order: 'section, sort_order, content_key',
+    listColumns: ['section', 'content_key', 'content_en', 'is_published'],
+    fields: [
+      text('section', 'Section', { required: true }),
+      text('content_key', 'Content key', { required: true }),
+      area('content_en', 'Content (EN)'),
+      area('content_ar', 'Content (AR)', { rtl: true }),
+      text('media_url', 'Media URL'),
+      number('sort_order', 'Order', { required: true, default: 0 }),
+      bool('is_published', 'Published'),
+    ],
+  },
 };
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
