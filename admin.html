@@ -168,11 +168,15 @@
 
   function api(path, options) {
     options = options || {};
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 10000);
     return fetch('/api/admin' + path, {
       method: options.method || 'GET',
       headers: Object.assign({ Authorization: 'Bearer ' + token() }, options.body ? { 'Content-Type': 'application/json' } : {}),
-      body: options.body ? JSON.stringify(options.body) : undefined
+      body: options.body ? JSON.stringify(options.body) : undefined,
+      signal: controller.signal
     }).then(function (res) {
+      clearTimeout(timeout);
       return res.json().catch(function () { return {}; }).then(function (json) {
         if (res.status === 401) { signOut(); throw new Error(json.error || 'Signed out'); }
         if (!res.ok) throw new Error(json.error || 'Request failed');
