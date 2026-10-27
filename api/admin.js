@@ -209,12 +209,12 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 class ValidationError extends Error {}
 
 function isAuthorized(req) {
-  const expected = process.env.ADMIN_PASSWORD;
+  const expected = String(process.env.ADMIN_PASSWORD || '').trim();
   const header = req.headers.authorization || '';
-  const provided = header.startsWith('Bearer ') ? header.slice(7) : '';
+  const provided = header.startsWith('Bearer ') ? header.slice(7).trim() : '';
   if (!expected || !provided) return false;
-  const a = crypto.createHash('sha256').update(provided).digest();
-  const b = crypto.createHash('sha256').update(expected).digest();
+  const a = crypto.createHash('sha256').update(provided, 'utf8').digest();
+  const b = crypto.createHash('sha256').update(expected, 'utf8').digest();
   return crypto.timingSafeEqual(a, b);
 }
 
