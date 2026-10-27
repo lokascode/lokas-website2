@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "serve . -l 3000",
-    "start": "serve . -l 3000"
+    "dev": "node --env-file-if-exists=/vercel/share/.env.project server.js",
+    "start": "node --env-file-if-exists=/vercel/share/.env.project server.js"
   },
   "devDependencies": {
     "serve": "^14.2.6"
