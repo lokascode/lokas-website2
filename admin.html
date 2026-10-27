@@ -112,7 +112,7 @@
       <input id="password" type="password" autocomplete="current-password" required>
     </div>
     <p class="error" id="login-error" role="alert"></p>
-    <button class="btn btn-primary" type="submit">Sign in</button>
+    <button class="btn btn-primary" type="submit" id="login-submit">Sign in</button>
   </form>
 </section>
 
@@ -446,8 +446,21 @@
 
   $('login-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    sessionStorage.setItem(TOKEN_KEY, $('password').value);
-    start();
+    var submit = $('login-submit');
+    var password = $('password').value;
+    if (!password) {
+      $('login-error').textContent = 'Enter the admin password.';
+      $('password').focus();
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = 'Signing in…';
+    $('login-error').textContent = '';
+    sessionStorage.setItem(TOKEN_KEY, password);
+    start().finally(function () {
+      submit.disabled = false;
+      submit.textContent = 'Sign in';
+    });
   });
 
   $('logout').addEventListener('click', signOut);
@@ -486,8 +499,8 @@
   });
 
   function start() {
-    if (!token()) { showLogin(''); return; }
-    loadOverview().then(function () {
+    if (!token()) { showLogin(''); return Promise.resolve(); }
+    return loadOverview().then(function () {
       loginEl.hidden = true;
       appEl.hidden = false;
       return loadResource();
