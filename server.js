@@ -9,6 +9,7 @@ const apiHandlers = {
   '/api/admin': require('./api/admin'),
   '/api/education': require('./api/education'),
   '/api/inquiries': require('./api/inquiries'),
+  '/api/media': require('./api/media'),
 };
 
 const mimeTypes = {

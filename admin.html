@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Lokas Education Admin</title>
+<title>Lokas Site Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -105,8 +105,8 @@
 
 <section class="login" id="login" hidden>
   <form id="login-form">
-    <h1>Education admin</h1>
-    <p>Enter the admin password to manage scholarships, events, applications and the rest of the Education content.</p>
+    <h1>Lokas site admin</h1>
+    <p>Manage education content, applications, events, services, and site media from one secure editor.</p>
     <div class="field">
       <label for="password">Password</label>
       <input id="password" type="password" autocomplete="current-password" required>
@@ -118,7 +118,7 @@
 
 <div class="shell" id="app" hidden>
   <nav class="side" aria-label="Education data">
-    <h1>Education admin</h1>
+    <h1>Lokas site admin</h1>
     <div id="nav" style="display:flex;flex-direction:column;gap:4px"></div>
     <div class="spacer"></div>
     <button class="btn" type="button" id="logout">Sign out</button>
@@ -129,6 +129,8 @@
       <div class="tools">
         <input type="search" id="search" placeholder="Search" aria-label="Search rows">
         <select id="status-filter" aria-label="Filter by status" hidden></select>
+        <button class="btn" type="button" id="upload-media">Upload media</button>
+        <input id="media-file" type="file" accept="image/*,.pdf,.doc,.docx" hidden>
         <button class="btn btn-primary" type="button" id="new-row" hidden>New</button>
       </div>
     </div>
@@ -468,6 +470,31 @@
   });
 
   $('logout').addEventListener('click', signOut);
+  $('upload-media').addEventListener('click', function () { $('media-file').click(); });
+  $('media-file').addEventListener('change', function () {
+    var file = this.files && this.files[0];
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) {
+      toast('Files must be smaller than 10 MB');
+      this.value = '';
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function () {
+      var result = String(reader.result || '');
+      var comma = result.indexOf(',');
+      var base64 = comma === -1 ? result : result.slice(comma + 1);
+      toast('Uploading ' + file.name + '…');
+      api('/media', { method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
+        .then(function (json) {
+          window.prompt('Media uploaded. Copy this URL:', json.url);
+          toast('Media uploaded');
+        })
+        .catch(function (error) { toast(error.message); })
+        .then(function () { $('media-file').value = ''; });
+    };
+    reader.readAsDataURL(file);
+  });
   $('search').addEventListener('input', function () { if (state.data) renderTable(); });
   $('status-filter').addEventListener('change', renderTable);
   $('new-row').addEventListener('click', function () { openEditor(null); });
