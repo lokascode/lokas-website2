@@ -185,6 +185,11 @@
 
 <script>
 (function () {
+  if (window.location.hostname === 'lokaslab.com') {
+    window.location.replace('https://www.lokaslab.com' + window.location.pathname + window.location.search + window.location.hash);
+    return;
+  }
+
   var TOKEN_KEY = 'lokas-admin-token';
   var state = { resources: [], current: 'applications', data: null, editingId: null };
 
