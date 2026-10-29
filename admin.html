@@ -580,7 +580,10 @@
     return loadOverview().then(function () {
       loginEl.hidden = true;
       appEl.hidden = false;
-      return loadResource();
+      return loadResource().catch(function (error) {
+        $('editor-error').textContent = 'Dashboard opened, but this section could not load: ' + error.message;
+        $('table-wrap').innerHTML = '<div class="empty">The editor is ready. Content could not be loaded for this section yet.</div>';
+      });
     }).catch(function (error) {
       sessionStorage.removeItem(TOKEN_KEY);
       showLogin(error.message || 'Unable to sign in. Check the Production password and deployment settings.');
