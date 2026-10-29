@@ -81,6 +81,7 @@
   .tools{display:flex;gap:8px;flex-wrap:wrap}
   .tools input,.tools select{min-height:40px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg)}
 
+  .editor-hint{margin:0 0 14px;color:var(--text-soft);font-size:13px;}
   .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--radius)}
   table{width:100%;border-collapse:collapse;min-width:640px}
   th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -145,11 +146,13 @@
       <div class="tools">
         <input type="search" id="search" placeholder="Search" aria-label="Search rows">
         <select id="status-filter" aria-label="Filter by status" hidden></select>
+        <a class="btn" href="/index.html" target="_blank" rel="noopener">View website</a>
         <button class="btn" type="button" id="upload-media">Upload media</button>
         <input id="media-file" type="file" accept="image/*,.pdf,.doc,.docx" hidden>
-        <button class="btn btn-primary" type="button" id="new-row" hidden>New</button>
+        <button class="btn btn-primary" type="button" id="new-row" hidden>New post</button>
       </div>
     </div>
+    <p class="editor-hint" id="editor-hint">Choose a section from the left, then create or edit posts. Changes are saved to the live website content.</p>
     <div class="table-wrap" id="table-wrap"></div>
   </main>
 </div>
@@ -242,6 +245,7 @@
       state.resources = json.resources;
       state.newApplications = json.newApplications;
       renderNav();
+      $('editor-hint').textContent = 'Choose a section from the left, then create or edit posts. Changes are saved to the live website content.';
     });
   }
 
@@ -282,6 +286,9 @@
     return api('?resource=' + encodeURIComponent(state.current)).then(function (json) {
       state.data = json;
       $('title').textContent = json.label;
+      $('editor-hint').textContent = json.canCreate
+        ? 'Create a new post or select an existing row to edit this section. Changes are saved to the live website content.'
+        : 'This section is managed by the website system. Select a row to review or update it.';
       $('new-row').hidden = !json.canCreate;
       setupStatusFilter();
       renderTable();
