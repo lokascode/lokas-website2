@@ -45,6 +45,7 @@
   .login h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(42px,6vw,58px);font-weight:400;letter-spacing:-.045em;text-align:center;line-height:1.05}
   .login .intro{margin:0 auto 26px;max-width:410px;text-align:center;color:#6b6965;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55}
   .login .login-note{margin:-12px 0 2px;text-align:center;font-size:12px;color:#85817a}
+  .login #login-error{min-height:20px;margin:0;text-align:center;color:#b43b21;font-size:13px;}
   .login .field{gap:8px}
   .login .field label{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#6b6965}
   .login .field input{min-height:43px;padding:10px 12px;border:1px solid #262522;border-radius:0;background:transparent;color:var(--login-ink)}
@@ -506,7 +507,9 @@
     submit.textContent = 'Signing in…';
     $('login-error').textContent = '';
     sessionStorage.setItem(TOKEN_KEY, password);
-    start().finally(function () {
+    start().catch(function (error) {
+      $('login-error').textContent = error.message || 'Unable to sign in. Check the Production password.';
+    }).finally(function () {
       submit.disabled = false;
       submit.textContent = 'Sign in';
     });
@@ -579,15 +582,9 @@
       appEl.hidden = false;
       return loadResource();
     }).catch(function (error) {
-      if (error.message === 'Incorrect password' || error.message === 'Signed out') {
-        sessionStorage.removeItem(TOKEN_KEY);
-        showLogin(error.message);
-        return;
-      }
-      loginEl.hidden = true;
-      appEl.hidden = false;
-      $('title').textContent = 'Editor connection issue';
-      $('table-wrap').innerHTML = '<div class="empty">The editor is open, but content could not be loaded: ' + error.message + '. Check the database connection and reload.</div>';
+      sessionStorage.removeItem(TOKEN_KEY);
+      showLogin(error.message || 'Unable to sign in. Check the Production password and deployment settings.');
+      throw error;
     });
   }
 
