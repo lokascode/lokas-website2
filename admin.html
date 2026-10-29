@@ -15,8 +15,10 @@
     --text:#070707;
     --text-soft:#4a4a4a;
     --line:rgba(7,7,7,0.14);
-    --accent:#070707;
+    --accent:#f26522;
     --accent-text:#ffffff;
+    --login-paper:#f7f6f2;
+    --login-ink:#191817;
     --danger:#b42318;
     --ok:#067647;
     --radius:10px;
@@ -37,8 +39,17 @@
   .btn-danger{color:var(--danger);border-color:rgba(180,35,24,0.35)}
   .btn[disabled]{opacity:.55;cursor:not-allowed}
 
-  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-  .login form{width:100%;max-width:380px;display:flex;flex-direction:column;gap:16px}
+  .login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 24px;background:var(--login-paper);color:var(--login-ink)}
+  .login form{width:100%;max-width:448px;display:flex;flex-direction:column;gap:18px}
+  .login .eyebrow{margin:0 0 2px;text-align:center;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#6b6965}
+  .login h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(42px,6vw,58px);font-weight:400;letter-spacing:-.045em;text-align:center;line-height:1.05}
+  .login .intro{margin:0 auto 26px;max-width:410px;text-align:center;color:#6b6965;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.55}
+  .login .field{gap:8px}
+  .login .field label{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:#6b6965}
+  .login .field input{min-height:43px;padding:10px 12px;border:1px solid #262522;border-radius:0;background:transparent;color:var(--login-ink)}
+  .login .field input:focus{border-color:var(--accent);outline:2px solid color-mix(in srgb,var(--accent) 22%,transparent);outline-offset:2px}
+  .login .btn-primary{min-height:43px;margin-top:2px;border-radius:0;border-color:var(--accent);background:var(--accent);font-family:Georgia,'Times New Roman',serif;font-weight:400}
+  .login .btn-primary:hover{background:#d9571b;border-color:#d9571b}
   .login p{margin:0;color:var(--text-soft)}
 
   .field{display:flex;flex-direction:column;gap:6px}
@@ -105,8 +116,13 @@
 
 <section class="login" id="login" hidden>
   <form id="login-form">
-    <h1>Lokas site admin</h1>
-    <p>Manage education content, applications, events, services, and site media from one secure editor.</p>
+    <p class="eyebrow">LOKAS EDITORIAL</p>
+    <h1>Sign in</h1>
+    <p class="intro">Access the Lokas editorial dashboard to manage the website, education content, applications, and media.</p>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" placeholder="you@lokas.com" required>
+    </div>
     <div class="field">
       <label for="password">Password</label>
       <input id="password" type="password" autocomplete="current-password" required>
