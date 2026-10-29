@@ -585,7 +585,7 @@
       if (error.message === 'Incorrect password' || error.message === 'Signed out') {
         sessionStorage.removeItem(TOKEN_KEY);
         showLogin(error.message);
-        return;
+        throw error;
       }
       loginEl.hidden = true;
       appEl.hidden = false;
