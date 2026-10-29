@@ -1759,6 +1759,49 @@
   body.page-mode-home .path-section,
   body.page-mode-home [data-page="home"].path-section{display:block !important;}
 
+  /* ================= MOBILE LAYOUT SYSTEM ================= */
+  @media (max-width:760px){
+    html,body{width:100%;min-width:0;overflow-x:hidden;}
+    .wrap{padding-left:20px;padding-right:20px;}
+    .nav-inner{min-height:72px;padding:14px 20px;gap:12px;}
+    .nav-logo{font-size:16px;}
+    .nav-right{margin-left:auto;gap:8px;}
+    .nav-burger{padding:10px 12px;min-height:42px;}
+    .hero{min-height:0;padding:88px 20px 64px;}
+    .hero h1{font-size:clamp(42px,13vw,64px);line-height:1.02;max-width:100%;}
+    .hero p{max-width:34rem;font-size:15px;line-height:1.65;}
+    .hero-ctas,.eduopp-ctas,.final-ctas{align-items:stretch;flex-direction:column;}
+    .hero-ctas .btn,.eduopp-ctas .btn,.final-ctas .btn{width:100%;justify-content:center;}
+    .division-row,.division-row.three{grid-template-columns:1fr;gap:12px;}
+    .division{min-height:0;padding:58px 22px;}
+    .choice-panel{padding:34px 24px;}
+    .section,.about,.contact,.testimonials,.faq,.final-cta,.why,.who-section{padding-left:20px;padding-right:20px;}
+    .section{padding-top:64px;padding-bottom:64px;}
+    .section-head{margin-bottom:32px;}
+    .section-head h2,.about h2,.contact h2,.final-cta h2{font-size:clamp(30px,9vw,46px);line-height:1.08;}
+    .section-head p{font-size:15px;line-height:1.65;}
+    .service-grid,.edu-grid,.work-grid,.stats,.why-grid,.team-grid,.faq-cols,.contact-inner,.about-grid,.about-split{grid-template-columns:1fr;}
+    .edu-grid.six{grid-template-columns:1fr;}
+    .edu-card,.service-card{min-height:0;padding:22px 18px;}
+    .eduopp-band{padding:64px 20px;}
+    .eduopp-inner{gap:28px;}
+    .eduopp-title{font-size:clamp(34px,10vw,52px);}
+    .eduopp-desc{font-size:15px;line-height:1.65;}
+    .edu-offers-head{display:block;}
+    .edu-offers-head p{margin-top:14px;}
+    .edu-offers-filter{gap:7px;margin-bottom:22px;}
+    .edu-filter-btn{min-height:40px;padding:9px 12px;}
+    .edu-offers-grid{grid-template-columns:1fr;gap:14px;}
+    .edu-offer-card{min-width:0;}
+    .edu-offer-media{height:150px;}
+    .work-grid{grid-auto-rows:auto;gap:12px;}
+    .work-card{min-height:240px;}
+    .field-row{grid-template-columns:1fr;gap:16px;}
+    .form-field input,.form-field textarea,.form-field select{font-size:16px;}
+    .footer-top,.footer-cols{display:grid;grid-template-columns:1fr;gap:28px;}
+    footer{padding:44px 20px 28px;}
+  }
+
 </style>
 </head>
 <body class="page-mode-home">
@@ -3038,13 +3081,13 @@
       "approach.desc":"نحن لا نؤمن بالحلول الموحدة للجميع. لكل علامة تجارية وعمل وطالب قصة مختلفة. لهذا نبدأ بفهم أين أنت الآن، وإلى أين تريد الوصول، وما يتطلبه ذلك.",
       "approach.s1.title":"فكّر","approach.s1.desc":"نفهم المشكلة، وندرس السوق، ونطوّر الاستراتيجية المناسبة.",
       "approach.s2.title":"أبدع","approach.s2.desc":"نحوّل الأفكار إلى علامات تجارية وحملات ومحتوى وتجارب رقمية.",
-      "approach.s3.title":"تواصل","approach.s3.desc":"نربط العلامات التجارية بالجمهور، ونربط الأفراد بالفرص.",
+      "approach.s3.title":"تواصل","approach.s3.desc":"نربط العلامات التجارية بالجمهور، ون��بط الأفراد بالفرص.",
       "approach.s4.title":"انمُ","approach.s4.desc":"نركز على التقدم القابل للقياس والأثر طويل الأمد.",
       "why.eyebrow":"لماذا لوكاس","why.title":"أكثر من مجرد خدمة. طريقة مختلفة في التفكير.",
       "why.1.title":"تفكير إبداعي","why.1.desc":"نتحدى الأفكار التقليدية ونبحث عن إمكانيات أفضل.",
       "why.2.title":"نهج استراتيجي","why.2.desc":"كل قرار إبداعي يبدأ بهدف واضح.",
       "why.3.title":"الرقمية أولاً","why.3.desc":"نستخدم أحدث المنصات والتقنيات والأدوات لمساعدتك على البقاء في الصدارة.",
-      "why.4.title":"التركيز على الإنسان","why.4.desc":"سواء كنت شركة أو طالبًا، نركز على الأشخاص الحقيقيين والنتائج الحقيقية.",
+      "why.4.title":"التركيز على الإنسان","why.4.desc":"سواء ك��ت شركة أو طالبًا، نركز على الأشخاص الحقيقيين والنتائج الحقيقية.",
       "why.5.title":"مبني للنمو","why.5.desc":"هدفنا ليس فقط أن يبدو الأمر جيدًا، بل أن ينجح فعلًا.",
       "who.eyebrow":"من نعمل معهم","who.title":"أفراد طموحون. مؤسسات طموحة.","who.desc":"نعمل مع الأفراد والمؤسسات الطموحة المستعدة للمضي قدمًا.",
       "who.t1":"الشركات الناشئة","who.t2":"الشركات الصغيرة","who.t3":"الشركات الراسخة","who.t4":"المطاعم والمقاهي","who.t5":"شركات العقارات",
