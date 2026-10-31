@@ -116,7 +116,10 @@
     .side button.nav{width:auto;white-space:nowrap}
     main{padding:20px 16px}
   }
-</style>
+
+    /* Ensure the HTML hidden attribute always overrides component display styles. */
+    [hidden] { display: none !important; }
+  </style>
 </head>
 <body>
 
