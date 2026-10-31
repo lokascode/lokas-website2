@@ -21,6 +21,7 @@ module.exports = async function handler(req, res) {
       db.query(
         `SELECT slug, title_en, title_ar, provider, country, study_level, field_of_study,
                 funding_type, amount_text, description_en, description_ar, application_url,
+                image_url,
                 deadline, status, is_featured
            FROM edu_scholarships
           WHERE status IN ('open', 'upcoming')
