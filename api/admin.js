@@ -50,6 +50,7 @@ const RESOURCES = {
     listColumns: ['title_en', 'country', 'study_level', 'deadline', 'status'],
     fields: [
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       text('title_en', 'Title (EN)', { required: true }),
       text('title_ar', 'Title (AR)', { rtl: true }),
       text('provider', 'Provider'),
@@ -83,6 +84,7 @@ const RESOURCES = {
     listColumns: ['name_en', 'country', 'city', 'is_partner', 'status'],
     fields: [
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       text('name_en', 'Name (EN)', { required: true }),
       text('name_ar', 'Name (AR)', { rtl: true }),
       text('country', 'Country', { required: true }),
@@ -106,6 +108,7 @@ const RESOURCES = {
     fields: [
       number('university_id', 'University ID', { required: true }),
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       text('name_en', 'Name (EN)', { required: true }),
       text('name_ar', 'Name (AR)', { rtl: true }),
       select('study_level', 'Level', PROGRAM_LEVELS, { required: true, default: 'bachelor' }),
@@ -129,6 +132,7 @@ const RESOURCES = {
     listColumns: ['title_en', 'delivery_mode', 'duration_hours', 'position', 'status'],
     fields: [
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       number('position', 'Position', { required: true, default: 0 }),
       text('title_en', 'Title (EN)', { required: true }),
       text('title_ar', 'Title (AR)', { required: true, rtl: true }),
@@ -148,6 +152,7 @@ const RESOURCES = {
     listColumns: ['title_en', 'event_type', 'starts_at', 'location', 'status'],
     fields: [
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       text('title_en', 'Title (EN)', { required: true }),
       text('title_ar', 'Title (AR)', { rtl: true }),
       area('description_en', 'Description (EN)'),
@@ -177,6 +182,7 @@ const RESOURCES = {
     listColumns: ['title_en', 'slug', 'position', 'is_active'],
     fields: [
       text('slug', 'Slug', { required: true }),
+      text('image_url', 'Post photo'),
       number('position', 'Position', { required: true, default: 0 }),
       text('icon', 'Icon'),
       text('title_en', 'Title (EN)', { required: true }),

@@ -114,6 +114,14 @@
   .dlg-body .field textarea{min-height:120px}
   .dlg-body .field[data-field="description_en"],.dlg-body .field[data-field="description_ar"],.dlg-body .field[data-field="eligibility_en"],.dlg-body .field[data-field="eligibility_ar"]{grid-column:2}
   .dlg-body .field[data-field="title_en"] input{font-size:17px;font-weight:600}
+  .photo-field{gap:10px!important}
+  .photo-button{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border:1px dashed var(--line);border-radius:12px;background:#fff;color:var(--text);font:600 13px inherit;cursor:pointer;transition:border-color .15s,background .15s}
+  .photo-button:hover{border-color:var(--accent);background:#fff8f3}
+  .photo-button:disabled{opacity:.6;cursor:wait}
+  .photo-preview{display:block;width:100%;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:#f4f4f2}
+  .photo-hint{font-size:11px;color:var(--text-soft);line-height:1.4}
+  .photo-picker{display:none!important}
+  .photo-url{font-size:12px!important;color:var(--text-soft)}
   .dlg-body .field label{font-size:12px;color:var(--text-soft);font-weight:600;letter-spacing:.04em}
   .dlg-body .field input,.dlg-body .field select,.dlg-body .field textarea{border-color:rgba(7,7,7,.16);border-radius:11px;min-height:44px;padding:10px 13px}
   .dlg-body .field input:focus,.dlg-body .field select:focus,.dlg-body .field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,101,34,.12);outline:0}
@@ -490,7 +498,57 @@
     input.name = field.name;
     if (field.rtl) input.dir = 'rtl';
     if (field.readOnly) { input.disabled = true; }
-    wrapper.append(labelEl, input);
+
+    if (field.name === 'image_url') {
+      wrapper.classList.add('photo-field');
+      var picker = document.createElement('input');
+      picker.type = 'file';
+      picker.accept = 'image/jpeg,image/png,image/webp,image/gif';
+      picker.className = 'photo-picker';
+      picker.setAttribute('aria-label', 'Choose post photo');
+      var photoButton = document.createElement('button');
+      photoButton.type = 'button';
+      photoButton.className = 'photo-button';
+      photoButton.textContent = input.value ? 'Replace photo' : 'Add photo';
+      var photoPreview = document.createElement('img');
+      photoPreview.className = 'photo-preview';
+      photoPreview.alt = 'Post photo preview';
+      photoPreview.hidden = !input.value;
+      if (input.value) photoPreview.src = input.value;
+      var photoHint = document.createElement('span');
+      photoHint.className = 'photo-hint';
+      photoHint.textContent = 'JPG, PNG, WEBP or GIF · max 10 MB';
+      photoButton.addEventListener('click', function () { picker.click(); });
+      picker.addEventListener('change', function () {
+        var file = picker.files && picker.files[0];
+        if (!file) return;
+        if (file.size > 10 * 1024 * 1024) { toast('Photos must be smaller than 10 MB'); picker.value = ''; return; }
+        var reader = new FileReader();
+        reader.onload = function () {
+          var result = String(reader.result || '');
+          var comma = result.indexOf(',');
+          var base64 = comma === -1 ? result : result.slice(comma + 1);
+          photoButton.disabled = true;
+          photoButton.textContent = 'Uploading…';
+          api('/media', { method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
+            .then(function (json) {
+              input.value = json.url;
+              photoPreview.src = json.url;
+              photoPreview.hidden = false;
+              photoButton.textContent = 'Replace photo';
+              toast('Photo attached');
+            })
+            .catch(function (error) { toast(error.message); photoButton.textContent = 'Add photo'; })
+            .then(function () { photoButton.disabled = false; picker.value = ''; });
+        };
+        reader.readAsDataURL(file);
+      });
+      input.className = 'photo-url';
+      input.placeholder = 'Or paste an image URL';
+      wrapper.append(labelEl, photoButton, photoPreview, photoHint, input, picker);
+    } else {
+      wrapper.append(labelEl, input);
+    }
     if (field.type === 'bool') wrapper.append(labelEl);
     if (field.type === 'bool') wrapper.insertBefore(input, labelEl);
     return wrapper;
