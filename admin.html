@@ -98,14 +98,38 @@
   .pill{display:inline-block;padding:2px 10px;border-radius:999px;border:1px solid var(--line);font-size:13px;white-space:nowrap}
   .empty{padding:48px 16px;text-align:center;color:var(--text-soft)}
 
-  dialog{width:min(640px,calc(100vw - 24px));max-height:calc(100vh - 24px);padding:0;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--text)}
-  dialog::backdrop{background:rgba(7,7,7,0.45)}
-  dialog form{display:flex;flex-direction:column;max-height:calc(100vh - 24px)}
+  dialog{width:min(940px,calc(100vw - 28px));max-height:min(760px,calc(100vh - 28px));padding:0;border:1px solid rgba(7,7,7,.12);border-radius:22px;background:var(--bg);color:var(--text);box-shadow:0 24px 80px rgba(7,7,7,.2)}
+  dialog::backdrop{background:rgba(7,7,7,0.55);backdrop-filter:blur(3px)}
+  dialog form{display:flex;flex-direction:column;max-height:min(760px,calc(100vh - 28px))}
   .dlg-head{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line)}
-  .dlg-head h3{font-size:20px}
-  .dlg-body{padding:20px 24px;overflow:auto;display:flex;flex-direction:column;gap:16px}
-  .dlg-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--line)}
+  .dlg-head h3{font-size:20px;letter-spacing:-.03em}
+  .dlg-head::before{content:'Create a post';position:absolute;margin-top:52px;font-size:12px;color:var(--text-soft);font-weight:400}
+  .dlg-body{padding:28px 28px 34px;overflow:auto;display:grid;grid-template-columns:minmax(260px,.82fr) minmax(320px,1.18fr);align-content:start;gap:18px 28px;background:#fff}
+  .dlg-body::before{content:'Post details';grid-column:2;grid-row:1;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-soft);padding-bottom:2px;border-bottom:1px solid var(--line)}
+  .dlg-body .field{grid-column:2}
+  .dlg-body .field[data-field="slug"]{grid-column:1;grid-row:1 / span 10;align-self:start;padding:22px;border:1px solid var(--line);border-radius:16px;background:var(--surface);min-height:300px;justify-content:center}
+  .dlg-body .field[data-field="slug"]::before{content:'Post identity';font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text-soft);text-align:center}
+  .dlg-body .field[data-field="slug"] label{font-size:12px;text-align:center;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft)}
+  .dlg-body .field[data-field="slug"] input{background:#fff}
+  .dlg-body .field textarea{min-height:120px}
+  .dlg-body .field[data-field="description_en"],.dlg-body .field[data-field="description_ar"],.dlg-body .field[data-field="eligibility_en"],.dlg-body .field[data-field="eligibility_ar"]{grid-column:2}
+  .dlg-body .field[data-field="title_en"] input{font-size:17px;font-weight:600}
+  .dlg-body .field label{font-size:12px;color:var(--text-soft);font-weight:600;letter-spacing:.04em}
+  .dlg-body .field input,.dlg-body .field select,.dlg-body .field textarea{border-color:rgba(7,7,7,.16);border-radius:11px;min-height:44px;padding:10px 13px}
+  .dlg-body .field input:focus,.dlg-body .field select:focus,.dlg-body .field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,101,34,.12);outline:0}
+  .dlg-body .field:nth-of-type(3),.dlg-body .field:nth-of-type(4){grid-column:2}
+  .dlg-body .field.check{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface)}
+  .dlg-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--line);background:var(--bg)}
   .dlg-foot .group{display:flex;gap:8px}
+  .dlg-foot .btn-primary{min-width:100px;border-radius:999px}
+  @media (max-width:760px){
+    dialog{width:calc(100vw - 16px);max-height:calc(100vh - 16px);border-radius:16px}
+    dialog form{max-height:calc(100vh - 16px)}
+    .dlg-body{display:flex;flex-direction:column;padding:20px}
+    .dlg-body::before{order:0}
+    .dlg-body .field:first-of-type{min-height:220px;order:1}
+    .dlg-body .field{order:2}
+  }
 
   .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:14px;z-index:50}
 
@@ -420,6 +444,7 @@
   function buildField(field, value) {
     var wrapper = document.createElement('div');
     wrapper.className = 'field' + (field.type === 'bool' ? ' check' : '');
+    wrapper.dataset.field = field.name;
     var id = 'f-' + field.name;
     var labelEl = document.createElement('label');
     labelEl.htmlFor = id;
