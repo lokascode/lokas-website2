@@ -900,8 +900,12 @@
   .edu-offer-card:nth-child(2) .edu-offer-media{background-color:#303f52;}
   .edu-offer-card:nth-child(3) .edu-offer-media{background-color:#59634c;}
   .edu-offer-mark{position:absolute;top:18px;right:18px;width:48px;height:48px;border:1px solid rgba(255,255,255,.45);border-radius:50%;display:grid;place-items:center;font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;}
-  .edu-offer-media-label{position:relative;font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-.06em;line-height:1;}
-  .edu-offer-body{display:flex;flex:1;flex-direction:column;padding:24px 24px 22px;}
+ .edu-offer-media-label{position:relative;font-family:'Space Grotesk',sans-serif;font-size:44px;font-weight:700;letter-spacing:-.06em;line-height:1;}
+ .edu-offer-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+ .edu-offer-image + .edu-offer-mark{z-index:1;background:rgba(255,255,255,.9);color:#111;}
+ .edu-offer-card-live .edu-offer-media::before{z-index:1;}
+ .edu-offer-card-live .edu-offer-kicker{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#777;margin:0 0 14px;}
+ .edu-offer-body{display:flex;flex:1;flex-direction:column;padding:24px 24px 22px;}
   .edu-offer-pill{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:var(--card-hover);color:var(--text-soft);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
   .edu-offer-card h3{margin-top:18px;font-family:'Space Grotesk',sans-serif;font-size:23px;line-height:1.15;letter-spacing:-.035em;}
   .edu-offer-card p{margin-top:12px;color:var(--text-soft);font-size:14px;line-height:1.7;}
@@ -3129,7 +3133,7 @@
       "faq.m1.q":"ما هي خدمات التسويق التي تقدمونها؟","faq.m1.a":"إدارة وسائل التواصل الاجتماعي، والتسويق الرقمي، والعلامة التجارية، وصناعة المحتوى — مصممة خصيصًا لعملك وأهدافك.",
       "faq.m2.q":"مع من تعملون؟","faq.m2.a":"الشركات الناشئة، والشركات الصغيرة، والمطاعم، وشركات العقارات، والعلامات الشخصية، والجامعات، والعلامات الفاخرة.",
       "faq.m3.q":"هل يمكنكم إدارة وسائل التواصل الاجتماعي الخاصة بنا؟","faq.m3.a":"نعم — من التقويمات المحتوى إلى إدارة المجتمع، يمكننا إدارة قنواتكم بشكل كامل.",
-      "faq.m4.q":"هل تقدمون باقات للعلامة التجارية؟","faq.m4.a":"نعم، من أنظمة الهوية إلى استراتيجية العلامة التجارية الكاملة — بحسب ما يحتاجه عملكم فعليًا.",
+      "faq.m4.q":"هل تقدمون باقات للعلامة التجارية؟","faq.m4.a":"ن��م، من أنظمة الهوية إلى استراتيجية العلامة التجارية الكاملة — بحسب ما يحتاجه عملكم فعليًا.",
       "faq.m5.q":"هل تنتجون محتوى تصوير وفيديو؟","faq.m5.a":"نعم، ننتج صورًا ومقاطع فيديو مصممة لعلامتكم التجارية ومنصاتكم.",
       "faq.m6.q":"هل يمكنكم إدارة الحملات الإعلانية؟","faq.m6.a":"نعم، نخطط ونطلق ونحسّن الحملات المدفوعة عبر المنصات التي تهم جمهوركم.",
       "faq.e1.q":"كيف يمكنني إيجاد منحة دراسية؟","faq.e1.a":"نساعدك في تحديد المنح الدراسية المناسبة ونرشدك خلال عملية التقديم بالكامل.",
@@ -3528,6 +3532,51 @@
   }));
   const query = new URLSearchParams(window.location.hash.split('?')[1] || '');
   setFilter(query.get('type'), false);
+})();
+
+/* Live education posts from the editorial dashboard */
+(function(){
+  const section = document.getElementById('education-offers');
+  if(!section) return;
+  const grid = section.querySelector('.edu-offers-grid') || section.querySelector('[data-offer-type]')?.parentElement;
+  if(!grid) return;
+  const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
+  const formatDate = value => value ? new Date(value).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : 'Open now';
+  const applyLiveFilter = () => {
+    const active = section.querySelector('[data-offer-tab].is-active')?.dataset.offerTab || 'all';
+    grid.querySelectorAll('[data-live-offer]').forEach(card => {
+      card.classList.toggle('is-hidden', active !== 'all' && card.dataset.offerType !== active);
+    });
+  };
+  section.querySelectorAll('[data-offer-tab]').forEach(button => button.addEventListener('click', () => setTimeout(applyLiveFilter, 0)));
+  fetch('/api/education')
+    .then(response => { if(!response.ok) throw new Error('Education content unavailable'); return response.json(); })
+    .then(data => {
+      const scholarships = Array.isArray(data.scholarships) ? data.scholarships : [];
+      if(!scholarships.length) return;
+      section.querySelectorAll('[data-offer-type="scholarship"]:not([data-live-offer])').forEach(card => card.remove());
+      scholarships.forEach((post, index) => {
+        const article = document.createElement('article');
+        article.className = 'edu-offer-card edu-offer-card-live';
+        article.dataset.offerType = 'scholarship';
+        article.dataset.liveOffer = 'true';
+        const image = post.image_url
+          ? `<img class="edu-offer-image" src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title_en || 'Scholarship')}" loading="lazy">`
+          : `<span class="edu-offer-media-label">FUND</span>`;
+        article.innerHTML = `
+          <div class="edu-offer-media">${image}<span class="edu-offer-mark">${String(index + 1).padStart(2, '0')}</span></div>
+          <div class="edu-offer-body">
+            <p class="edu-offer-kicker">Scholarship · ${escapeHtml(post.funding_type || 'Opportunity')}</p>
+            <h3>${escapeHtml(post.title_en || 'Scholarship opportunity')}</h3>
+            <p>${escapeHtml(post.description_en || 'Explore this scholarship opportunity and application details.')}</p>
+            <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${formatDate(post.deadline || null)}</span></div>
+            <a class="edu-offer-link" href="${escapeHtml(post.application_url || '#contact')}">${post.application_url ? 'Apply now' : 'Explore scholarship'} <span>→</span></a>
+          </div>`;
+        grid.appendChild(article);
+      });
+      applyLiveFilter();
+    })
+    .catch(error => console.warn('[v0] Live education posts unavailable:', error.message));
 })();
 
 /* ================= PAGE ROUTER ================= */
