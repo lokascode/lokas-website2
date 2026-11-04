@@ -3074,7 +3074,7 @@
       "div.mkt.num":"01 — التسويق","div.mkt.title":"اجعل علامتك التجارية<br>يستحيل تجاهلها.",
       "div.mkt.desc":"نساعد الشركات على بناء هويات قوية والتواصل بشكل أفضل والوصول إلى الجمهور المناسب.",
       "div.mkt.s1":"استراتيجية العلامة التجارية","div.mkt.s2":"العلامة التجارية والهوية البصرية","div.mkt.s3":"إدارة وسائل التواصل الاجتماعي","div.mkt.s4":"صناعة المحتوى",
-      "div.mkt.s5":"التسويق الرقمي","div.mkt.s6":"تطوير الحملات","div.mkt.s7":"الإعلانات","div.mkt.s8":"الاستراتيجية الإبداعية",
+      "div.mkt.s5":"التسويق الرقمي","div.mkt.s6":"تطوير الحملات","div.mkt.s7":"الإعلانات","div.mkt.s8":"الاستراتيجية ال��بداعية",
       "div.mkt.s9":"التصوير الفوتوغرافي والفيديو","div.mkt.s10":"تطوير المواقع الإلكترونية","div.mkt.s11":"استشارات تسويقية","div.mkt.cta":"ابنِ علامة تجارية لا تُنسى",
       "div.edu.num":"02 — التعليم","div.edu.title":"مستقبلك يبدأ<br>بالفرصة المناسبة.",
       "div.edu.desc":"التعليم يمكن أن يغيّر كل شيء. تساعد لوكاس الطلاب والمهنيين الشباب على اكتشاف الفرص التعليمية والمنح الدراسية والجامعات ومسارات الدراسة الدولية.",
@@ -3131,7 +3131,7 @@
       "testi.eyebrow":"آراء العملاء",
       "faq.eyebrow":"الأسئلة الشائعة","faq.title":"إجابات على أسئلتك.","faq.col.marketing":"التسويق","faq.col.education":"التعليم",
       "faq.m1.q":"ما هي خدمات التسويق التي تقدمونها؟","faq.m1.a":"إدارة وسائل التواصل الاجتماعي، والتسويق الرقمي، والعلامة التجارية، وصناعة المحتوى — مصممة خصيصًا لعملك وأهدافك.",
-      "faq.m2.q":"مع من تعملون؟","faq.m2.a":"الشركات الناشئة، والشركات الصغيرة، والمطاعم، وشركات العقارات، والعلامات الشخصية، والجامعات، والعلامات الف��خرة.",
+      "faq.m2.q":"مع من تعملون؟","faq.m2.a":"الشركات الناشئة، والشركات الصغيرة، والمطاعم، وشركات العقارات، والعلامات الشخصية، والجامعات، والعلامات الف����خرة.",
       "faq.m3.q":"هل يمكنكم إدارة وسائل التواصل الاجتماعي الخاصة بنا؟","faq.m3.a":"نعم — من التقويمات المحتوى إلى إدارة المجتمع، يمكننا إدارة قنواتكم بشكل كامل.",
       "faq.m4.q":"هل تقدمون باقات للعلامة التجارية؟","faq.m4.a":"ن��م، من أنظمة الهوية إلى استراتيجية العلامة التجارية الكاملة — بحسب ما يحتاجه عملكم فعليًا.",
       "faq.m5.q":"هل تنتجون محتوى تصوير وفيديو؟","faq.m5.a":"نعم، ننتج صورًا ومقاطع فيديو مصممة لعلامتكم التجارية ومنصاتكم.",
@@ -3563,6 +3563,17 @@
         article.className = 'edu-offer-card edu-offer-card-live';
         article.dataset.offerType = 'scholarship';
         article.dataset.liveOffer = 'true';
+        article.tabIndex = 0;
+        article.setAttribute('role', 'link');
+        article.setAttribute('aria-label', 'Open ' + (post.title_en || 'scholarship'));
+        article.addEventListener('click', () => {
+          const destination = post.application_url || '#contact';
+          if (destination.startsWith('#')) window.location.hash = destination.slice(1);
+          else window.open(destination, '_blank', 'noopener,noreferrer');
+        });
+        article.addEventListener('keydown', event => {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); article.click(); }
+        });
         const image = post.image_url
           ? `<img class="edu-offer-image" src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title_en || 'Scholarship')}" loading="lazy">`
           : `<span class="edu-offer-media-label">FUND</span>`;
@@ -3575,6 +3586,8 @@
             <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${formatDate(post.deadline || null)}</span></div>
             <a class="edu-offer-link" href="${escapeHtml(post.application_url || '#contact')}">${post.application_url ? 'Apply now' : 'Explore scholarship'} <span>→</span></a>
           </div>`;
+        const actionLink = article.querySelector('.edu-offer-link');
+        if (actionLink) actionLink.addEventListener('click', event => event.stopPropagation());
         grid.appendChild(article);
       });
       applyLiveFilter();
