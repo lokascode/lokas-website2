@@ -3043,7 +3043,7 @@
       "choose.mkt.title":"التسويق","choose.mkt.desc":"ابنِ علامة تجارية لا تُنسى.",
       "choose.edu.title":"التعليم","choose.edu.desc":"اعثر على فرصتك القادمة.",
       "choose.furas.title":"فرصة","choose.furas.desc":"اكتشف خطوتك المهنية القادمة.",
-      "choose.consulting.title":"الاستشارات","choose.consulting.desc":"قرارات أفضل لمؤسستك.",
+      "choose.consulting.title":"الاستشارات","choose.consulting.desc":"��رارات أفضل لمؤسستك.",
       "marquee.branding":"العلامة التجارية","marquee.digital":"التسويق الرقمي","marquee.scholarships":"المنح الدراسية","marquee.university":"عروض الجامعات","marquee.content":"صناعة المحتوى","marquee.training":"التدريب",
       "training.eyebrow":"التدريب","training.title":"بناء المهارات. تطوير الأفراد. تحسين الأداء.",
       "training.desc":"التدريب عملية منظمة تهدف إلى تحسين المعرفة والمهارات والسلوك والأداء العملي. في لوكاس، نؤمن بأن التدريب يجب أن يتجاوز مجرد تقديم المعلومات — المعرفة ← القدرة ← الأداء ← النتائج.",
@@ -3081,7 +3081,7 @@
       "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية لا تُنسى، ومساعدة الأفراد على اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
       "about.vision-label":"رؤيتنا","about.vision":"أن نصبح منصة رائدة في الإبداع والتعليم تربط بين الأفكار والشركات والمواهب والفرص.","about.cta":"تعرف علينا",
       "team.eyebrow":"فريقنا","team.title":"الأشخاص وراء لوكاس.",
-      "team.desc":"الأشخاص الذين يقودون لوكاس إلى الأمام.",
+      "team.desc":"الأشخاص الذين يقودون لوكاس إلى ا��أمام.",
       "team.1.name":"فرهاد يوسف","team.1.role":"المؤسس والرئيس التنفيذي",
       "team.2.name":"متين مايي","team.2.role":"مدرب ومستشار",
       "team.3.name":"مشير عزيز","team.3.role":"مستشار التعليم العالي",
@@ -3613,7 +3613,7 @@
             <p class="edu-offer-kicker">Scholarship · ${escapeHtml(post.funding_type || 'Opportunity')}</p>
             <h3>${escapeHtml(post.title_en || 'Scholarship opportunity')}</h3>
             <p>${escapeHtml(post.description_en || 'Explore this scholarship opportunity and application details.')}</p>
-            <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${formatDate(post.deadline || null)}</span></div>
+            <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${escapeHtml(post.status === 'closed' ? 'Closed' : post.status === 'upcoming' ? 'Coming soon' : 'Open now')}</span></div>
             <a class="edu-offer-link" href="${escapeHtml(post.application_url || '#contact')}">${post.application_url ? 'Apply now' : 'Explore scholarship'} <span>→</span></a>
           </div>`;
         const actionLink = article.querySelector('.edu-offer-link');
