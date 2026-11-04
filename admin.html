@@ -193,7 +193,7 @@
         <button class="btn btn-primary" type="button" id="new-row" hidden>New post</button>
       </div>
     </div>
-    <p class="editor-hint" id="editor-hint">Choose a section from the left, then create or edit posts. Changes are saved to the live website content.</p>
+    <p class="editor-hint" id="editor-hint">Choose a section from the left, then create or edit posts. New scholarships are published as Open by default and appear on the website after saving.</p>
     <div class="table-wrap" id="table-wrap"></div>
   </main>
 </div>
@@ -291,7 +291,7 @@
       state.resources = json.resources;
       state.newApplications = json.newApplications;
       renderNav();
-      $('editor-hint').textContent = 'Choose a section from the left, then create or edit posts. Changes are saved to the live website content.';
+      $('editor-hint').textContent = 'Choose a section from the left, then create or edit posts. New scholarships are published as Open by default and appear on the website after saving.';
     });
   }
 

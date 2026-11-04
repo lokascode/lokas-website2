@@ -68,9 +68,9 @@ const RESOURCES = {
       area('eligibility_ar', 'Eligibility (AR)', { rtl: true }),
       text('application_url', 'Application URL'),
       { name: 'deadline', label: 'Deadline', type: 'date' },
-      select('status', 'Status', ['draft', 'upcoming', 'open', 'closed', 'archived'], {
+      select('status', 'Status', ['open', 'upcoming', 'draft', 'closed', 'archived'], {
         required: true,
-        default: 'draft',
+        default: 'open',
       }),
       bool('is_featured', 'Featured'),
     ],
