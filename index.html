@@ -905,6 +905,21 @@
  .edu-offer-image + .edu-offer-mark{z-index:1;background:rgba(255,255,255,.9);color:#111;}
  .edu-offer-card-live .edu-offer-media::before{z-index:1;}
  .edu-offer-card-live .edu-offer-kicker{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#777;margin:0 0 14px;}
+ .edu-offer-card-live{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;}
+ .edu-offer-card-live:hover,.edu-offer-card-live:focus-visible{transform:translateY(-4px);box-shadow:0 18px 42px rgba(0,0,0,.1);outline:none;}
+ .scholarship-dialog{width:min(860px,calc(100vw - 28px));padding:0;border:0;border-radius:22px;overflow:hidden;background:var(--white);color:var(--black);box-shadow:0 24px 90px rgba(0,0,0,.22);grid-template-columns:1fr 1fr;}
+ .scholarship-dialog[open]{display:grid;}
+ .scholarship-dialog::backdrop{background:rgba(0,0,0,.58);backdrop-filter:blur(4px);}
+ .scholarship-dialog-media{min-height:420px;background:var(--lokas-education-orange) center/cover no-repeat;}
+ .scholarship-dialog-content{padding:48px 42px 42px;display:flex;flex-direction:column;justify-content:center;}
+ .scholarship-dialog-content h2{font-size:clamp(30px,4vw,52px);line-height:.98;letter-spacing:-.06em;margin:0 0 18px;}
+ .scholarship-dialog-content>p:not(.edu-offer-kicker){color:var(--text-soft);line-height:1.65;margin:0 0 24px;}
+ .scholarship-dialog-close{position:absolute;right:16px;top:14px;z-index:2;width:36px;height:36px;border:1px solid rgba(0,0,0,.18);border-radius:50%;background:rgba(255,255,255,.86);font-size:24px;line-height:1;cursor:pointer;}
+ .scholarship-dialog-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 28px;}
+ .scholarship-dialog-meta div{border-top:1px solid var(--line-soft);padding-top:10px;}
+ .scholarship-dialog-meta dt{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-soft);}
+ .scholarship-dialog-meta dd{margin:5px 0 0;font-weight:600;}
+ @media(max-width:700px){.scholarship-dialog[open]{display:block}.scholarship-dialog-media{min-height:230px}.scholarship-dialog-content{padding:30px 24px 28px}.scholarship-dialog-meta{grid-template-columns:1fr 1fr;}}
  .edu-offer-body{display:flex;flex:1;flex-direction:column;padding:24px 24px 22px;}
   .edu-offer-pill{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:var(--card-hover);color:var(--text-soft);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
   .edu-offer-card h3{margin-top:18px;font-family:'Space Grotesk',sans-serif;font-size:23px;line-height:1.15;letter-spacing:-.035em;}
@@ -3036,7 +3051,7 @@
       "training.2.title":"الموارد البشرية","training.2.desc":"التوظيف والاختيار، تقييم الأداء، مؤشرات الأداء، الأوصاف الوظيفية، إدارة المواهب، وتخطيط القوى العاملة.",
       "training.3.title":"الإدارة التنظيمية","training.3.desc":"التخطيط الاستراتيجي، الهياكل التنظيمية، الحوكمة، السياسات والإجراءات، وإدارة العمليات.",
       "training.4.title":"المبيعات والتسويق","training.4.desc":"مهارات البيع، خدمة العملاء، التفاوض، التسويق الرقمي، إدارة علاقات العملاء، وتجربة العميل.",
-      "training.5.title":"المهارات الإدارية","training.5.desc":"إدارة الوقت، الاجتماعات الفعالة، كتابة التقارير، حل المشكلات، والتواصل الداخلي.",
+      "training.5.title":"المهار��ت الإدارية","training.5.desc":"إدارة الوقت، الاجتماعات الفعالة، كتابة التقارير، حل المشكلات، والتواصل الداخلي.",
       "training.6.title":"التكنولوجيا والذكاء الاصطناعي","training.6.desc":"الذكاء الاصطناعي في الإدارة والموارد البشرية والتسويق والمبيعات، تحليل البيانات، الأتمتة، والتحول الرقمي.",
       "consulting.eyebrow":"الاستشارات","consulting.title":"قرارات أفضل. مؤسسات أقوى.",
       "consulting.desc":"الاستشارات هي عملية تقديم التوصيات والرؤى والمشورة المتخصصة لتحسين المشاريع وحل التحديات ودعم اتخاذ القرار. لا نؤمن بأن الاستشارة يجب أن تنتهي بتقرير — المعرفة ← القدرة ← الأداء ← نتائج قابلة للقياس.",
@@ -3074,7 +3089,7 @@
       "div.mkt.num":"01 — التسويق","div.mkt.title":"اجعل علامتك التجارية<br>يستحيل تجاهلها.",
       "div.mkt.desc":"نساعد الشركات على بناء هويات قوية والتواصل بشكل أفضل والوصول إلى الجمهور المناسب.",
       "div.mkt.s1":"استراتيجية العلامة التجارية","div.mkt.s2":"العلامة التجارية والهوية البصرية","div.mkt.s3":"إدارة وسائل التواصل الاجتماعي","div.mkt.s4":"صناعة المحتوى",
-      "div.mkt.s5":"التسويق الرقمي","div.mkt.s6":"تطوير الحملات","div.mkt.s7":"الإعلانات","div.mkt.s8":"الاستراتيجية ال��بداعية",
+      "div.mkt.s5":"التسويق الرقمي","div.mkt.s6":"تطوير الحملات","div.mkt.s7":"الإعلانات","div.mkt.s8":"الاستراتيجية ال����بداعية",
       "div.mkt.s9":"التصوير الفوتوغرافي والفيديو","div.mkt.s10":"تطوير المواقع الإلكترونية","div.mkt.s11":"استشارات تسويقية","div.mkt.cta":"ابنِ علامة تجارية لا تُنسى",
       "div.edu.num":"02 — التعليم","div.edu.title":"مستقبلك يبدأ<br>بالفرصة المناسبة.",
       "div.edu.desc":"التعليم يمكن أن يغيّر كل شيء. تساعد لوكاس الطلاب والمهنيين الشباب على اكتشاف الفرص التعليمية والمنح الدراسية والجامعات ومسارات الدراسة الدولية.",
@@ -3118,7 +3133,7 @@
       "stats.l1":"طالب تم إرشادهم","stats.l2":"فرصة جامعية","stats.l3":"طلب منحة تم دعمه","stats.l4":"فعالية تدريبية وتعليمية",
       "furas.eyebrow":"الفرص","furas.title":"فرصة",
       "furas.tagline":"اكتشف فرصتك القادمة واتخذ الخطوة التالية نحو مستقبلك المهني.",
-      "furas.desc":"استكشف أحدث الشواغر الوظيفية والتدريب الداخلي وبرامج التدريب وفرص العمل من المؤسسات المحلية والدولية. نجمع الفرص في مختلف المجالات لمساعدة الطلاب والخريجين والمهنيين على إيجاد وظائف تناسب مهاراتهم ومؤهلاتهم وأهدافهم المهنية.",
+      "furas.desc":"استكشف أحدث الشواغر الوظيفية والتدريب الداخلي وبرامج التدريب وفرص العمل من المؤسسات المحلية والدولية. نجمع ��لفرص في مختلف المجالات لمساعدة الطلاب والخريجين والمهنيين على إيجاد وظائف تناسب مهاراتهم ومؤهلاتهم وأهدافهم المهنية.",
       "furas.subhead":"ماذا ستجد",
       "furas.1":"شواغر وظيفية في مختلف المجالات",
       "furas.2":"التدريب الداخلي وبرامج التدريب",
@@ -3131,7 +3146,7 @@
       "testi.eyebrow":"آراء العملاء",
       "faq.eyebrow":"الأسئلة الشائعة","faq.title":"إجابات على أسئلتك.","faq.col.marketing":"التسويق","faq.col.education":"التعليم",
       "faq.m1.q":"ما هي خدمات التسويق التي تقدمونها؟","faq.m1.a":"إدارة وسائل التواصل الاجتماعي، والتسويق الرقمي، والعلامة التجارية، وصناعة المحتوى — مصممة خصيصًا لعملك وأهدافك.",
-      "faq.m2.q":"مع من تعملون؟","faq.m2.a":"الشركات الناشئة، والشركات الصغيرة، والمطاعم، وشركات العقارات، والعلامات الشخصية، والجامعات، والعلامات الف����خرة.",
+      "faq.m2.q":"مع من تعملون؟","faq.m2.a":"الشركات الناشئة، والشركات الصغيرة، والمطاعم، وشركات العقارات، والعلامات الشخصية، والجامعات، والعلامات ا��ف����خرة.",
       "faq.m3.q":"هل يمكنكم إدارة وسائل التواصل الاجتماعي الخاصة بنا؟","faq.m3.a":"نعم — من التقويمات المحتوى إلى إدارة المجتمع، يمكننا إدارة قنواتكم بشكل كامل.",
       "faq.m4.q":"هل تقدمون باقات للعلامة التجارية؟","faq.m4.a":"ن��م، من أنظمة الهوية إلى استراتيجية العلامة التجارية الكاملة — بحسب ما يحتاجه عملكم فعليًا.",
       "faq.m5.q":"هل تنتجون محتوى تصوير وفيديو؟","faq.m5.a":"نعم، ننتج صورًا ومقاطع فيديو مصممة لعلامتكم التجارية ومنصاتكم.",
@@ -3551,6 +3566,25 @@
       card.classList.toggle('is-hidden', active !== 'all' && card.dataset.offerType !== active);
     });
   };
+  const dialog = document.getElementById('scholarship-dialog');
+  const openScholarship = post => {
+    if (!dialog) return;
+    document.getElementById('scholarship-dialog-title').textContent = post.title_en || 'Scholarship opportunity';
+    document.getElementById('scholarship-dialog-kicker').textContent = 'Scholarship · ' + (post.funding_type || 'Opportunity');
+    document.getElementById('scholarship-dialog-description').textContent = post.description_en || 'Explore this scholarship opportunity and application details.';
+    document.getElementById('scholarship-dialog-provider').textContent = post.provider || '—';
+    document.getElementById('scholarship-dialog-level').textContent = post.study_level || 'All levels';
+    document.getElementById('scholarship-dialog-deadline').textContent = formatDate(post.deadline || null);
+    const media = document.getElementById('scholarship-dialog-media');
+    media.style.backgroundImage = post.image_url ? 'url("' + String(post.image_url).replace(/"/g, '%22') + '")' : '';
+    const apply = document.getElementById('scholarship-dialog-apply');
+    apply.href = post.application_url || '#contact';
+    apply.target = post.application_url ? '_blank' : '';
+    apply.rel = post.application_url ? 'noopener noreferrer' : '';
+    dialog.showModal();
+  };
+  document.querySelector('[data-close-scholarship]')?.addEventListener('click', () => dialog.close());
+  dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   section.querySelectorAll('[data-offer-tab]').forEach(button => button.addEventListener('click', () => setTimeout(applyLiveFilter, 0)));
   fetch('/api/education')
     .then(response => { if(!response.ok) throw new Error('Education content unavailable'); return response.json(); })
@@ -3566,13 +3600,9 @@
         article.tabIndex = 0;
         article.setAttribute('role', 'link');
         article.setAttribute('aria-label', 'Open ' + (post.title_en || 'scholarship'));
-        article.addEventListener('click', () => {
-          const destination = post.application_url || '#contact';
-          if (destination.startsWith('#')) window.location.hash = destination.slice(1);
-          else window.open(destination, '_blank', 'noopener,noreferrer');
-        });
+        article.addEventListener('click', () => openScholarship(post));
         article.addEventListener('keydown', event => {
-          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); article.click(); }
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post); }
         });
         const image = post.image_url
           ? `<img class="edu-offer-image" src="${escapeHtml(post.image_url)}" alt="${escapeHtml(post.title_en || 'Scholarship')}" loading="lazy">`
@@ -3739,5 +3769,20 @@
 })();
 
 </script>
+<dialog class="scholarship-dialog" id="scholarship-dialog" aria-labelledby="scholarship-dialog-title">
+  <button class="scholarship-dialog-close" type="button" data-close-scholarship aria-label="Close scholarship details">×</button>
+  <div class="scholarship-dialog-media" id="scholarship-dialog-media"></div>
+  <div class="scholarship-dialog-content">
+    <p class="edu-offer-kicker" id="scholarship-dialog-kicker">Scholarship opportunity</p>
+    <h2 id="scholarship-dialog-title"></h2>
+    <p id="scholarship-dialog-description"></p>
+    <dl class="scholarship-dialog-meta">
+      <div><dt>Provider</dt><dd id="scholarship-dialog-provider"></dd></div>
+      <div><dt>Study level</dt><dd id="scholarship-dialog-level"></dd></div>
+      <div><dt>Deadline</dt><dd id="scholarship-dialog-deadline"></dd></div>
+    </dl>
+    <a class="btn btn-primary" id="scholarship-dialog-apply" href="#contact">Read more / Apply <span>→</span></a>
+  </div>
+</dialog>
 </body>
 </html>
