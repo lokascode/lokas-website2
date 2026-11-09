@@ -50,7 +50,7 @@ const RESOURCES = {
     listColumns: ['title_en', 'country', 'study_level', 'deadline', 'status'],
     fields: [
       text('slug', 'Slug', { required: true }),
-      text('image_url', 'Post photo'),
+      text('image_url', 'Post photo', { required: true }),
       text('title_en', 'Title (EN)', { required: true }),
       text('title_ar', 'Title (AR)', { rtl: true }),
       text('provider', 'Provider'),
