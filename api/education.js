@@ -24,7 +24,7 @@ module.exports = async function handler(req, res) {
                 image_url,
                 deadline, status, is_featured
            FROM edu_scholarships
-          WHERE status IN ('open', 'upcoming', 'draft')
+          WHERE status <> 'archived'
           ORDER BY is_featured DESC, deadline NULLS LAST`
       ),
       db.query(
