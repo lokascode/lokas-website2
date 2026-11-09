@@ -563,6 +563,8 @@
           var result = String(reader.result || '');
           var comma = result.indexOf(',');
           var base64 = comma === -1 ? result : result.slice(comma + 1);
+          photoPreview.src = result;
+          photoPreview.hidden = false;
           photoButton.disabled = true;
           photoButton.textContent = 'Uploading…';
           mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
