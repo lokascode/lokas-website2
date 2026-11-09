@@ -3081,7 +3081,7 @@
       "about.eyebrow":"عن لوكاس","about.title":"نحن لا نتبع المألوف.",
       "about.p1":"تأسست لوكاس على إيمان بسيط: هناك دائمًا طريقة للتفكير إلى أبعد من ذلك. نجمع بين الإبداع والتكنولوجيا والتسويق والتعليم لمساعدة الأفراد والمؤسسات على تحويل الأفكار إلى فرص حقيقية.",
       "about.p2":"من بناء علامات تجارية قوية إلى إنشاء حملات رقمية وربط الطلاب بفرص التعليم الدولية، نصنع حلولاً مصممة لعالم الغد.",
-      "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية لا تُنسى، ومساعدة الأفراد على اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
+      "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية ل�� تُنسى، ومساعدة الأفراد على اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
       "about.vision-label":"رؤيتنا","about.vision":"أن نصبح منصة رائدة في الإبداع والتعليم تربط بين الأفكار والشركات والمواهب والفرص.","about.cta":"تعرف علينا",
       "team.eyebrow":"فريقنا","team.title":"الأشخاص وراء لوكاس.",
       "team.desc":"الأشخاص الذين يقودون لوكاس إلى ا���أمام.",
@@ -3569,8 +3569,9 @@
       card.classList.toggle('is-hidden', active !== 'all' && card.dataset.offerType !== active);
     });
   };
-  const dialog = document.getElementById('scholarship-dialog');
+  const getScholarshipDialog = () => document.getElementById('scholarship-dialog');
   const openScholarship = post => {
+    const dialog = getScholarshipDialog();
     if (!dialog) return;
     document.getElementById('scholarship-dialog-title').textContent = post.title_en || 'Scholarship opportunity';
     document.getElementById('scholarship-dialog-kicker').textContent = 'Scholarship · ' + (post.funding_type || 'Opportunity');
@@ -3590,8 +3591,11 @@
     apply.rel = post.application_url ? 'noopener noreferrer' : '';
     dialog.showModal();
   };
-  document.querySelector('[data-close-scholarship]')?.addEventListener('click', () => dialog.close());
-  dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  document.addEventListener('DOMContentLoaded', () => {
+    const dialog = getScholarshipDialog();
+    document.querySelector('[data-close-scholarship]')?.addEventListener('click', () => dialog?.close());
+    dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  });
   section.querySelectorAll('[data-offer-tab]').forEach(button => button.addEventListener('click', () => setTimeout(applyLiveFilter, 0)));
   fetch('/api/education')
     .then(response => { if(!response.ok) throw new Error('Education content unavailable'); return response.json(); })
