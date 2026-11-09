@@ -3166,7 +3166,7 @@
       "contact.eyebrow":"تواصل معنا","contact.title":"أخبرنا بما تبنيه.","contact.reach":"تواصل معنا","contact.location":"دهوك، العراق",
       "form.name":"الاسم","form.email":"البريد الإلكتروني","form.phone":"رقم الهاتف","form.org":"الشركة / المؤسسة","form.service":"الخدمة",
       "form.group.marketing":"التسويق","form.group.education":"التعليم",
-      "form.opt.social":"إدارة وسائل التواصل الاجتماعي","form.opt.digital":"التسويق الرقمي","form.opt.branding":"العلامة التجارية","form.opt.content":"��ناعة المحتوى",
+      "form.opt.social":"إدارة وسائل التواصل الاجتما��ي","form.opt.digital":"التسويق الرقمي","form.opt.branding":"العلامة التجارية","form.opt.content":"��ناعة المحتوى",
       "form.opt.scholarship":"منحة در��سية","form.opt.uni":"عرض جامعي","form.opt.training":"تدريب","form.opt.consulting":"است��ارة","form.opt.event":"فعالية",
       "form.message":"الرسالة","form.submit":"إرسال الطلب","form.response":"شكرًا لك — تم استلام طلبك. سنتواصل معك قريبًا.",
       "footer.tag":"تسويق | علامة تجارية | رقمي | تعليم","footer.navigate":"روابط","footer.social":"تواصل",
@@ -3584,7 +3584,7 @@
     document.getElementById('scholarship-dialog-provider').textContent = post.provider || '—';
     document.getElementById('scholarship-dialog-level').textContent = post.study_level || 'All levels';
     document.getElementById('scholarship-dialog-deadline').textContent = formatDate(post.deadline || null);
-    const coverImage = post.image_url || post.cover_image_url || post.photo_url;
+    const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^https?:\/\//i.test(String(value || '')));
     const cover = document.getElementById('scholarship-dialog-cover');
     cover.src = coverImage || '';
     cover.alt = post.title_en ? post.title_en + ' scholarship cover' : 'Scholarship cover';
@@ -3619,7 +3619,7 @@
         article.addEventListener('keydown', event => {
           if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post); }
         });
-        const coverImage = post.image_url || post.cover_image_url || post.photo_url;
+        const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^https?:\/\//i.test(String(value || '')));
         const image = coverImage
           ? `<img class="edu-offer-image" src="${escapeHtml(coverImage)}" alt="${escapeHtml(post.title_en || 'Scholarship')}" loading="lazy">`
           : `<span class="edu-offer-media-label">FUND</span>`;

@@ -679,10 +679,14 @@
   $('editor-form').addEventListener('submit', function (event) {
     event.preventDefault();
     var photoInput = $('f-image_url');
-    if (state.current === 'scholarships' && photoInput && !photoInput.value.trim()) {
-      $('editor-error').textContent = 'Upload a photo before saving this scholarship.';
-      photoInput.focus();
-      return;
+    if (state.current === 'scholarships') {
+      var photoUrl = photoInput && photoInput.value.trim();
+      var validPhotoUrl = /^https?:\/\//i.test(photoUrl || '');
+      if (!validPhotoUrl) {
+        $('editor-error').textContent = 'Upload a photo and wait for the public image URL before saving.';
+        photoInput.focus();
+        return;
+      }
     }
     var save = $('editor-save');
     save.disabled = true;
