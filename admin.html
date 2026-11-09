@@ -531,6 +531,7 @@
     }
     input.id = id;
     input.name = field.name;
+    input.required = Boolean(field.required && !field.readOnly);
     if (field.rtl) input.dir = 'rtl';
     if (field.readOnly) { input.disabled = true; }
 
@@ -677,6 +678,10 @@
 
   $('editor-form').addEventListener('submit', function (event) {
     event.preventDefault();
+    if (!$('editor-fields').checkValidity()) {
+      $('editor-fields').reportValidity();
+      return;
+    }
     var save = $('editor-save');
     save.disabled = true;
     $('editor-error').textContent = '';
