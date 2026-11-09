@@ -570,7 +570,7 @@
           photoButton.textContent = 'Uploading…';
           mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
             .then(function (json) {
-              if (!json.url || !/^https?:\/\//i.test(json.url)) {
+              if (!json.url || !/^(https?:\/\/|\/api\/media\?pathname=)/i.test(json.url)) {
                 throw new Error('Upload did not return a public image URL.');
               }
               input.value = json.url;
