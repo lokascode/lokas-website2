@@ -914,6 +914,9 @@
  .scholarship-dialog-content{padding:48px 42px 42px;display:flex;flex-direction:column;justify-content:center;}
  .scholarship-dialog-content h2{font-size:clamp(30px,4vw,52px);line-height:.98;letter-spacing:-.06em;margin:0 0 18px;}
  .scholarship-dialog-content>p:not(.edu-offer-kicker){color:var(--text-soft);line-height:1.65;margin:0 0 24px;}
+ .scholarship-dialog-requirements{border-top:1px solid var(--line-soft);margin:0 0 24px;padding-top:18px;}
+ .scholarship-dialog-requirements h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px;}
+ .scholarship-dialog-requirements p{color:var(--text-soft);line-height:1.6;white-space:pre-line;margin:0;}
  .scholarship-dialog-close{position:absolute;right:16px;top:14px;z-index:2;width:36px;height:36px;border:1px solid rgba(0,0,0,.18);border-radius:50%;background:rgba(255,255,255,.86);font-size:24px;line-height:1;cursor:pointer;}
  .scholarship-dialog-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 28px;}
  .scholarship-dialog-meta div{border-top:1px solid var(--line-soft);padding-top:10px;}
@@ -3043,7 +3046,7 @@
       "choose.mkt.title":"التسويق","choose.mkt.desc":"ابنِ علامة تجارية لا تُنسى.",
       "choose.edu.title":"التعليم","choose.edu.desc":"اعثر على فرصتك القادمة.",
       "choose.furas.title":"فرصة","choose.furas.desc":"اكتشف خطوتك المهنية القادمة.",
-      "choose.consulting.title":"الاستشارات","choose.consulting.desc":"��رارات أفضل لمؤسستك.",
+      "choose.consulting.title":"الاستشارات","choose.consulting.desc":"����رارات أفضل لمؤسستك.",
       "marquee.branding":"العلامة التجارية","marquee.digital":"التسويق الرقمي","marquee.scholarships":"المنح الدراسية","marquee.university":"عروض الجامعات","marquee.content":"صناعة المحتوى","marquee.training":"التدريب",
       "training.eyebrow":"التدريب","training.title":"بناء المهارات. تطوير الأفراد. تحسين الأداء.",
       "training.desc":"التدريب عملية منظمة تهدف إلى تحسين المعرفة والمهارات والسلوك والأداء العملي. في لوكاس، نؤمن بأن التدريب يجب أن يتجاوز مجرد تقديم المعلومات — المعرفة ← القدرة ← الأداء ← النتائج.",
@@ -3081,7 +3084,7 @@
       "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية لا تُنسى، ومساعدة الأفراد على اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
       "about.vision-label":"رؤيتنا","about.vision":"أن نصبح منصة رائدة في الإبداع والتعليم تربط بين الأفكار والشركات والمواهب والفرص.","about.cta":"تعرف علينا",
       "team.eyebrow":"فريقنا","team.title":"الأشخاص وراء لوكاس.",
-      "team.desc":"الأشخاص الذين يقودون لوكاس إلى ا��أمام.",
+      "team.desc":"الأشخاص الذين يقودون لوكاس إلى ا���أمام.",
       "team.1.name":"فرهاد يوسف","team.1.role":"المؤسس والرئيس التنفيذي",
       "team.2.name":"متين مايي","team.2.role":"مدرب ومستشار",
       "team.3.name":"مشير عزيز","team.3.role":"مستشار التعليم العالي",
@@ -3124,7 +3127,7 @@
       "svc.edu.3.title":"الدراسة في الخارج","svc.edu.3.desc":"إرشاد للطلاب الراغبين في التعليم الدولي.",
       "svc.edu.4.title":"التدريب","svc.edu.4.desc":"طوّر مهاراتك العملية من خلال برامج تعليمية.",
       "svc.edu.5.title":"الاستشارات","svc.edu.5.desc":"إرشاد تعليمي ومهني شخصي.",
-      "svc.edu.6.title":"الفعاليات","svc.edu.6.desc":"فعاليات تعليمية وورش عمل وتجارب مرتبطة بالفرص.",
+      "svc.edu.6.title":"الفعاليات","svc.edu.6.desc":"فعاليات تعليمية و��رش عمل وتجارب مرتبطة بالفرص.",
       "work.eyebrow":"أعمالنا","work.title":"أعمال مختارة.","work.desc":"صور مؤقتة — استبدلها بصور مشاريع حقيقية وأسماء فعلية عند توفرها.","work.cta":"عرض جميع المشاريع",
       "eduopp.eyebrow":"فصلك القادم قد يبدأ من أي مكان.","eduopp.title":"اعثر على فرصتك.<br>ابنِ مستقبلك.",
       "eduopp.desc":"الدراسة في الخارج أكثر من مجرد الحصول على شهادة. إنها عن اختبار ثقافة جديدة، والتعرف على أشخاص جدد، وتطوير مهارات جديدة، وخلق فرص لمستقبلك. تساعد لوكاس الطلاب على اجتياز هذه الرحلة من اكتشاف الفرصة المناسبة إلى تجهيز طلب الالتحاق.",
@@ -3572,6 +3575,10 @@
     document.getElementById('scholarship-dialog-title').textContent = post.title_en || 'Scholarship opportunity';
     document.getElementById('scholarship-dialog-kicker').textContent = 'Scholarship · ' + (post.funding_type || 'Opportunity');
     document.getElementById('scholarship-dialog-description').textContent = post.description_en || 'Explore this scholarship opportunity and application details.';
+    const requirements = post.eligibility_en || post.eligibility_ar || '';
+    const requirementsWrap = document.getElementById('scholarship-dialog-requirements-wrap');
+    document.getElementById('scholarship-dialog-requirements').textContent = requirements;
+    requirementsWrap.hidden = !requirements;
     document.getElementById('scholarship-dialog-provider').textContent = post.provider || '—';
     document.getElementById('scholarship-dialog-level').textContent = post.study_level || 'All levels';
     document.getElementById('scholarship-dialog-deadline').textContent = formatDate(post.deadline || null);
@@ -3614,10 +3621,14 @@
             <h3>${escapeHtml(post.title_en || 'Scholarship opportunity')}</h3>
             <p>${escapeHtml(post.description_en || 'Explore this scholarship opportunity and application details.')}</p>
             <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${escapeHtml(post.status === 'closed' ? 'Closed' : post.status === 'upcoming' ? 'Coming soon' : 'Open now')}</span></div>
-            <a class="edu-offer-link" href="${escapeHtml(post.application_url || '#contact')}">${post.application_url ? 'Apply now' : 'Explore scholarship'} <span>→</span></a>
+            <a class="edu-offer-link" href="#scholarship-${escapeHtml(post.slug || index)}">Learn more <span>→</span></a>
           </div>`;
         const actionLink = article.querySelector('.edu-offer-link');
-        if (actionLink) actionLink.addEventListener('click', event => event.stopPropagation());
+        if (actionLink) actionLink.addEventListener('click', event => {
+          event.preventDefault();
+          event.stopPropagation();
+          openScholarship(post);
+        });
         grid.appendChild(article);
       });
       applyLiveFilter();
@@ -3776,6 +3787,10 @@
     <p class="edu-offer-kicker" id="scholarship-dialog-kicker">Scholarship opportunity</p>
     <h2 id="scholarship-dialog-title"></h2>
     <p id="scholarship-dialog-description"></p>
+    <section class="scholarship-dialog-requirements" id="scholarship-dialog-requirements-wrap" hidden>
+      <h3>Requirements and guidance</h3>
+      <p id="scholarship-dialog-requirements"></p>
+    </section>
     <dl class="scholarship-dialog-meta">
       <div><dt>Provider</dt><dd id="scholarship-dialog-provider"></dd></div>
       <div><dt>Study level</dt><dd id="scholarship-dialog-level"></dd></div>
