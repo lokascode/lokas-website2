@@ -570,13 +570,22 @@
           photoButton.textContent = 'Uploading…';
           mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
             .then(function (json) {
+              if (!json.url || !/^https?:\/\//i.test(json.url)) {
+                throw new Error('Upload did not return a public image URL.');
+              }
               input.value = json.url;
               photoPreview.src = json.url;
               photoPreview.hidden = false;
               photoButton.textContent = 'Replace photo';
               toast('Photo attached');
             })
-            .catch(function (error) { toast(error.message); photoButton.textContent = 'Add photo'; })
+            .catch(function (error) {
+              input.value = '';
+              photoPreview.removeAttribute('src');
+              photoPreview.hidden = true;
+              toast(error.message);
+              photoButton.textContent = 'Add photo';
+            })
             .then(function () { photoButton.disabled = false; picker.value = ''; });
         };
         reader.readAsDataURL(file);
