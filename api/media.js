@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { put } = require('@vercel/blob');
+const { get, put } = require('@vercel/blob');
 
 function isAuthorized(req) {
   const expected = String(process.env.ADMIN_PASSWORD || '').trim();
@@ -12,6 +12,21 @@ function isAuthorized(req) {
 }
 
 module.exports = async function handler(req, res) {
+  if (req.method === 'GET') {
+    const pathname = String(req.query?.pathname || '');
+    if (!pathname.startsWith('site-media/')) return res.status(400).json({ error: 'Invalid media path' });
+    try {
+      const result = await get(pathname, { access: 'private' });
+      if (!result) return res.status(404).end();
+      res.setHeader('Content-Type', result.blob.contentType || 'application/octet-stream');
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return result.stream.pipe(res);
+    } catch (error) {
+      console.error('[v0] Media delivery failed:', error.message);
+      return res.status(404).end();
+    }
+  }
+
   if (!isAuthorized(req)) return res.status(401).json({ error: 'Unauthorized' });
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -29,11 +44,15 @@ module.exports = async function handler(req, res) {
 
   try {
     const blob = await put(`site-media/${Date.now()}-${safeName}`, buffer, {
-      access: 'public',
+      access: 'private',
       contentType: contentType || 'application/octet-stream',
       addRandomSuffix: false,
     });
-    return res.status(200).json({ url: blob.url, pathname: blob.pathname, filename: safeName });
+    return res.status(200).json({
+      url: `/api/media?pathname=${encodeURIComponent(blob.pathname)}`,
+      pathname: blob.pathname,
+      filename: safeName,
+    });
   } catch (error) {
     console.error('[v0] Media upload failed:', error.message);
     return res.status(500).json({ error: 'Upload failed. Check Blob integration configuration.' });

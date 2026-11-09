@@ -690,7 +690,7 @@
     var photoInput = $('f-image_url');
     if (state.current === 'scholarships') {
       var photoUrl = photoInput && photoInput.value.trim();
-      var validPhotoUrl = /^https?:\/\//i.test(photoUrl || '');
+      var validPhotoUrl = /^(https?:\/\/|\/api\/media\?pathname=)/i.test(photoUrl || '');
       if (!validPhotoUrl) {
         $('editor-error').textContent = 'Upload a photo and wait for the public image URL before saving.';
         photoInput.focus();
