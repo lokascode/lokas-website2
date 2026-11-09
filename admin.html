@@ -678,8 +678,10 @@
 
   $('editor-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    if (!$('editor-fields').checkValidity()) {
-      $('editor-fields').reportValidity();
+    var photoInput = $('f-image_url');
+    if (state.current === 'scholarships' && photoInput && !photoInput.value.trim()) {
+      $('editor-error').textContent = 'Upload a photo before saving this scholarship.';
+      photoInput.focus();
       return;
     }
     var save = $('editor-save');
