@@ -255,6 +255,21 @@
     });
   }
 
+  function mediaApi(options) {
+    options = options || {};
+    return fetch('/api/media', {
+      method: options.method || 'POST',
+      headers: { Authorization: 'Bearer ' + token(), 'Content-Type': 'application/json' },
+      body: options.body ? JSON.stringify(options.body) : undefined
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (json) {
+        if (res.status === 401) { signOut(); throw new Error(json.error || 'Signed out'); }
+        if (!res.ok) throw new Error(json.error || 'Upload failed');
+        return json;
+      });
+    });
+  }
+
   function toast(message) {
     var el = document.createElement('div');
     el.className = 'toast';
@@ -550,7 +565,7 @@
           var base64 = comma === -1 ? result : result.slice(comma + 1);
           photoButton.disabled = true;
           photoButton.textContent = 'Uploading…';
-          api('/media', { method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
+          mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
             .then(function (json) {
               input.value = json.url;
               photoPreview.src = json.url;
@@ -642,7 +657,7 @@
       var comma = result.indexOf(',');
       var base64 = comma === -1 ? result : result.slice(comma + 1);
       toast('Uploading ' + file.name + '…');
-      api('/media', { method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
+      mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
         .then(function (json) {
           window.prompt('Media uploaded. Copy this URL:', json.url);
           toast('Media uploaded');
