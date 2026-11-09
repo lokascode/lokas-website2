@@ -583,7 +583,9 @@
               input.value = '';
               photoPreview.removeAttribute('src');
               photoPreview.hidden = true;
-              toast(error.message);
+              toast(error.message === 'Unauthorized' || error.message === 'Signed out'
+                ? 'Your admin session expired. Sign in again, then upload the photo.'
+                : error.message);
               photoButton.textContent = 'Add photo';
             })
             .then(function () { photoButton.disabled = false; picker.value = ''; });
