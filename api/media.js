@@ -55,6 +55,7 @@ module.exports = async function handler(req, res) {
     });
   } catch (error) {
     console.error('[v0] Media upload failed:', error.message);
-    return res.status(500).json({ error: 'Upload failed. Check Blob integration configuration.' });
+    const detail = String(error && error.message || 'Unknown Blob storage error').slice(0, 240);
+    return res.status(500).json({ error: `Photo upload failed: ${detail}` });
   }
 };

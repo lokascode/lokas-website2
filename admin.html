@@ -118,13 +118,18 @@
   .dlg-body .field[data-field="description_en"],.dlg-body .field[data-field="description_ar"],.dlg-body .field[data-field="eligibility_en"],.dlg-body .field[data-field="eligibility_ar"]{grid-column:2}
   .dlg-body .field[data-field="title_en"] input{font-size:17px;font-weight:600}
   .photo-field{gap:10px!important}
-  .photo-button{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border:1px dashed var(--line);border-radius:12px;background:#fff;color:var(--text);font:600 13px inherit;cursor:pointer;transition:border-color .15s,background .15s}
+  .photo-stage{display:flex;align-items:center;justify-content:center;position:relative;width:100%;aspect-ratio:4/3;min-height:180px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#f5f5f4}
+  .photo-preview{display:block;width:100%;height:100%;object-fit:contain;background:#f5f5f4}
+  .photo-empty{padding:24px;text-align:center;color:var(--text-soft);font-size:13px}
+  .photo-button{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--text);font:600 13px inherit;cursor:pointer;transition:border-color .15s,background .15s}
   .photo-button:hover{border-color:var(--accent);background:#fff8f3}
   .photo-button:disabled{opacity:.6;cursor:wait}
-  .photo-preview{display:block;width:100%;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--line);background:#f4f4f2}
-  .photo-hint{font-size:11px;color:var(--text-soft);line-height:1.4}
+  .photo-hint{font-size:12px;color:var(--text-soft);line-height:1.5}
+  .photo-status{min-height:20px;color:var(--text-soft);font-size:13px}
+  .photo-status[data-state=error]{color:var(--danger)}
+  .photo-status[data-state=success]{color:var(--ok)}
   .photo-picker{display:none!important}
-  .photo-url{font-size:12px!important;color:var(--text-soft)}
+  .photo-url{display:none!important}
   .dlg-body .field label{font-size:12px;color:var(--text-soft);font-weight:600;letter-spacing:.04em}
   .dlg-body .field input,.dlg-body .field select,.dlg-body .field textarea{border-color:rgba(7,7,7,.16);border-radius:11px;min-height:44px;padding:10px 13px}
   .dlg-body .field input:focus,.dlg-body .field select:focus,.dlg-body .field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(242,101,34,.12);outline:0}
@@ -484,6 +489,55 @@
     return new Date(date.getTime() - offset).toISOString().slice(0, 16);
   }
 
+  function preparePhoto(file) {
+    var readDataUrl = function (blob) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var result = String(reader.result || '');
+          var comma = result.indexOf(',');
+          resolve({ filename: file.name.replace(/\.[^.]+$/, '') + '.jpg', contentType: 'image/jpeg', data: comma === -1 ? result : result.slice(comma + 1) });
+        };
+        reader.onerror = function () { reject(new Error('Could not read the selected photo.')); };
+        reader.readAsDataURL(blob);
+      });
+    };
+    if (file.type === 'image/gif' || file.size <= 2 * 1024 * 1024) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var result = String(reader.result || '');
+          var comma = result.indexOf(',');
+          resolve({ filename: file.name, contentType: file.type, data: comma === -1 ? result : result.slice(comma + 1) });
+        };
+        reader.onerror = function () { reject(new Error('Could not read the selected photo.')); };
+        reader.readAsDataURL(file);
+      });
+    }
+    return createImageBitmap(file).then(function (bitmap) {
+      var scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.round(bitmap.width * scale);
+      canvas.height = Math.round(bitmap.height * scale);
+      var context = canvas.getContext('2d');
+      if (!context) throw new Error('Your browser could not prepare this photo.');
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (blob) {
+          if (!blob) { reject(new Error('Your browser could not prepare this photo.')); return; }
+          if (blob.size > 2 * 1024 * 1024) { reject(new Error('This photo is too large after compression. Choose a smaller image.')); return; }
+          readDataUrl(blob).then(resolve, reject);
+        }, 'image/jpeg', 0.82);
+      });
+    }).catch(function (error) {
+      if (error && error.message) throw error;
+      throw new Error('This image could not be prepared for upload. Try a JPG or PNG photo.');
+    });
+  }
+
   function buildField(field, value) {
     var wrapper = document.createElement('div');
     wrapper.className = 'field' + (field.type === 'bool' ? ' check' : '');
@@ -537,6 +591,9 @@
 
     if (field.name === 'image_url') {
       wrapper.classList.add('photo-field');
+      var publicImageUrl = /^(https?:\/\/|\/api\/media\?pathname=)/i.test(String(input.value || '')) ? input.value : '';
+      input.value = publicImageUrl;
+      input.type = 'hidden';
       var picker = document.createElement('input');
       picker.type = 'file';
       picker.accept = 'image/jpeg,image/png,image/webp,image/gif';
@@ -545,56 +602,83 @@
       var photoButton = document.createElement('button');
       photoButton.type = 'button';
       photoButton.className = 'photo-button';
-      photoButton.textContent = input.value ? 'Replace photo' : 'Add photo';
+      photoButton.textContent = publicImageUrl ? 'Replace photo' : 'Choose photo';
+      var photoStage = document.createElement('div');
+      photoStage.className = 'photo-stage';
       var photoPreview = document.createElement('img');
       photoPreview.className = 'photo-preview';
-      photoPreview.alt = 'Post photo preview';
-      photoPreview.hidden = !input.value;
-      if (input.value) photoPreview.src = input.value;
+      photoPreview.alt = 'Scholarship post photo preview';
+      photoPreview.hidden = !publicImageUrl;
+      if (publicImageUrl) photoPreview.src = publicImageUrl;
+      var photoEmpty = document.createElement('span');
+      photoEmpty.className = 'photo-empty';
+      photoEmpty.textContent = 'Your post photo preview will appear here';
+      photoEmpty.hidden = Boolean(publicImageUrl);
+      photoStage.append(photoPreview, photoEmpty);
       var photoHint = document.createElement('span');
       photoHint.className = 'photo-hint';
-      photoHint.textContent = 'JPG, PNG, WEBP or GIF · max 10 MB';
+      photoHint.textContent = 'Choose a JPG, PNG, WEBP, or GIF image. Up to 10 MB.';
+      var photoStatus = document.createElement('span');
+      photoStatus.className = 'photo-status';
+      photoStatus.setAttribute('role', 'status');
+      if (!publicImageUrl && value) photoStatus.textContent = 'The old photo was a local file path and is unavailable. Choose the image again.';
       photoButton.addEventListener('click', function () { picker.click(); });
+      photoPreview.addEventListener('error', function () {
+        if (!input.value) return;
+        photoPreview.hidden = true;
+        photoEmpty.hidden = false;
+        photoStatus.dataset.state = 'error';
+        photoStatus.textContent = 'This saved photo URL cannot be loaded. Choose the image again.';
+        input.value = '';
+        photoButton.textContent = 'Choose photo';
+      });
       picker.addEventListener('change', function () {
         var file = picker.files && picker.files[0];
         if (!file) return;
-        if (file.size > 10 * 1024 * 1024) { toast('Photos must be smaller than 10 MB'); picker.value = ''; return; }
-        var reader = new FileReader();
-        reader.onload = function () {
-          var result = String(reader.result || '');
-          var comma = result.indexOf(',');
-          var base64 = comma === -1 ? result : result.slice(comma + 1);
-          photoPreview.src = result;
-          photoPreview.hidden = false;
-          photoButton.disabled = true;
-          photoButton.textContent = 'Uploading…';
-          mediaApi({ method: 'POST', body: { filename: file.name, contentType: file.type, data: base64 } })
-            .then(function (json) {
-              if (!json.url || !/^(https?:\/\/|\/api\/media\?pathname=)/i.test(json.url)) {
-                throw new Error('Upload did not return a public image URL.');
-              }
-              input.value = json.url;
-              photoPreview.src = json.url;
-              photoPreview.hidden = false;
-              photoButton.textContent = 'Replace photo';
-              toast('Photo attached');
-            })
-            .catch(function (error) {
-              input.value = '';
-              photoPreview.removeAttribute('src');
-              photoPreview.hidden = true;
-              toast(error.message === 'Unauthorized' || error.message === 'Signed out'
-                ? 'Your admin session expired. Sign in again, then upload the photo.'
-                : error.message);
-              photoButton.textContent = 'Add photo';
-            })
-            .then(function () { photoButton.disabled = false; picker.value = ''; });
-        };
-        reader.readAsDataURL(file);
+        if (file.size > 10 * 1024 * 1024) { photoStatus.dataset.state = 'error'; photoStatus.textContent = 'Choose an image smaller than 10 MB.'; picker.value = ''; return; }
+        if (!/^image\/(jpeg|png|webp|gif)$/i.test(file.type)) { photoStatus.dataset.state = 'error'; photoStatus.textContent = 'Choose a JPG, PNG, WEBP, or GIF image.'; picker.value = ''; return; }
+        if (file.type === 'image/gif' && file.size > 2 * 1024 * 1024) { photoStatus.dataset.state = 'error'; photoStatus.textContent = 'Animated GIFs must be smaller than 2 MB. Choose a smaller GIF or a JPG/PNG photo.'; picker.value = ''; return; }
+        var localPreview = URL.createObjectURL(file);
+        photoPreview.src = localPreview;
+        photoPreview.hidden = false;
+        photoEmpty.hidden = true;
+        photoStatus.dataset.state = '';
+        photoStatus.textContent = 'Uploading photo…';
+        input.dataset.pendingUpload = 'true';
+        photoButton.disabled = true;
+        photoButton.textContent = 'Uploading…';
+        preparePhoto(file)
+          .then(function (prepared) {
+            return mediaApi({ method: 'POST', body: { filename: prepared.filename, contentType: prepared.contentType, data: prepared.data } });
+          })
+          .then(function (json) {
+            if (!json.url || !/^(https?:\/\/|\/api\/media\?pathname=)/i.test(json.url)) {
+              throw new Error('The upload completed without returning a usable photo URL. Please try again.');
+            }
+            input.value = json.url;
+            delete input.dataset.pendingUpload;
+            photoPreview.src = json.url;
+            URL.revokeObjectURL(localPreview);
+            photoPreview.hidden = false;
+            photoEmpty.hidden = true;
+            photoButton.textContent = 'Replace photo';
+            photoStatus.dataset.state = 'success';
+            photoStatus.textContent = 'Photo uploaded and ready to publish.';
+          })
+          .catch(function (error) {
+            photoPreview.src = localPreview;
+            photoPreview.hidden = false;
+            photoEmpty.hidden = true;
+            photoStatus.dataset.state = 'error';
+            photoStatus.textContent = error.message === 'Unauthorized' || error.message === 'Signed out'
+              ? 'Your admin session expired. Sign in again, then upload the photo.'
+              : error.message || 'Photo upload failed. Please try again.';
+            photoButton.textContent = input.value ? 'Replace photo' : 'Try upload again';
+          })
+          .then(function () { photoButton.disabled = false; picker.value = ''; });
       });
       input.className = 'photo-url';
-      input.placeholder = 'Or paste an image URL';
-      wrapper.append(labelEl, photoButton, photoPreview, photoHint, input, picker);
+      wrapper.append(labelEl, photoStage, photoButton, photoHint, photoStatus, input, picker);
     } else {
       wrapper.append(labelEl, input);
     }
@@ -691,11 +775,16 @@
     event.preventDefault();
     var photoInput = $('f-image_url');
     if (state.current === 'scholarships') {
+      if (photoInput && photoInput.dataset.pendingUpload === 'true') {
+        $('editor-error').textContent = 'The selected photo has not finished uploading. Wait for the upload to complete or choose the photo again.';
+        return;
+      }
       var photoUrl = photoInput && photoInput.value.trim();
       var validPhotoUrl = /^(https?:\/\/|\/api\/media\?pathname=)/i.test(photoUrl || '');
       if (!validPhotoUrl) {
         $('editor-error').textContent = 'Upload a photo and wait for the public image URL before saving.';
-        photoInput.focus();
+        var choosePhoto = photoInput.closest('.photo-field')?.querySelector('.photo-button');
+        if (choosePhoto) choosePhoto.focus();
         return;
       }
     }
