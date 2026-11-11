@@ -47,6 +47,7 @@ function createResponse(res) {
     statusCode: 200,
     setHeader(name, value) { res.setHeader(name, value); },
     status(code) { this.statusCode = code; return this; },
+    stream(readable) { res.statusCode = this.statusCode; return readable.pipe(res); },
     json(payload) {
       res.statusCode = this.statusCode;
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
