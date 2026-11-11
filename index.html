@@ -3082,7 +3082,7 @@
       "about.eyebrow":"عن لوكاس","about.title":"نحن لا نتبع المألوف.",
       "about.p1":"تأسست لوكاس على إيمان بسيط: هناك دائمًا طريقة للتفكير إلى أبعد من ذلك. نجمع بين الإبداع والتكنولوجيا والتسويق والتعليم لمساعدة الأفراد والمؤسسات على تحويل الأفكار إلى فرص حقيقية.",
       "about.p2":"من بناء علامات تجارية قوية إلى إنشاء حملات رقمية وربط الطلاب بفرص التعليم الدولية، نصنع حلولاً مصممة لعالم الغد.",
-      "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية ل�� تُنسى، ومساعدة الأفراد ��لى اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
+      "about.mission-label":"رسالتنا","about.mission":"مساعدة الشركات على النمو، وجعل العلامات التجارية ل�� تُنسى، ومساعدة الأفراد ����لى اكتشاف فرص يمكن أن تغيّر مستقبلهم.",
       "about.vision-label":"رؤيتنا","about.vision":"أن نصبح منصة رائدة في الإبداع والتعليم تربط بين الأفكار والشركات والمواهب والفرص.","about.cta":"تعرف علينا",
       "team.eyebrow":"فريقنا","team.title":"الأشخاص وراء لوكاس.",
       "team.desc":"الأشخاص الذين يقودون لوكاس إلى ا���أمام.",
@@ -3563,7 +3563,11 @@
   const grid = section.querySelector('.edu-offers-grid') || section.querySelector('[data-offer-type]')?.parentElement;
   if(!grid) return;
   const escapeHtml = value => String(value ?? '').replace(/[&<>\"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[char]));
-  const formatDate = value => value ? new Date(value).toLocaleDateString(undefined, {month:'short', day:'numeric', year:'numeric'}) : 'Open now';
+  const getLanguage = () => document.documentElement.lang === 'ar' ? 'ar' : 'en';
+  const localized = (post, field, fallback) => post[field + '_' + getLanguage()] || post[field + '_en'] || post[field + '_ar'] || fallback;
+  const formatDate = value => value ? new Date(value).toLocaleDateString(getLanguage() === 'ar' ? 'ar' : 'en', {month:'short', day:'numeric', year:'numeric'}) : (getLanguage() === 'ar' ? 'التقديم مفتوح' : 'Open now');
+  let scholarshipPosts = [];
+  let activeScholarship = null;
   const applyLiveFilter = () => {
     const active = section.querySelector('[data-offer-tab].is-active')?.dataset.offerTab || 'all';
     grid.querySelectorAll('[data-live-offer]').forEach(card => {
@@ -3571,76 +3575,109 @@
     });
   };
   const getScholarshipDialog = () => document.getElementById('scholarship-dialog');
-  const openScholarship = post => {
-    const dialog = getScholarshipDialog();
-    if (!dialog) return;
-    document.getElementById('scholarship-dialog-title').textContent = post.title_en || 'Scholarship opportunity';
-    document.getElementById('scholarship-dialog-kicker').textContent = 'Scholarship · ' + (post.funding_type || 'Opportunity');
-    document.getElementById('scholarship-dialog-description').textContent = post.description_en || 'Explore this scholarship opportunity and application details.';
-    const requirements = post.eligibility_en || post.eligibility_ar || '';
+  const updateScholarshipDialog = post => {
+    const language = getLanguage();
+    const arabic = language === 'ar';
+    const copy = arabic
+      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', requirements: 'المتطلبات والإرشادات', provider: 'الجهة المقدمة', level: 'المستوى الدراسي', deadline: 'الموعد النهائي', apply: 'اقرأ المزيد / قدّم', cover: 'صورة المنحة' }
+      : { scholarship: 'Scholarship', opportunity: 'Opportunity', details: 'Explore this scholarship opportunity and application details.', requirements: 'Requirements and guidance', provider: 'Provider', level: 'Study level', deadline: 'Deadline', apply: 'Read more / Apply', cover: 'Scholarship cover' };
+    const title = localized(post, 'title', arabic ? 'فرصة منحة دراسية' : 'Scholarship opportunity');
+    document.getElementById('scholarship-dialog-title').textContent = title;
+    document.getElementById('scholarship-dialog-kicker').textContent = copy.scholarship + ' · ' + (post['funding_type_' + language] || post.funding_type || copy.opportunity);
+    document.getElementById('scholarship-dialog-description').textContent = localized(post, 'description', copy.details);
+    const requirements = localized(post, 'eligibility', '');
     const requirementsWrap = document.getElementById('scholarship-dialog-requirements-wrap');
+    document.getElementById('scholarship-dialog-requirements-title').textContent = copy.requirements;
     document.getElementById('scholarship-dialog-requirements').textContent = requirements;
     requirementsWrap.hidden = !requirements;
-    document.getElementById('scholarship-dialog-provider').textContent = post.provider || '—';
-    document.getElementById('scholarship-dialog-level').textContent = post.study_level || 'All levels';
+    document.getElementById('scholarship-dialog-provider-label').textContent = copy.provider;
+    document.getElementById('scholarship-dialog-level-label').textContent = copy.level;
+    document.getElementById('scholarship-dialog-deadline-label').textContent = copy.deadline;
+    document.getElementById('scholarship-dialog-provider').textContent = post['provider_' + language] || post.provider || '—';
+    document.getElementById('scholarship-dialog-level').textContent = post['study_level_' + language] || post.study_level || (arabic ? 'جميع المستويات' : 'All levels');
     document.getElementById('scholarship-dialog-deadline').textContent = formatDate(post.deadline || null);
     const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^(https?:\/\/|\/api\/media\?pathname=)/i.test(String(value || '')));
     const cover = document.getElementById('scholarship-dialog-cover');
     cover.src = coverImage || '';
-    cover.alt = post.title_en ? post.title_en + ' scholarship cover' : 'Scholarship cover';
+    cover.alt = title + ' · ' + copy.cover;
     cover.hidden = !coverImage;
     const apply = document.getElementById('scholarship-dialog-apply');
     apply.href = post.application_url || '#contact';
     apply.target = post.application_url ? '_blank' : '';
     apply.rel = post.application_url ? 'noopener noreferrer' : '';
-    dialog.showModal();
+    apply.firstChild.textContent = copy.apply + ' ';
+    const close = document.querySelector('[data-close-scholarship]');
+    if (close) close.setAttribute('aria-label', arabic ? 'إغلاق تفاصيل المنحة' : 'Close scholarship details');
   };
+  const openScholarship = post => {
+    const dialog = getScholarshipDialog();
+    if (!dialog) return;
+    activeScholarship = post;
+    updateScholarshipDialog(post);
+    if (!dialog.open) dialog.showModal();
+  };
+  document.addEventListener('lokas:langchange', () => {
+    if (scholarshipPosts.length) renderScholarships();
+    if (activeScholarship && getScholarshipDialog()?.open) updateScholarshipDialog(activeScholarship);
+  });
   document.addEventListener('DOMContentLoaded', () => {
     const dialog = getScholarshipDialog();
     document.querySelector('[data-close-scholarship]')?.addEventListener('click', () => dialog?.close());
     dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   });
   section.querySelectorAll('[data-offer-tab]').forEach(button => button.addEventListener('click', () => setTimeout(applyLiveFilter, 0)));
+  const renderScholarships = () => {
+    if (!scholarshipPosts.length) return;
+    const language = getLanguage();
+    const arabic = language === 'ar';
+    const copy = arabic
+      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', title: 'فرصة منحة دراسية', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', level: 'جميع المستويات', closed: 'مغلقة', upcoming: 'قريباً', open: 'التقديم مفتوح', learn: 'اقرأ المزيد', image: 'صورة المنحة' }
+      : { scholarship: 'Scholarship', opportunity: 'Opportunity', title: 'Scholarship opportunity', details: 'Explore this scholarship opportunity and application details.', level: 'All levels', closed: 'Closed', upcoming: 'Coming soon', open: 'Open now', learn: 'Learn more', image: 'Scholarship cover' };
+    grid.querySelectorAll('[data-live-offer]').forEach(card => card.remove());
+    scholarshipPosts.forEach((post, index) => {
+      const title = localized(post, 'title', copy.title);
+      const article = document.createElement('article');
+      article.className = 'edu-offer-card edu-offer-card-live';
+      article.dataset.offerType = 'scholarship';
+      article.dataset.liveOffer = 'true';
+      article.tabIndex = 0;
+      article.setAttribute('role', 'link');
+      article.setAttribute('aria-label', (arabic ? 'فتح ' : 'Open ') + title);
+      article.addEventListener('click', () => openScholarship(post));
+      article.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post); }
+      });
+      const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^(https?:\/\/|\/api\/media\?pathname=)/i.test(String(value || '')));
+      const image = coverImage
+        ? `<img class="edu-offer-image" src="${escapeHtml(coverImage)}" alt="${escapeHtml(title + ' · ' + copy.image)}" loading="lazy">`
+        : `<span class="edu-offer-media-label">${arabic ? 'منحة' : 'FUND'}</span>`;
+      const status = post.status === 'closed' ? copy.closed : post.status === 'upcoming' ? copy.upcoming : copy.open;
+      article.innerHTML = `
+        <div class="edu-offer-media">${image}<span class="edu-offer-mark">${String(index + 1).padStart(2, '0')}</span></div>
+        <div class="edu-offer-body">
+          <p class="edu-offer-kicker">${copy.scholarship} · ${escapeHtml(post['funding_type_' + language] || post.funding_type || copy.opportunity)}</p>
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(localized(post, 'description', copy.details))}</p>
+          <div class="edu-offer-meta"><span>${escapeHtml(post['study_level_' + language] || post.study_level || copy.level)}</span><span>${escapeHtml(status)}</span></div>
+          <a class="edu-offer-link" href="#scholarship-${escapeHtml(post.slug || index)}">${copy.learn} <span>→</span></a>
+        </div>`;
+      const actionLink = article.querySelector('.edu-offer-link');
+      if (actionLink) actionLink.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openScholarship(post);
+      });
+      grid.appendChild(article);
+    });
+    applyLiveFilter();
+  };
   fetch('/api/education')
     .then(response => { if(!response.ok) throw new Error('Education content unavailable'); return response.json(); })
     .then(data => {
-      const scholarships = Array.isArray(data.scholarships) ? data.scholarships : [];
-      if(!scholarships.length) return;
+      scholarshipPosts = Array.isArray(data.scholarships) ? data.scholarships : [];
+      if (!scholarshipPosts.length) return;
       section.querySelectorAll('[data-offer-type="scholarship"]:not([data-live-offer])').forEach(card => card.remove());
-      scholarships.forEach((post, index) => {
-        const article = document.createElement('article');
-        article.className = 'edu-offer-card edu-offer-card-live';
-        article.dataset.offerType = 'scholarship';
-        article.dataset.liveOffer = 'true';
-        article.tabIndex = 0;
-        article.setAttribute('role', 'link');
-        article.setAttribute('aria-label', 'Open ' + (post.title_en || 'scholarship'));
-        article.addEventListener('click', () => openScholarship(post));
-        article.addEventListener('keydown', event => {
-          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post); }
-        });
-        const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^(https?:\/\/|\/api\/media\?pathname=)/i.test(String(value || '')));
-        const image = coverImage
-          ? `<img class="edu-offer-image" src="${escapeHtml(coverImage)}" alt="${escapeHtml(post.title_en || 'Scholarship')}" loading="lazy">`
-          : `<span class="edu-offer-media-label">FUND</span>`;
-        article.innerHTML = `
-          <div class="edu-offer-media">${image}<span class="edu-offer-mark">${String(index + 1).padStart(2, '0')}</span></div>
-          <div class="edu-offer-body">
-            <p class="edu-offer-kicker">Scholarship · ${escapeHtml(post.funding_type || 'Opportunity')}</p>
-            <h3>${escapeHtml(post.title_en || 'Scholarship opportunity')}</h3>
-            <p>${escapeHtml(post.description_en || 'Explore this scholarship opportunity and application details.')}</p>
-            <div class="edu-offer-meta"><span>${escapeHtml(post.study_level || 'All levels')}</span><span>${escapeHtml(post.status === 'closed' ? 'Closed' : post.status === 'upcoming' ? 'Coming soon' : 'Open now')}</span></div>
-            <a class="edu-offer-link" href="#scholarship-${escapeHtml(post.slug || index)}">Learn more <span>→</span></a>
-          </div>`;
-        const actionLink = article.querySelector('.edu-offer-link');
-        if (actionLink) actionLink.addEventListener('click', event => {
-          event.preventDefault();
-          event.stopPropagation();
-          openScholarship(post);
-        });
-        grid.appendChild(article);
-      });
-      applyLiveFilter();
+      renderScholarships();
     })
     .catch(error => console.warn('[v0] Live education posts unavailable:', error.message));
 })();
@@ -3797,13 +3834,13 @@
     <h2 id="scholarship-dialog-title"></h2>
     <p id="scholarship-dialog-description"></p>
     <section class="scholarship-dialog-requirements" id="scholarship-dialog-requirements-wrap" hidden>
-      <h3>Requirements and guidance</h3>
+      <h3 id="scholarship-dialog-requirements-title">Requirements and guidance</h3>
       <p id="scholarship-dialog-requirements"></p>
     </section>
     <dl class="scholarship-dialog-meta">
-      <div><dt>Provider</dt><dd id="scholarship-dialog-provider"></dd></div>
-      <div><dt>Study level</dt><dd id="scholarship-dialog-level"></dd></div>
-      <div><dt>Deadline</dt><dd id="scholarship-dialog-deadline"></dd></div>
+      <div><dt id="scholarship-dialog-provider-label">Provider</dt><dd id="scholarship-dialog-provider"></dd></div>
+      <div><dt id="scholarship-dialog-level-label">Study level</dt><dd id="scholarship-dialog-level"></dd></div>
+      <div><dt id="scholarship-dialog-deadline-label">Deadline</dt><dd id="scholarship-dialog-deadline"></dd></div>
     </dl>
     <a class="btn btn-primary" id="scholarship-dialog-apply" href="#contact">Read more / Apply <span>→</span></a>
   </div>
