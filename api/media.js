@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { Readable } = require('stream');
 const { get, put } = require('@vercel/blob');
 
 function isAuthorized(req) {
@@ -20,7 +21,9 @@ module.exports = async function handler(req, res) {
       if (!result) return res.status(404).end();
       res.setHeader('Content-Type', result.blob.contentType || 'application/octet-stream');
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-      return result.stream.pipe(res);
+      const imageStream = Readable.fromWeb(result.stream);
+      if (typeof res.stream === 'function') return res.stream(imageStream);
+      return imageStream.pipe(res);
     } catch (error) {
       console.error('[v0] Media delivery failed:', error.message);
       return res.status(404).end();
