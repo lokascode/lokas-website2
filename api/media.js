@@ -44,12 +44,12 @@ module.exports = async function handler(req, res) {
 
   try {
     const blob = await put(`site-media/${Date.now()}-${safeName}`, buffer, {
-      access: 'public',
+      access: 'private',
       contentType: contentType || 'application/octet-stream',
       addRandomSuffix: false,
     });
     return res.status(200).json({
-      url: blob.url,
+      url: `/api/media?pathname=${encodeURIComponent(blob.pathname)}`,
       pathname: blob.pathname,
       filename: safeName,
     });
