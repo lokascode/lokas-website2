@@ -907,23 +907,42 @@
  .edu-offer-card-live .edu-offer-kicker{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#777;margin:0 0 14px;}
  .edu-offer-card-live{cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;}
  .edu-offer-card-live:hover,.edu-offer-card-live:focus-visible{transform:translateY(-4px);box-shadow:0 18px 42px rgba(0,0,0,.1);outline:none;}
- .scholarship-dialog{width:100vw;height:100vh;max-width:none;max-height:none;padding:0;border:0;border-radius:0;overflow:auto;background:var(--white);color:var(--black);box-shadow:none;grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
- .scholarship-dialog[open]{display:grid;}
+ .scholarship-dialog{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow:auto;overscroll-behavior:contain;background:var(--bg);color:var(--text);box-shadow:none;}
+ .scholarship-dialog[open]{display:block;}
+ .scholarship-dialog-toolbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px clamp(16px,4vw,48px);border-bottom:1px solid var(--line-soft);background:var(--bg);}
+ .scholarship-back{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0;border:0;background:transparent;color:var(--text);font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;}
+ .scholarship-back-arrow{font-size:20px;line-height:1;}
  .scholarship-dialog::backdrop{background:rgba(0,0,0,.58);backdrop-filter:blur(4px);}
- .scholarship-dialog-media{min-height:420px;background:var(--lokas-education-orange);overflow:hidden;}
- .scholarship-dialog-cover{display:block;width:100%;height:100%;min-height:420px;object-fit:cover;}
- .scholarship-dialog-content{padding:48px 42px 42px;display:flex;flex-direction:column;justify-content:center;}
- .scholarship-dialog-content h2{font-size:clamp(30px,4vw,52px);line-height:.98;letter-spacing:-.06em;margin:0 0 18px;}
- .scholarship-dialog-content>p:not(.edu-offer-kicker){color:var(--text-soft);line-height:1.65;margin:0 0 24px;}
- .scholarship-dialog-requirements{border-top:1px solid var(--line-soft);margin:0 0 24px;padding-top:18px;}
- .scholarship-dialog-requirements h3{font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin:0 0 8px;}
- .scholarship-dialog-requirements p{color:var(--text-soft);line-height:1.6;white-space:pre-line;margin:0;}
- .scholarship-dialog-close{position:absolute;right:16px;top:14px;z-index:2;width:36px;height:36px;border:1px solid rgba(0,0,0,.18);border-radius:50%;background:rgba(255,255,255,.86);font-size:24px;line-height:1;cursor:pointer;}
- .scholarship-dialog-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 28px;}
- .scholarship-dialog-meta div{border-top:1px solid var(--line-soft);padding-top:10px;}
- .scholarship-dialog-meta dt{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-soft);}
- .scholarship-dialog-meta dd{margin:5px 0 0;font-weight:600;}
- @media(max-width:700px){.scholarship-dialog[open]{display:block}.scholarship-dialog-media{min-height:260px}.scholarship-dialog-cover{min-height:260px}.scholarship-dialog-content{padding:30px 24px 28px}.scholarship-dialog-meta{grid-template-columns:1fr 1fr;}}
+ .scholarship-dialog-media{position:relative;height:clamp(210px,34vh,360px);background:var(--lokas-education-orange);overflow:hidden;}
+ .scholarship-dialog-cover{display:block;width:100%;height:100%;object-fit:cover;}
+ .scholarship-dialog-content{box-sizing:border-box;width:min(100%,1100px);margin:0 auto;padding:clamp(28px,5vw,56px) clamp(20px,6vw,72px) 64px;display:flex;flex-direction:column;align-items:flex-start;}
+ .scholarship-dialog-intro{width:100%;}
+ .scholarship-dialog-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,300px);align-items:start;gap:28px;width:100%;}
+ .scholarship-dialog-main{min-width:0;}
+ .scholarship-dialog-sidebar{position:sticky;top:84px;border:1px solid var(--line-soft);border-radius:var(--radius-md);background:var(--bg-soft);padding:22px;}
+ .scholarship-dialog-sidebar h3{margin:0 0 8px;font-size:16px;}
+ .scholarship-dialog-sidebar p{margin:0 0 18px;color:var(--text-soft);font-size:14px;line-height:1.6;}
+ .scholarship-dialog-sidebar .btn-primary{width:100%;justify-content:center;}
+ .scholarship-dialog-content .edu-offer-kicker{margin:0 0 14px;color:var(--text-soft);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+ .scholarship-dialog-media[hidden],.scholarship-dialog-cover[hidden]{display:none;}
+ .scholarship-dialog-content h2{max-width:18ch;font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.045em;margin:0 0 18px;text-wrap:balance;}
+ .scholarship-dialog-content>p:not(.edu-offer-kicker){max-width:70ch;color:var(--text-soft);font-size:16px;line-height:1.75;margin:0 0 30px;}
+ .scholarship-dialog-requirements{width:100%;box-sizing:border-box;border:1px solid var(--line-soft);border-radius:var(--radius-md);background:var(--bg-soft);margin:0 0 28px;padding:20px 22px;}
+ .scholarship-dialog-requirements h3{font-size:13px;font-weight:700;letter-spacing:.02em;margin:0 0 10px;}
+ .scholarship-dialog-requirements p{color:var(--text-soft);line-height:1.75;white-space:pre-line;margin:0;}
+ .scholarship-dialog-close{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;padding:0;border:1px solid var(--line-soft);border-radius:50%;background:var(--bg);color:var(--text);font-size:24px;line-height:1;cursor:pointer;}
+ .scholarship-dialog-meta{width:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 30px;}
+ .scholarship-dialog-meta div{background:var(--bg-soft);}
+ .scholarship-dialog-meta div{min-width:0;border:1px solid var(--line-soft);border-radius:var(--radius-sm);padding:14px 16px;}
+ .scholarship-dialog-meta dt{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-soft);}
+ .scholarship-dialog-meta dd{margin:6px 0 0;font-size:15px;font-weight:600;overflow-wrap:anywhere;}
+ .scholarship-dialog-content .btn-primary{align-self:flex-start;min-height:48px;padding-inline:24px;}
+ html[dir="rtl"] .scholarship-dialog-content{align-items:stretch;text-align:right;}
+ html[dir="rtl"] .scholarship-dialog-content h2{letter-spacing:0;line-height:1.3;}
+ html[dir="rtl"] .scholarship-dialog-content .btn-primary{align-self:flex-start;}
+ @media(max-width:760px){.scholarship-dialog-body{grid-template-columns:1fr}.scholarship-dialog-sidebar{position:static}}
+ @media(max-width:700px){.scholarship-dialog-media{height:28vh;min-height:200px}.scholarship-dialog-content{padding:30px 20px 44px}.scholarship-dialog-meta{grid-template-columns:repeat(2,minmax(0,1fr))}.scholarship-dialog-requirements{padding:18px}.scholarship-dialog-close{flex-basis:40px;width:40px;height:40px}.scholarship-dialog-toolbar{padding:8px 16px}}
+ @media(max-width:420px){.scholarship-dialog-meta{grid-template-columns:1fr}.scholarship-back{font-size:13px}}
  .edu-offer-body{display:flex;flex:1;flex-direction:column;padding:24px 24px 22px;}
   .edu-offer-pill{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:var(--card-hover);color:var(--text-soft);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
   .edu-offer-card h3{margin-top:18px;font-family:'Space Grotesk',sans-serif;font-size:23px;line-height:1.15;letter-spacing:-.035em;}
@@ -3117,7 +3136,7 @@
       "who.t6":"العلامات الشخصية","who.t7":"الجامعات","who.t8":"الشركات المحلية","who.t9":"العلامات الفاخرة والراقية","who.t10":"الطلاب","who.t11":"الخريجون","who.t12":"طلاب الدراسة الدولية المستقبليون",
       "svc.mkt.eyebrow":"خدمات التسويق","svc.mkt.title":"من هنا تبدأ العلامات التجارية.",
       "svc.mkt.1.title":"إدارة وسائل التواصل الاجتماعي","svc.mkt.1.desc":"بناء وإدارة حضور رقمي متسق.",
-      "svc.mkt.2.title":"التسويق الرقمي","svc.mkt.2.desc":"الوصول إلى الجمهور المناسب عبر حملات رقمية استراتيجية.",
+      "svc.mkt.2.title":"التسويق الرقمي","svc.mkt.2.desc":"الوصول إلى ا��جمهور المناسب عبر حملات رقمية استراتيجية.",
       "svc.mkt.3.title":"العلامة التجارية","svc.mkt.3.desc":"صناعة هويات مميزة يتذكرها الناس ويتعرفون عليها.",
       "svc.mkt.4.title":"صناعة المحتوى","svc.mkt.4.desc":"تصوير فوتوغرافي وفيديو وتصميم وموشن ومحتوى إبداعي.",
       "svc.mkt.5.title":"الحملات والفعاليات","svc.mkt.5.desc":"صناعة تجارب وحملات تجذب الانتباه وتزيد التفاعل.",
@@ -3166,7 +3185,7 @@
       "contact.eyebrow":"تواصل معنا","contact.title":"أخبرنا بما تبنيه.","contact.reach":"تواصل معنا","contact.location":"دهوك، العراق",
       "form.name":"الاسم","form.email":"البريد الإلكتروني","form.phone":"رقم الهاتف","form.org":"الشركة / المؤسسة","form.service":"الخدمة",
       "form.group.marketing":"التسويق","form.group.education":"التعليم",
-      "form.opt.social":"إدارة وسائل التواصل الاجتما����ي","form.opt.digital":"التسويق الرقمي","form.opt.branding":"العلامة التجارية","form.opt.content":"��ناعة المحتوى",
+      "form.opt.social":"إدارة وسائل التواصل ال��جتما����ي","form.opt.digital":"التسويق الرقمي","form.opt.branding":"العلامة التجارية","form.opt.content":"��ناعة المحتوى",
       "form.opt.scholarship":"منحة در��سية","form.opt.uni":"عرض جامعي","form.opt.training":"تدريب","form.opt.consulting":"است��ارة","form.opt.event":"فعالية",
       "form.message":"الرسالة","form.submit":"إرسال الطلب","form.response":"شكرًا لك — تم استلام طلبك. سنتواصل معك قريبًا.",
       "footer.tag":"تسويق | علامة تجارية | رقمي | تعليم","footer.navigate":"روابط","footer.social":"تواصل",
@@ -3568,6 +3587,7 @@
   const formatDate = value => value ? new Date(value).toLocaleDateString(getLanguage() === 'ar' ? 'ar' : 'en', {month:'short', day:'numeric', year:'numeric'}) : (getLanguage() === 'ar' ? 'التقديم مفتوح' : 'Open now');
   let scholarshipPosts = [];
   let activeScholarship = null;
+  let lastScholarshipTrigger = null;
   const applyLiveFilter = () => {
     const active = section.querySelector('[data-offer-tab].is-active')?.dataset.offerTab || 'all';
     grid.querySelectorAll('[data-live-offer]').forEach(card => {
@@ -3579,9 +3599,13 @@
     const language = getLanguage();
     const arabic = language === 'ar';
     const copy = arabic
-      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', requirements: 'المتطلبات والإرشادات', provider: 'الجهة المقدمة', level: 'المستوى الدراسي', deadline: 'الموعد النهائي', apply: 'اقرأ المزيد / قدّم', cover: 'صورة المنحة' }
-      : { scholarship: 'Scholarship', opportunity: 'Opportunity', details: 'Explore this scholarship opportunity and application details.', requirements: 'Requirements and guidance', provider: 'Provider', level: 'Study level', deadline: 'Deadline', apply: 'Read more / Apply', cover: 'Scholarship cover' };
+      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', requirements: 'المتطلبات والإرشادات', provider: 'الجهة المقدمة', level: 'المستوى الدراسي', deadline: 'الموعد النهائي', status: 'الحالة', open: 'التقديم مفتوح', upcoming: 'قريباً', closed: 'مغلقة', apply: 'قدّم الآن', contact: 'تواصل معنا للاستفسار', cover: 'صورة المنحة', back: 'العودة إلى المنح', nextTitle: 'الخطوة التالية', nextDescription: 'راجع المتطلبات، ثم تابع إلى التقديم أو تواصل مع فريقنا للحصول على الإرشاد.' }
+      : { scholarship: 'Scholarship', opportunity: 'Opportunity', details: 'Explore this scholarship opportunity and application details.', requirements: 'Requirements and guidance', provider: 'Provider', level: 'Study level', deadline: 'Deadline', status: 'Status', open: 'Open now', upcoming: 'Coming soon', closed: 'Closed', apply: 'Apply now', contact: 'Contact us for guidance', cover: 'Scholarship cover', back: 'Back to scholarships', nextTitle: 'Next steps', nextDescription: 'Review the requirements, then continue to the application or contact our team for guidance.' };
     const title = localized(post, 'title', arabic ? 'فرصة منحة دراسية' : 'Scholarship opportunity');
+    document.getElementById('scholarship-dialog-back-label').textContent = copy.back;
+    document.getElementById('scholarship-dialog-back-arrow').textContent = arabic ? '→' : '←';
+    document.getElementById('scholarship-dialog-next-title').textContent = copy.nextTitle;
+    document.getElementById('scholarship-dialog-next-description').textContent = copy.nextDescription;
     document.getElementById('scholarship-dialog-title').textContent = title;
     document.getElementById('scholarship-dialog-kicker').textContent = copy.scholarship + ' · ' + (post['funding_type_' + language] || post.funding_type || copy.opportunity);
     document.getElementById('scholarship-dialog-description').textContent = localized(post, 'description', copy.details);
@@ -3593,6 +3617,9 @@
     document.getElementById('scholarship-dialog-provider-label').textContent = copy.provider;
     document.getElementById('scholarship-dialog-level-label').textContent = copy.level;
     document.getElementById('scholarship-dialog-deadline-label').textContent = copy.deadline;
+    document.getElementById('scholarship-dialog-status-label').textContent = copy.status;
+    const status = post.status === 'closed' ? copy.closed : post.status === 'upcoming' ? copy.upcoming : copy.open;
+    document.getElementById('scholarship-dialog-status').textContent = status;
     document.getElementById('scholarship-dialog-provider').textContent = post['provider_' + language] || post.provider || '—';
     document.getElementById('scholarship-dialog-level').textContent = post['study_level_' + language] || post.study_level || (arabic ? 'جميع المستويات' : 'All levels');
     document.getElementById('scholarship-dialog-deadline').textContent = formatDate(post.deadline || null);
@@ -3601,18 +3628,21 @@
     cover.src = coverImage || '';
     cover.alt = title + ' · ' + copy.cover;
     cover.hidden = !coverImage;
+    document.getElementById('scholarship-dialog-media').hidden = !coverImage;
     const apply = document.getElementById('scholarship-dialog-apply');
-    apply.href = post.application_url || '#contact';
-    apply.target = post.application_url ? '_blank' : '';
-    apply.rel = post.application_url ? 'noopener noreferrer' : '';
-    apply.firstChild.textContent = copy.apply + ' ';
+    const canApply = Boolean(post.application_url && post.status !== 'closed');
+    apply.href = canApply ? post.application_url : '#contact';
+    apply.target = canApply ? '_blank' : '';
+    apply.rel = canApply ? 'noopener noreferrer' : '';
+    apply.firstChild.textContent = (canApply ? copy.apply : copy.contact) + ' ';
     const close = document.querySelector('[data-close-scholarship]');
     if (close) close.setAttribute('aria-label', arabic ? 'إغلاق تفاصيل المنحة' : 'Close scholarship details');
   };
-  const openScholarship = post => {
+  const openScholarship = (post, trigger) => {
     const dialog = getScholarshipDialog();
     if (!dialog) return;
     activeScholarship = post;
+    if (trigger) lastScholarshipTrigger = trigger;
     updateScholarshipDialog(post);
     if (!dialog.open) dialog.showModal();
   };
@@ -3623,6 +3653,11 @@
   document.addEventListener('DOMContentLoaded', () => {
     const dialog = getScholarshipDialog();
     document.querySelector('[data-close-scholarship]')?.addEventListener('click', () => dialog?.close());
+    document.querySelector('[data-return-scholarship]')?.addEventListener('click', () => dialog?.close('back-to-scholarships'));
+    dialog?.addEventListener('close', () => {
+      activeScholarship = null;
+      if (lastScholarshipTrigger?.isConnected) lastScholarshipTrigger.focus({ preventScroll: true });
+    });
     dialog?.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   });
   section.querySelectorAll('[data-offer-tab]').forEach(button => button.addEventListener('click', () => setTimeout(applyLiveFilter, 0)));
@@ -3643,9 +3678,9 @@
       article.tabIndex = 0;
       article.setAttribute('role', 'link');
       article.setAttribute('aria-label', (arabic ? 'فتح ' : 'Open ') + title);
-      article.addEventListener('click', () => openScholarship(post));
+      article.addEventListener('click', () => openScholarship(post, article));
       article.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post); }
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openScholarship(post, article); }
       });
       const coverImage = [post.image_url, post.cover_image_url, post.photo_url].find(value => /^(https?:\/\/|\/api\/media\?pathname=)/i.test(String(value || '')));
       const image = coverImage
@@ -3665,7 +3700,7 @@
       if (actionLink) actionLink.addEventListener('click', event => {
         event.preventDefault();
         event.stopPropagation();
-        openScholarship(post);
+        openScholarship(post, article);
       });
       grid.appendChild(article);
     });
@@ -3827,22 +3862,39 @@
 
 </script>
 <dialog class="scholarship-dialog" id="scholarship-dialog" aria-labelledby="scholarship-dialog-title">
-  <button class="scholarship-dialog-close" type="button" data-close-scholarship aria-label="Close scholarship details">×</button>
-    <div class="scholarship-dialog-media" id="scholarship-dialog-media"><img class="scholarship-dialog-cover" id="scholarship-dialog-cover" alt=""></div>
+  <header class="scholarship-dialog-toolbar">
+    <button class="scholarship-back" type="button" data-return-scholarship>
+      <span class="scholarship-back-arrow" id="scholarship-dialog-back-arrow" aria-hidden="true">←</span>
+      <span id="scholarship-dialog-back-label">Back to scholarships</span>
+    </button>
+    <button class="scholarship-dialog-close" type="button" data-close-scholarship aria-label="Close scholarship details">×</button>
+  </header>
+  <div class="scholarship-dialog-media" id="scholarship-dialog-media"><img class="scholarship-dialog-cover" id="scholarship-dialog-cover" alt=""></div>
   <div class="scholarship-dialog-content">
-    <p class="edu-offer-kicker" id="scholarship-dialog-kicker">Scholarship opportunity</p>
-    <h2 id="scholarship-dialog-title"></h2>
-    <p id="scholarship-dialog-description"></p>
-    <section class="scholarship-dialog-requirements" id="scholarship-dialog-requirements-wrap" hidden>
-      <h3 id="scholarship-dialog-requirements-title">Requirements and guidance</h3>
-      <p id="scholarship-dialog-requirements"></p>
-    </section>
+    <div class="scholarship-dialog-intro">
+      <p class="edu-offer-kicker" id="scholarship-dialog-kicker">Scholarship opportunity</p>
+      <h2 id="scholarship-dialog-title"></h2>
+      <p id="scholarship-dialog-description"></p>
+    </div>
     <dl class="scholarship-dialog-meta">
       <div><dt id="scholarship-dialog-provider-label">Provider</dt><dd id="scholarship-dialog-provider"></dd></div>
       <div><dt id="scholarship-dialog-level-label">Study level</dt><dd id="scholarship-dialog-level"></dd></div>
       <div><dt id="scholarship-dialog-deadline-label">Deadline</dt><dd id="scholarship-dialog-deadline"></dd></div>
+      <div><dt id="scholarship-dialog-status-label">Status</dt><dd id="scholarship-dialog-status"></dd></div>
     </dl>
-    <a class="btn btn-primary" id="scholarship-dialog-apply" href="#contact">Read more / Apply <span>→</span></a>
+    <div class="scholarship-dialog-body">
+      <div class="scholarship-dialog-main">
+        <section class="scholarship-dialog-requirements" id="scholarship-dialog-requirements-wrap" hidden>
+          <h3 id="scholarship-dialog-requirements-title">Requirements and guidance</h3>
+          <p id="scholarship-dialog-requirements"></p>
+        </section>
+      </div>
+      <aside class="scholarship-dialog-sidebar">
+        <h3 id="scholarship-dialog-next-title">Next steps</h3>
+        <p id="scholarship-dialog-next-description">Review the requirements, then continue to the application or contact our team for guidance.</p>
+        <a class="btn btn-primary" id="scholarship-dialog-apply" href="#contact">Contact us for guidance <span>→</span></a>
+      </aside>
+    </div>
   </div>
 </dialog>
 </body>
