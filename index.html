@@ -127,28 +127,11 @@
     line-height:1.55;
     -webkit-font-smoothing:antialiased;
     transition:background-color 300ms ease, color 300ms ease;
-    cursor:none;
   }
-  @media (hover:none){ body{cursor:auto;} }
-
-  /* ================= CUSTOM CURSOR ================= */
-  .cur{
-    position:fixed;top:0;left:0;
-    width:9px;height:9px;
-    background:#ffffff;
-    border-radius:50%;
-    pointer-events:none;
-    z-index:9999;
-    transform:translate(-50%,-50%);
-    mix-blend-mode:difference;
-  }
-  .cur-ring{display:none !important;}
-  @media (hover:none){ .cur, .cur-ring{display:none;} }
 
   a{color:inherit;text-decoration:none;}
   ul{list-style:none;}
-  button{font-family:inherit;background:none;border:none;color:inherit;cursor:none;}
-  @media (hover:none){ button{cursor:pointer;} }
+  button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer;}
   img{max-width:100%;display:block;}
 
   /* ================= ICONS ================= */
@@ -1182,7 +1165,7 @@
   .test-dots{margin-top:36px;display:flex;justify-content:center;gap:10px;}
   .tdot{
     width:6px;height:6px;border-radius:50%;background:var(--gray-light);
-    transition:background .3s ease;cursor:none;
+    transition:background .3s ease;cursor:pointer;
     position:relative;
   }
   .tdot::before{
@@ -1192,7 +1175,6 @@
     width:44px;height:44px;
     transform:translate(-50%,-50%);
   }
-  @media (hover:none){ .tdot{cursor:pointer;} }
   .tdot.active{background:var(--accent);}
 
   /* ================= ABOUT ================= */
@@ -1874,8 +1856,6 @@
   </defs>
 </svg>
 
-<div class="cur" id="cur"></div>
-<div class="cur-ring" id="cur-ring"></div>
 
 <div id="boot" aria-hidden="true">
   <div class="boot-lines" id="boot-lines">
@@ -2874,25 +2854,6 @@
 </footer>
 
 <script>
-/* ================= CUSTOM CURSOR ================= */
-(function(){
-  const dot = document.getElementById('cur');
-  if(!dot) return;
-  if(window.matchMedia('(hover: none)').matches) return;
-
-  window.addEventListener('mousemove', function(e){
-    dot.style.left = e.clientX + 'px';
-    dot.style.top = e.clientY + 'px';
-  });
-
-  document.addEventListener('mouseleave', function(){
-    dot.style.opacity = '0';
-  });
-  document.addEventListener('mouseenter', function(){
-    dot.style.opacity = '1';
-  });
-})();
-
 /* ================= THEME + LANGUAGE ENGINE ================= */
 (function(){
   const root = document.documentElement;
@@ -3129,7 +3090,7 @@
       "why.1.title":"تفكير إبداعي","why.1.desc":"نتحدى الأفكار التقليدية ونبحث عن إمكانيات أفضل.",
       "why.2.title":"نهج استراتيجي","why.2.desc":"كل قرار إبداعي يبدأ بهدف واضح.",
       "why.3.title":"الرقمية أولاً","why.3.desc":"نستخدم أحدث المنصات والتقنيات والأدوات لمساعدتك على البقاء في الصدارة.",
-      "why.4.title":"التركيز على الإنسان","why.4.desc":"سواء ك��ت شركة أو طالبًا، نركز على الأشخاص الحقيقيين والنتائج الحقيقية.",
+      "why.4.title":"التركيز على الإنسان","why.4.desc":"سواء ك��ت شركة أو طالبًا، نركز على الأشخاص الحق��قيين والنتائج الحقيقية.",
       "why.5.title":"مبني للنمو","why.5.desc":"هدفنا ليس فقط أن يبدو الأمر جيدًا، بل أن ينجح فعلًا.",
       "who.eyebrow":"من نعمل معهم","who.title":"أفراد طموحون. مؤسسات طموحة.","who.desc":"نعمل مع الأفراد والمؤسسات الطموحة المستعدة للمضي قدمًا.",
       "who.t1":"الشركات الناشئة","who.t2":"الشركات الصغيرة","who.t3":"الشركات الراسخة","who.t4":"المطاعم والمقاهي","who.t5":"شركات العقارات",
