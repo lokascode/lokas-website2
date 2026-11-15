@@ -415,7 +415,7 @@
   html[data-theme="dark"] .nav-drop{
     box-shadow:0 18px 48px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.2);
   }
-  @media (max-width:900px){
+  @media (max-width:1240px){
     .nav-drop{display:none;}
   }
   .nav-cta{
@@ -495,15 +495,15 @@
     margin-bottom:16px;
     border-bottom:1px solid var(--line-soft);
   }
-  @media (min-width:901px){.mobile-nav-utils{display:none;}}
-  @media (max-width:900px){.nav-utils{display:none;}}
-  @media (max-width:900px){.nav-links{display:none;}}
+  @media (min-width:1241px){.mobile-nav-utils{display:none;}}
+  @media (max-width:1240px){.nav-utils{display:none;}}
+  @media (max-width:1240px){.nav-links{display:none;}}
   .nav-burger{display:none;font-size:13px;padding:12px 14px;min-height:44px;align-items:center;}
-  @media (max-width:900px){.nav-burger{display:flex;}}
+  @media (max-width:1240px){.nav-burger{display:flex;}}
 
   #mobile-nav{
-    position:fixed;inset:0;background:var(--bg);z-index:190;
-    display:flex;flex-direction:column;justify-content:center;padding:0 32px;
+    position:fixed;inset:0;background:var(--bg);z-index:190;overflow-y:auto;
+    display:flex;flex-direction:column;justify-content:flex-start;padding:100px 32px 32px;
     transform:translateY(-100%);transition:transform 500ms var(--ease-out);
   }
   #mobile-nav.open{transform:translateY(0);}
@@ -520,6 +520,10 @@
   #mobile-nav.open a:nth-child(5){transition-delay:230ms;}
   #mobile-nav.open a:nth-child(6){transition-delay:280ms;}
   #mobile-nav.open a:nth-child(7){transition-delay:330ms;}
+  .mobile-furas-menu{border-bottom:1px solid var(--line-soft);}
+  .mobile-furas-menu summary{list-style:none;padding:12px 0;color:var(--text-soft);font-size:14px;font-weight:600;cursor:pointer;}
+  .mobile-furas-menu summary::-webkit-details-marker{display:none;}
+  #mobile-nav .mobile-furas-menu a{display:block;padding:9px 8px;border:0;font-family:'Inter',sans-serif;font-size:14px;opacity:1;transform:none;}
   @media (prefers-reduced-motion: reduce){
     #mobile-nav a{transition-delay:0ms !important;transform:none;}
   }
@@ -1479,6 +1483,43 @@
   body.page-mode-about .page-about,
   body.page-mode-contact .page-contact{display:block;}
   .page-top-pad{padding-top:88px;}
+  body.page-mode-furas-1 [data-page="furas-detail"],body.page-mode-furas-2 [data-page="furas-detail"],body.page-mode-furas-3 [data-page="furas-detail"],body.page-mode-furas-4 [data-page="furas-detail"],body.page-mode-furas-5 [data-page="furas-detail"],body.page-mode-furas-6 [data-page="furas-detail"]{display:block !important;}
+  .furas-detail-page{min-height:100vh;padding:34px clamp(20px,5vw,64px) 96px;background:var(--bg);}
+  .furas-detail-inner{max-width:1180px;margin:0 auto;}
+  .furas-back-link{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin-bottom:48px;color:var(--text-soft);font-size:13px;font-weight:600;transition:color 180ms ease;}
+  .furas-back-link:hover{color:var(--text);}
+  .furas-back-arrow{font-size:18px;line-height:1;}
+  html[dir="rtl"] .furas-back-arrow{transform:scaleX(-1);}
+  .furas-detail-heading{max-width:900px;margin-bottom:54px;}
+  .furas-detail-eyebrow{margin-bottom:20px;color:var(--gray);}
+  .furas-detail-heading h1{max-width:880px;font-family:'Nomixa','Space Grotesk',sans-serif;font-size:clamp(40px,7vw,82px);font-weight:500;line-height:1.04;letter-spacing:-.035em;text-wrap:balance;}
+  .furas-detail-heading p{max-width:720px;margin-top:22px;color:var(--text-soft);font-size:clamp(16px,1.6vw,19px);line-height:1.75;}
+  .furas-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.75fr);align-items:start;gap:clamp(24px,5vw,68px);}
+  .furas-detail-main{border-top:1px solid var(--line-soft);padding-top:26px;}
+  .furas-detail-main h2{max-width:620px;font-family:'Nomixa','Space Grotesk',sans-serif;font-size:clamp(28px,3.6vw,42px);font-weight:500;line-height:1.14;letter-spacing:-.02em;}
+  .furas-detail-main > p{max-width:650px;margin-top:14px;color:var(--text-soft);font-size:15px;line-height:1.75;}
+  .furas-detail-list{display:grid;gap:0;margin-top:30px;list-style:none;}
+  .furas-detail-list li{position:relative;padding:18px 0 18px 24px;border-top:1px solid var(--line-soft);color:var(--text);font-size:15px;line-height:1.65;}
+  .furas-detail-list li::before{position:absolute;top:29px;left:2px;width:7px;height:7px;border-radius:50%;background:var(--text);content:"";}
+  html[dir="rtl"] .furas-detail-list li{padding-right:24px;padding-left:0;}
+  html[dir="rtl"] .furas-detail-list li::before{right:2px;left:auto;}
+  .furas-detail-aside{padding:clamp(24px,3vw,34px);background:var(--text);color:var(--bg);border-radius:var(--radius-md);}
+  .furas-detail-aside .eyebrow{color:var(--bg);opacity:.65;}
+  .furas-detail-aside h2{margin-top:18px;font-family:'Nomixa','Space Grotesk',sans-serif;font-size:clamp(24px,3vw,34px);font-weight:500;line-height:1.16;letter-spacing:-.02em;}
+  html[dir="rtl"] .furas-detail-heading h1,html[dir="rtl"] .furas-detail-main h2,html[dir="rtl"] .furas-detail-aside h2{font-family:'Rabar_037','Tajawal','Nomixa','Space Grotesk',sans-serif;}
+  .furas-detail-aside > p{margin-top:12px;color:var(--bg);opacity:.76;font-size:14px;line-height:1.7;}
+  .furas-detail-steps{display:grid;gap:0;margin:26px 0;list-style:none;}
+  .furas-detail-steps li{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-top:1px solid color-mix(in srgb,var(--bg) 24%,transparent);}
+  .furas-step-number{flex:0 0 26px;font-family:'Space Grotesk',sans-serif;font-size:12px;opacity:.58;}
+  .furas-step-title{font-size:14px;font-weight:600;line-height:1.55;}
+  .furas-detail-aside .btn{width:100%;justify-content:center;border-color:var(--bg);background:var(--bg);color:var(--text);font-size:13px;}
+  .furas-detail-aside .btn:hover{opacity:.86;}
+  .furas-option-card{display:block;color:inherit;text-decoration:none;}
+  .furas-option-card .furas-card-link{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;color:var(--text-soft);font-size:12px;font-weight:600;}
+  .furas-option-card .furas-card-link span{font-size:17px;transition:transform 180ms ease;}
+  .furas-option-card:hover .furas-card-link span{transform:translateX(4px);}
+  @media(max-width:760px){.furas-detail-page{padding:24px 20px 64px}.furas-back-link{margin-bottom:34px}.furas-detail-heading{margin-bottom:38px}.furas-detail-grid{grid-template-columns:1fr;gap:28px}.furas-detail-aside{max-width:none}}
+  @media (prefers-reduced-motion: reduce){.furas-back-link,.furas-option-card .furas-card-link span{transition:none;}}
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important;transition:none !important;}
   }
@@ -1965,6 +2006,15 @@
   <a href="#education" data-i18n="nav.education">Education</a>
   <a href="#marketing" data-i18n="nav.marketing">Marketing</a>
   <a href="#furas" data-i18n="nav.furas">Furas</a>
+  <details class="mobile-furas-menu">
+    <summary data-i18n="furas.mobileMenu">Explore Furas categories</summary>
+    <a href="#furas-1" data-i18n="furas.1">Job Vacancies across various fields</a>
+    <a href="#furas-2" data-i18n="furas.2">Internships &amp; Training Programs</a>
+    <a href="#furas-3" data-i18n="furas.3">Opportunities for Students &amp; Graduates</a>
+    <a href="#furas-4" data-i18n="furas.4">Local &amp; International Jobs</a>
+    <a href="#furas-5" data-i18n="furas.5">Remote Work Opportunities</a>
+    <a href="#furas-6" data-i18n="furas.6">Professional Development Programs</a>
+  </details>
   <a href="#consulting" data-i18n="nav.consulting">Consulting</a>
   <a href="#work" data-i18n="nav.work">Work</a>
   <a href="#about" data-i18n="nav.about">About</a>
@@ -2305,35 +2355,81 @@
     <h3 class="display" style="font-size:22px;" data-i18n="furas.subhead">What You Can Find</h3>
   </div>
   <div class="edu-grid stagger six">
-    <div class="edu-card" id="furas-1">
+    <a class="edu-card furas-option-card" href="#furas-1">
       <svg class="icon card-icon"><use href="#icon-briefcase"/></svg>
       <div class="edu-num">01</div>
       <h3 class="display" data-i18n="furas.1">Job Vacancies across various fields</h3>
-    </div>
-    <div class="edu-card" id="furas-2">
+      <p data-i18n="furas.detail.1.short">Explore openings across industries, experience levels and career paths.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+    <a class="edu-card furas-option-card" href="#furas-2">
       <svg class="icon card-icon"><use href="#icon-bulb"/></svg>
       <div class="edu-num">02</div>
       <h3 class="display" data-i18n="furas.2">Internships &amp; Training Programs</h3>
-    </div>
-    <div class="edu-card" id="furas-3">
+      <p data-i18n="furas.detail.2.short">Develop practical skills through guided experience and structured training.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+    <a class="edu-card furas-option-card" href="#furas-3">
       <svg class="icon card-icon"><use href="#icon-cap"/></svg>
       <div class="edu-num">03</div>
       <h3 class="display" data-i18n="furas.3">Opportunities for Students &amp; Graduates</h3>
-    </div>
-    <div class="edu-card" id="furas-4">
+      <p data-i18n="furas.detail.3.short">Find an encouraging start to your career after study.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+    <a class="edu-card furas-option-card" href="#furas-4">
       <svg class="icon card-icon"><use href="#icon-globe"/></svg>
       <div class="edu-num">04</div>
       <h3 class="display" data-i18n="furas.4">Local &amp; International Jobs</h3>
-    </div>
-    <div class="edu-card" id="furas-5">
+      <p data-i18n="furas.detail.4.short">Discover roles across local communities and international markets.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+    <a class="edu-card furas-option-card" href="#furas-5">
       <svg class="icon card-icon"><use href="#icon-monitor"/></svg>
       <div class="edu-num">05</div>
       <h3 class="display" data-i18n="furas.5">Remote Work Opportunities</h3>
-    </div>
-    <div class="edu-card" id="furas-6">
+      <p data-i18n="furas.detail.5.short">Connect with distributed teams and flexible remote roles.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+    <a class="edu-card furas-option-card" href="#furas-6">
       <svg class="icon card-icon"><use href="#icon-trend"/></svg>
       <div class="edu-num">06</div>
       <h3 class="display" data-i18n="furas.6">Professional Development Programs</h3>
+      <p data-i18n="furas.detail.6.short">Build the skills, credentials and confidence for your next move.</p>
+      <span class="furas-card-link"><span data-i18n="furas.detail.open">Explore this path</span><span aria-hidden="true">→</span></span>
+    </a>
+  </div>
+</section>
+
+<section class="furas-detail-page" id="furas-detail-page" data-page="furas-detail" aria-labelledby="furas-detail-title">
+  <div class="furas-detail-inner">
+    <a class="furas-back-link" href="#furas"><span class="furas-back-arrow" aria-hidden="true">←</span><span data-i18n="furas.detail.back">All Furas opportunities</span></a>
+    <header class="furas-detail-heading">
+      <div class="eyebrow furas-detail-eyebrow" data-i18n="furas.detail.eyebrow">FURAS / OPPORTUNITY GUIDE</div>
+      <h1 class="display" id="furas-detail-title"></h1>
+      <p id="furas-detail-intro"></p>
+    </header>
+    <div class="furas-detail-grid">
+      <article class="furas-detail-main">
+        <div class="eyebrow" data-i18n="furas.detail.section-label">THE OPPORTUNITY</div>
+        <h2 class="display" data-i18n="furas.detail.section-title">What to explore</h2>
+        <p data-i18n="furas.detail.section-desc">Use this guide to understand the options, prepare with confidence and choose a next step that fits your goals.</p>
+        <ul class="furas-detail-list">
+          <li id="furas-detail-point-1"></li>
+          <li id="furas-detail-point-2"></li>
+          <li id="furas-detail-point-3"></li>
+        </ul>
+      </article>
+      <aside class="furas-detail-aside">
+        <div class="eyebrow" data-i18n="furas.detail.process-label">A CLEAR WAY FORWARD</div>
+        <h2 class="display" data-i18n="furas.detail.process-title">Make your next step count.</h2>
+        <p data-i18n="furas.detail.process-desc">A thoughtful plan helps you move from exploring options to making a confident application.</p>
+        <ol class="furas-detail-steps">
+          <li><span class="furas-step-number">01</span><span class="furas-step-title" data-i18n="furas.detail.step1">Define your direction</span></li>
+          <li><span class="furas-step-number">02</span><span class="furas-step-title" data-i18n="furas.detail.step2">Prepare your profile</span></li>
+          <li><span class="furas-step-number">03</span><span class="furas-step-title" data-i18n="furas.detail.step3">Take the next step</span></li>
+        </ol>
+        <a class="btn" href="#contact"><span data-i18n="furas.detail.cta">Talk to our team</span><span aria-hidden="true">→</span></a>
+      </aside>
     </div>
   </div>
 </section>
@@ -2991,6 +3087,14 @@
       "furas.4":"Local & International Jobs",
       "furas.5":"Remote Work Opportunities",
       "furas.6":"Professional Development Programs",
+      "furas.mobileMenu":"Explore Furas categories",
+      "furas.detail.back":"All Furas opportunities","furas.detail.eyebrow":"FURAS / OPPORTUNITY GUIDE","furas.detail.section-label":"THE OPPORTUNITY","furas.detail.section-title":"What to explore","furas.detail.section-desc":"Use this guide to understand the options, prepare with confidence and choose a next step that fits your goals.","furas.detail.process-label":"A CLEAR WAY FORWARD","furas.detail.process-title":"Make your next step count.","furas.detail.process-desc":"A thoughtful plan helps you move from exploring options to making a confident application.","furas.detail.step1":"Define your direction","furas.detail.step2":"Prepare your profile","furas.detail.step3":"Take the next step","furas.detail.cta":"Talk to our team",
+      "furas.detail.1.intro":"Find current openings across a range of industries, from early-career roles to experienced positions. Compare the essentials and focus on opportunities that support the career you want to build.","furas.detail.1.point1":"Search by role, industry, experience level and location.","furas.detail.1.point2":"Compare responsibilities, requirements and application deadlines.","furas.detail.1.point3":"Prioritize roles that align with your strengths and long-term goals.",
+      "furas.detail.2.intro":"Build real-world experience through internships and structured training. Discover ways to learn from experienced teams, strengthen practical skills and prepare for the workplace.","furas.detail.2.point1":"Explore placements that offer hands-on experience and mentorship.","furas.detail.2.point2":"Find programs that build professional and technical skills.","furas.detail.2.point3":"Review duration, eligibility and expected outcomes before applying.",
+      "furas.detail.3.intro":"Take a confident first step into your career. Explore opportunities designed for students and recent graduates as you turn your education, interests and potential into experience.","furas.detail.3.point1":"Look for entry-level roles that welcome early-career candidates.","furas.detail.3.point2":"Explore internships, graduate programs, fellowships and skills training.","furas.detail.3.point3":"Show your potential through projects, volunteering and relevant coursework.",
+      "furas.detail.4.intro":"Explore career possibilities in local and international markets. Understand what each location asks of candidates and find a direction that matches your experience and ambitions.","furas.detail.4.point1":"Discover roles with employers across local and international markets.","furas.detail.4.point2":"Review location, work authorization, language and relocation requirements.","furas.detail.4.point3":"Consider cultural context and regional hiring timelines as you plan.",
+      "furas.detail.5.intro":"Find remote roles that offer flexibility without compromising on meaningful work. Learn what distributed employers value and present yourself as a reliable, independent collaborator.","furas.detail.5.point1":"Explore flexible roles with remote-first and distributed teams.","furas.detail.5.point2":"Understand time-zone overlap, communication and equipment expectations.","furas.detail.5.point3":"Demonstrate how you organize your work and deliver outcomes independently.",
+      "furas.detail.6.intro":"Keep growing with development opportunities that strengthen your capabilities and open new career paths. Choose learning that supports your current work and the professional future you want.","furas.detail.6.point1":"Identify learning paths for professional, technical and leadership skills.","furas.detail.6.point2":"Explore workshops, certifications, coaching and continuing education.","furas.detail.6.point3":"Choose development goals that support your role or next career move.","furas.detail.open":"Explore this path","furas.detail.1.short":"Explore openings across industries, experience levels and career paths.","furas.detail.2.short":"Develop practical skills through guided experience and structured training.","furas.detail.3.short":"Find an encouraging start to your career after study.","furas.detail.4.short":"Discover roles across local communities and international markets.","furas.detail.5.short":"Connect with distributed teams and flexible remote roles.","furas.detail.6.short":"Build the skills, credentials and confidence for your next move.",
       "mktnext.eyebrow":"Marketing for the Next Generation","mktnext.title":"Your Audience Has Changed. Your Marketing Should Too.",
       "mktnext.desc":"People don't just buy products anymore. They follow stories. They connect with brands. They trust experiences. They remember creativity. LOKAS combines strategy, creativity, technology, and culture to create marketing that gets attention and builds meaningful connections.",
       "testi.eyebrow":"Testimonials",
@@ -3054,7 +3158,7 @@
       "intl.5.title":"المشاركة","intl.5.desc":"مساعدتك على الاستعدا�� للفعالية ورحلتك الدولية.","intl.cta":"استكشف الفعاليات الدولية",
       "whylokas.eyebrow":"لماذا لوكاس","whylokas.title":"رؤية واحدة. حلول متعددة.",
       "whylokas.desc":"التحديات التي يواجهها الأفراد والشركات نادرًا ما توجد بمعزل عن بعضها. لهذا تجمع لوكاس مجالات خبرة متعددة تحت رؤية واحدة — فكّر أبعد.",
-      "whylokas.1.title":"للطلاب","whylokas.1.desc":"استكشف فرص التعليم والفرص الدولية.",
+      "whylokas.1.title":"للطلاب","whylokas.1.desc":"استكشف فرص التعليم والفر�� الدولية.",
       "whylokas.2.title":"للمهنيين","whylokas.2.desc":"طوّر مهاراتك ووسّع فرصك.",
       "whylokas.3.title":"لرواد الأعمال","whylokas.3.desc":"حوّل الأفكار إلى أعمال منظمة.",
       "whylokas.4.title":"للمؤسسات","whylokas.4.desc":"طوّر الأفراد والأنظمة والأداء.",
@@ -3096,7 +3200,7 @@
       "who.t1":"الشركات الناشئة","who.t2":"الشركات الصغيرة","who.t3":"الشركات الراسخة","who.t4":"المطاعم والمقاهي","who.t5":"شركات العقارات",
       "who.t6":"العلامات الشخصية","who.t7":"الجامعات","who.t8":"الشركات المحلية","who.t9":"العلامات الفاخرة والراقية","who.t10":"الطلاب","who.t11":"الخريجون","who.t12":"طلاب الدراسة الدولية المستقبليون",
       "svc.mkt.eyebrow":"خدمات التسويق","svc.mkt.title":"من هنا تبدأ العلامات التجارية.",
-      "svc.mkt.1.title":"إدارة وسائل التواصل الاجتماعي","svc.mkt.1.desc":"بناء وإدارة حضور رقمي متسق.",
+      "svc.mkt.1.title":"إ��ارة وسائل التواصل الاجتماعي","svc.mkt.1.desc":"بناء وإدارة حضور رقمي متسق.",
       "svc.mkt.2.title":"التسويق الرقمي","svc.mkt.2.desc":"الوصول إلى ا��جمهور المناسب عبر حملات رقمية استراتيجية.",
       "svc.mkt.3.title":"العلامة التجارية","svc.mkt.3.desc":"صناعة هويات مميزة يتذكرها الناس ويتعرفون عليها.",
       "svc.mkt.4.title":"صناعة المحتوى","svc.mkt.4.desc":"تصوير فوتوغرافي وفيديو وتصميم وموشن ومحتوى إبداعي.",
@@ -3125,6 +3229,14 @@
       "furas.4":"وظائف محلية ودولية",
       "furas.5":"فرص العمل عن بُعد",
       "furas.6":"برامج التطوير المهني",
+      "furas.mobileMenu":"استكشف مجالات فرصة",
+      "furas.detail.back":"جميع فرص فرصة","furas.detail.eyebrow":"فرصة / دليل الفرص","furas.detail.section-label":"الفرصة","furas.detail.section-title":"ما الذي يمكنك استكشافه؟","furas.detail.section-desc":"استخدم هذا الدليل لفهم الخيارات والاستعداد بثقة واختيار خطوة تتوافق مع أهدافك.","furas.detail.process-label":"خطوات واضحة نحو الأمام","furas.detail.process-title":"اجعل خطوتك القادمة مؤثرة.","furas.detail.process-desc":"تساعدك الخطة المدروسة على الانتقال من استكشاف الخيارات إلى تقديم طلبك بثقة.","furas.detail.step1":"حدّد مسارك","furas.detail.step2":"جهّز ملفك المهني","furas.detail.step3":"ابدأ خطوتك القادمة","furas.detail.cta":"تواصل مع فريقنا",
+      "furas.detail.1.intro":"اكتشف الشواغر الحالية في مجالات متنوعة، من الوظائف المخصصة لبداية المسار المهني إلى الأدوار التي تتطلب خبرة. قارن التفاصيل الأساسية وركّز على الفرص التي تدعم مستقبلك المهني.","furas.detail.1.point1":"ابحث حسب المسمى الوظيفي والمجال والخبرة والموقع.","furas.detail.1.point2":"قارن المسؤوليات والمتطلبات والمواعيد النهائية للتقديم.","furas.detail.1.point3":"قدّم الأولوية للأدوار التي تناسب نقاط قوتك وأهدافك طويلة الأمد.",
+      "furas.detail.2.intro":"اكتسب خبرة عملية من خلال التدريب الداخلي والبرامج التدريبية المنظمة. تعرّف إلى فرص التعلم من فرق ذات خبرة، وتطوير المهارات العملية والاستعداد لبيئة العمل.","furas.detail.2.point1":"استكشف فرصًا تمنحك خبرة عملية وإرشادًا مهنيًا.","furas.detail.2.point2":"ابحث عن برامج تطوّر مهاراتك المهنية والتقنية.","furas.detail.2.point3":"راجع مدة البرنامج وشروط الأهلية والنتائج المتوقعة قبل التقديم.",
+      "furas.detail.3.intro":"ابدأ مسارك المهني بثقة. استكشف الفرص المصممة للطلاب والخريجين الجدد، وحوّل تعليمك واهتماماتك وإمكاناتك إلى خبرة عملية.","furas.detail.3.point1":"ابحث عن وظائف للمبتدئين ترحّب بأصحاب الخبرة المهنية المحدودة.","furas.detail.3.point2":"استكشف التدريب الداخلي وبرامج الخريجين والزمالات والتدريب المهاري.","furas.detail.3.point3":"أظهر إمكاناتك من خلال المشاريع والعمل التطوعي والمقررات ذات الصلة.",
+      "furas.detail.4.intro":"استكشف المسارات المهنية في الأسواق المحلية والدولية. تعرّف إلى متطلبات كل موقع وابحث عن المسار الذي ينسجم مع خبراتك وطموحاتك.","furas.detail.4.point1":"اكتشف وظائف لدى جهات عمل في الأسواق المحلية والدولية.","furas.detail.4.point2":"راجع متطلبات الموقع وتصاريح العمل واللغة والانتقال.","furas.detail.4.point3":"ضع السياق الثقافي ومواعيد التوظيف الإقليمية في الحسبان أثناء التخطيط.",
+      "furas.detail.5.intro":"ابحث عن وظائف عن بُعد تمنحك المرونة وتتيح لك إنجاز عمل ذي قيمة. تعرّف إلى ما تقدّره المؤسسات الموزعة جغرافيًا وقدّم نفسك كشريك موثوق ومستقل.","furas.detail.5.point1":"استكشف الوظائف المرنة لدى الفرق الموزعة والمؤسسات التي تعتمد العمل عن بُعد.","furas.detail.5.point2":"افهم متطلبات التداخل الزمني والتواصل والأدوات اللازمة.","furas.detail.5.point3":"وضّح كيف تنظّم عملك وتحقق النتائج باستقلالية.",
+      "furas.detail.6.intro":"واصل التطور من خلال فرص تعزز قدراتك وتفتح أمامك مسارات مهنية جديدة. اختر ما يدعم عملك الحالي والمستقبل المهني الذي تطمح إليه.","furas.detail.6.point1":"حدّد مسارات تعلم للمهارات المهنية والتقنية والقيادية.","furas.detail.6.point2":"استكشف ورش العمل والشهادات والتوجيه والتعليم المستمر.","furas.detail.6.point3":"اختر أهدافًا تطويرية تدعم دورك الحالي أو خطوتك المهنية القادمة.","furas.detail.open":"استكشف هذا المسار","furas.detail.1.short":"استكشف وظائف في مجالات ومستويات خبرة ومسارات مهنية متنوعة.","furas.detail.2.short":"طوّر مهارات عملية من خلال الخبرة الموجّهة والبرامج التدريبية.","furas.detail.3.short":"ابدأ مسارك المهني بعد الدراسة بخطوة واثقة.","furas.detail.4.short":"اكتشف وظائف في الأسواق المحلية والدولية.","furas.detail.5.short":"تواصل مع فرق موزعة جغرافيًا ووظائف مرنة عن بُعد.","furas.detail.6.short":"طوّر مهاراتك وخبراتك وثقتك استعدادًا لخطوتك القادمة.",
       "mktnext.eyebrow":"التسويق للجيل القادم","mktnext.title":"جمهورك تغيّر. وتسويقك يجب أن يتغيّر أيضًا.",
       "mktnext.desc":"الناس لم يعودوا يشترون المنتجات فقط. إنهم يتابعون القصص. يتواصلون مع العلامات التجارية. يثقون بالتجارب. يتذكرون الإبداع. تجمع لوكاس بين الاستراتيجية والإبداع والتكنولوجيا والثقافة لصنع تسويق يجذب الانتباه ويبني روابط ذات معنى.",
       "testi.eyebrow":"آراء العملاء",
@@ -3138,7 +3250,7 @@
       "faq.e1.q":"كيف يمكنني إيجاد منحة دراسية؟","faq.e1.a":"نساعدك في تحديد المنح الدراسية المناسبة ونرشدك خلال عملية التقديم بالكامل.",
       "faq.e2.q":"هل تساعدون في طلبات الالتحاق بالجامعات؟","faq.e2.a":"نعم، من اختيار الجامعات إلى تجهيز مستندات طلب الالتحاق.",
       "faq.e3.q":"هل يمكنكم مساعدتي في ا��دراسة بالخارج؟","faq.e3.a":"نعم، ندعم الطلاب في استكشاف فرص الدراسة بالخارج من البداية حتى النهاية.",
-      "faq.e4.q":"ما هي برامج التدريب التي تقدمونها؟","faq.e4.a":"��دريب عملي يركز على المسار المهني ومصمم حول احتياجات أكاديمية ومهنية حقيقية.",
+      "faq.e4.q":"ما هي برامج التدريب التي تقدمونها؟","faq.e4.a":"��دريب عملي يركز على المسار المهني ومصمم حول احتياجات أكاديمية ومهنية حقي��ية.",
       "faq.e5.q":"هل تنظمون فعاليات تعليمية؟","faq.e5.a":"نعم، نربط الطلاب والمهنيين بالجامعات والفرص المتاحة.",
       "faq.e6.q":"هل يمكنني الحصول على استشارة شخصية؟","faq.e6.a":"نعم، إرشاد فردي مبني على أهدافك واهتماماتك وخططك المستقبلية.",
       "finalcta.title":"لنبنِ<br>شيئًا أبعد.","finalcta.desc":"لديك فكرة؟ عمل تريد تنميته؟ علامة تجارية تحتاج اتجاهًا جديدًا؟ أو مستقبل تريد استكشافه؟ لنتحدث.",
@@ -3150,7 +3262,7 @@
       "form.opt.scholarship":"منحة در��سية","form.opt.uni":"عرض جامعي","form.opt.training":"تدريب","form.opt.consulting":"است��ارة","form.opt.event":"فعالية",
       "form.message":"الرسالة","form.submit":"إرسال الطلب","form.response":"شكرًا لك — تم استلام طلبك. سنتواصل معك قريبًا.",
       "footer.tag":"تسويق | علامة تجارية | رقمي | تعليم","footer.navigate":"روابط","footer.social":"تواصل",
-      "footer.linkedin":"لينكدإن (أضف الرابط)","footer.tiktok":"تيك توك (أضف الرابط)","footer.rights":"© 2026 لوكاس. جميع الحقوق محفوظة.","footer.think":"فكّر أبعد."
+      "footer.linkedin":"لينكدإن (أضف الرابط)","footer.tiktok":"تيك توك (أضف الرابط)","footer.rights":"© 2026 ��وكاس. جميع الحقوق محفوظة.","footer.think":"فكّر أبعد."
     }
   };
 
@@ -3560,7 +3672,7 @@
     const language = getLanguage();
     const arabic = language === 'ar';
     const copy = arabic
-      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', requirements: 'المتطلبات والإرشادات', provider: 'الجهة المقدمة', level: 'المستوى الدراسي', deadline: 'الموعد النهائي', status: 'الحالة', open: 'التقديم مفتوح', upcoming: 'قريباً', closed: 'مغلقة', apply: 'قدّم الآن', contact: 'تواصل معنا للاستفسار', cover: 'صورة المنحة', back: 'العودة إلى المنح', nextTitle: 'الخطوة التالية', nextDescription: 'راجع المتطلبات، ثم تابع إلى التقديم أو تواصل مع فريقنا للحصول على الإرشاد.' }
+      ? { scholarship: 'منحة دراسية', opportunity: 'فرصة', details: 'استكشف فرصة المنحة وتفاصيل التقديم.', requirements: 'المتطلبات والإرشادات', provider: 'الجهة المقدمة', level: 'المستوى الدراسي', deadline: 'الموعد النهائي', status: 'الحالة', open: 'التقديم مفتوح', upcoming: 'قريباً', closed: 'مغلقة', apply: 'قدّم الآن', contact: 'تواصل معنا للاستفسار', cover: 'صورة المنحة', back: 'العودة إلى المنح', nextTitle: 'الخطوة ��لتالية', nextDescription: 'راجع المتطلبات، ثم تابع إلى التقديم أو تواصل مع فريقنا للحصول على الإرشاد.' }
       : { scholarship: 'Scholarship', opportunity: 'Opportunity', details: 'Explore this scholarship opportunity and application details.', requirements: 'Requirements and guidance', provider: 'Provider', level: 'Study level', deadline: 'Deadline', status: 'Status', open: 'Open now', upcoming: 'Coming soon', closed: 'Closed', apply: 'Apply now', contact: 'Contact us for guidance', cover: 'Scholarship cover', back: 'Back to scholarships', nextTitle: 'Next steps', nextDescription: 'Review the requirements, then continue to the application or contact our team for guidance.' };
     const title = localized(post, 'title', arabic ? 'فرصة منحة دراسية' : 'Scholarship opportunity');
     document.getElementById('scholarship-dialog-back-label').textContent = copy.back;
@@ -3680,7 +3792,7 @@
 
 /* ================= PAGE ROUTER ================= */
 (function(){
-  const PAGES = ['home','education','marketing','furas','consulting','work','about','contact'];
+  const PAGES = ['home','education','marketing','furas','furas-1','furas-2','furas-3','furas-4','furas-5','furas-6','consulting','work','about','contact'];
   const map = {
     home: 'home',
     services: 'marketing',
@@ -3690,6 +3802,12 @@
     'education-opportunities': 'education',
     'education-offers': 'education',
     furas: 'furas',
+    'furas-1': 'furas-1',
+    'furas-2': 'furas-2',
+    'furas-3': 'furas-3',
+    'furas-4': 'furas-4',
+    'furas-5': 'furas-5',
+    'furas-6': 'furas-6',
     consulting: 'consulting',
     work: 'work',
     about: 'about',
@@ -3708,29 +3826,49 @@
     // sub-ids like svc-mkt-1
     if(raw.startsWith('svc-mkt')) return {page:'marketing', anchor:raw};
     if(raw.startsWith('svc-edu')) return {page:'education', anchor:raw};
-    if(raw.startsWith('furas-')) return {page:'furas', anchor:raw};
     return {page:'home', anchor:raw};
   }
 
+  let activeFurasDetail = null;
+  function renderFurasDetail(page){
+    if(!page || !/^furas-[1-6]$/.test(page)) return;
+    const lang = window.__lokasLang === 'ar' ? 'ar' : 'en';
+    const translations = window.__lokasTranslations?.[lang] || {};
+    const prefix = 'furas.detail.' + page.slice(-1);
+    const title = translations['furas.' + page.slice(-1)] || '';
+    document.getElementById('furas-detail-title').textContent = title;
+    document.getElementById('furas-detail-intro').textContent = translations[prefix + '.intro'] || '';
+    [1,2,3].forEach(index => {
+      document.getElementById('furas-detail-point-' + index).textContent = translations[prefix + '.point' + index] || '';
+    });
+  }
+  document.addEventListener('lokas:langchange', () => renderFurasDetail(activeFurasDetail));
+
   function setActiveNav(page){
+    const activePage = page.startsWith('furas-') ? 'furas' : page;
     document.querySelectorAll('.nav-links > .nav-item > a[href^="#"], #mobile-nav a[href^="#"]').forEach(a=>{
       const href = a.getAttribute('href') || '';
       const key = href.replace('#','');
       const p = map[key] || (PAGES.includes(key) ? key : null);
-      a.classList.toggle('active', p === page);
+      a.classList.toggle('active', p === activePage);
     });
   }
 
   function showPage(page, anchor){
     if(!PAGES.includes(page)) page = 'home';
+    activeFurasDetail = /^furas-[1-6]$/.test(page) ? page : null;
+    renderFurasDetail(activeFurasDetail);
     document.body.className = document.body.className
-      .replace(/\bpage-mode-\w+/g, '')
+      .replace(/\bpage-mode-[\w-]+/g, '')
       .trim();
     document.body.classList.add('page-mode-' + page);
     setActiveNav(page);
     // close mobile nav
     const mobile = document.getElementById('mobile-nav');
-    if(mobile) mobile.classList.remove('open');
+    if(mobile){
+      mobile.classList.remove('open');
+      mobile.querySelectorAll('details[open]').forEach(detail=>detail.removeAttribute('open'));
+    }
     const burger = document.getElementById('burger');
     if(burger) burger.classList.remove('open');
     if(page === 'home' && anchor){
