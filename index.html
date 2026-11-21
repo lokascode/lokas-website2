@@ -367,17 +367,22 @@
     .nav-item:hover > a .nav-caret,
     .nav-item:focus-within > a .nav-caret{transform:rotate(180deg);opacity:1;}
   }
+  .nav-item{z-index:0;}
+  .nav-item:hover,
+  .nav-item:focus-within{z-index:2;}
   .nav-drop{
     position:absolute;
     top:calc(100% + 14px);
     left:50%;
+    width:min(320px, calc(100vw - 32px));
+    max-height:min(68vh, 480px);
+    overflow-y:auto;
     transform:translateX(-50%) translateY(6px);
-    min-width:220px;
-    padding:10px;
+    padding:12px;
     background:var(--bg);
     border:1px solid var(--line-soft);
-    border-radius:14px;
-    box-shadow:0 18px 48px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04);
+    border-radius:16px;
+    box-shadow:0 20px 56px rgba(0,0,0,0.14), 0 3px 10px rgba(0,0,0,0.04);
     opacity:0;
     visibility:hidden;
     pointer-events:none;
@@ -399,21 +404,32 @@
   html[dir="rtl"] .nav-item:focus-within > .nav-drop{
     transform:translateX(50%) translateY(0);
   }
+  .nav-links:has(.nav-item:hover) .nav-item:not(:hover) > .nav-drop,
+  .nav-links:not(:has(.nav-item:hover)):has(.nav-item:focus-within) .nav-item:not(:focus-within) > .nav-drop{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+  }
   .nav-drop a{
     display:block;
-    padding:10px 12px;
+    padding:12px 14px;
     border-radius:10px;
     font-size:13px;
+    line-height:1.45;
     color:var(--text-soft);
-    white-space:nowrap;
+    white-space:normal;
     transition:background 160ms var(--ease-out), color 160ms var(--ease-out);
   }
   .nav-drop a::after{display:none !important;}
+  .nav-drop a:focus-visible{outline:2px solid var(--text);outline-offset:2px;}
   @media (hover:hover) and (pointer:fine){
     .nav-drop a:hover{background:var(--card-hover);color:var(--text);}
   }
   html[data-theme="dark"] .nav-drop{
-    box-shadow:0 18px 48px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow:0 20px 56px rgba(0,0,0,0.5), 0 3px 10px rgba(0,0,0,0.24);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .nav-drop,.nav-drop a{transition:none;}
   }
   @media (max-width:1240px){
     .nav-drop{display:none;}
@@ -3139,7 +3155,7 @@
       "training.2.title":"الموارد البشرية","training.2.desc":"التوظيف والاختيار، تقييم الأداء، مؤشرات الأداء، الأوصاف الوظيفية، إدارة المواهب، وتخطيط القوى العاملة.",
       "training.3.title":"الإدارة التنظيمية","training.3.desc":"التخطيط الاستراتيجي، الهياكل التنظيمية، الحوكمة، السياسات والإجراءات، وإدارة العمليات.",
       "training.4.title":"المبيعات والتسويق","training.4.desc":"مهارات البيع، خدمة العملاء، التفاوض، التسويق الرقمي، إدارة علاقات العملاء، وتجربة العميل.",
-      "training.5.title":"المهار��ت الإدارية","training.5.desc":"إدارة الوقت، الاجتماعات الفعالة، كتابة التقارير، حل المشكلات، والتواصل الداخلي.",
+      "training.5.title":"المهار��ت الإدارية","training.5.desc":"إدارة الوقت، الاجتماعات الفعالة، كتابة التقارير، حل المشكلات، والت��اصل الداخلي.",
       "training.6.title":"التكنولوجيا والذكاء الاصطناعي","training.6.desc":"الذكاء الاصطناعي في الإدارة والموارد البشرية والتسويق والمبيعات، تحليل البيانات، الأتمتة، والتحول الرقمي.",
       "consulting.eyebrow":"الاستشارات","consulting.title":"قرارات أفضل. مؤسسات أقوى.",
       "consulting.desc":"الاستشارات هي عملية تقديم التوصيات والرؤى والمشورة المتخصصة لتحسين المشاريع وحل التحديات ودعم اتخاذ القرار. لا نؤمن بأن الاستشارة يجب أن تنتهي بتقرير — المعرفة ← القدرة ← الأداء ← نتائج قابلة للقياس.",
