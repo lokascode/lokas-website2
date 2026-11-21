@@ -3353,7 +3353,6 @@
     return;
   }
 
-  document.documentElement.style.overflow = 'hidden';
   lines.forEach((line, i)=>{
     line.style.transition = 'opacity 250ms ease';
     setTimeout(()=>{ line.style.opacity = '1'; }, 120 + i * 260);
@@ -3363,7 +3362,6 @@
   const totalDelay = 120 + lines.length * 260 + 500;
   function finishBoot(){
     boot.classList.add('hidden');
-    document.documentElement.style.overflow = '';
     sessionStorage.setItem('lokas_booted', '1');
     playLogoGlitch();
   }
