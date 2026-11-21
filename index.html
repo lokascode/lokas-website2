@@ -529,6 +529,10 @@
     opacity:0;transform:translateY(14px);
     transition:opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
   }
+  #mobile-nav > a.active{
+    text-decoration:underline;text-decoration-color:var(--accent);
+    text-decoration-thickness:1px;text-underline-offset:8px;
+  }
   #mobile-nav.open a{opacity:1;transform:translateY(0);}
   #mobile-nav.open a:nth-child(2){transition-delay:80ms;}
   #mobile-nav.open a:nth-child(3){transition-delay:130ms;}
@@ -3421,9 +3425,9 @@
   update();
 })();
 
-/* Scrollspy: highlight the page represented by the section under the reading line */
+/* Scrollspy: highlight the current page in both navigation menus */
 (function(){
-  const navLinks = Array.from(document.querySelectorAll('.nav-links > .nav-item > a[href^="#"]'));
+  const navLinks = Array.from(document.querySelectorAll('.nav-links > .nav-item > a[href^="#"], #mobile-nav > a[href^="#"]'));
   if(!navLinks.length) return;
   const nav = document.querySelector('nav');
   let ticking = false;
